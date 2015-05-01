@@ -22,12 +22,20 @@ if(!defined('IN_TEMPLATE'))
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 
+                <ul class="nav navbar-nav">
+                    <?php if( $_G['usertype'] == 1 ): ?>
+                    <li><a href="#">採購頁面</a></li>
+                    <?php endif; ?>
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <?php if( $_G['usertype'] == 2 ): ?>
                     <li><a href="admin.php">管理</a></li>
-                    <li><a href="api.php?action=logout">登出</a></li>
-                    <?php else: ?>
+                    <?php endif; ?>
+                    
+                    <?php if( $_G['usertype'] == 0 ): ?>
                     <li><a href="#" data-toggle="modal" data-target="#LoginModal">登入</a></li>
+                    <?php else: ?>
+                    <li><a href="api.php?action=logout">登出</a></li>
                     <?php endif; ?>
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -66,7 +74,9 @@ if(!defined('IN_TEMPLATE'))
 <?php if( $_G['usertype'] == 2 ): ?>
 <?php else: /*Not Login*/?>
     <!--LoginModal-->
-    <!--<script src='https://www.google.com/recaptcha/api.js'></script>-->
+    <?php if($_E['loginrecaptcha']): ?>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <?php endif;?>
     <script>
         function login()
         {
@@ -83,7 +93,14 @@ if(!defined('IN_TEMPLATE'))
                             $('#login_form').modal('hide');
                         },300);
                         setTimeout( function(){
-                            location.reload();
+                            if( res.data == 1 )
+                            {
+                                location.href = 'index.php';
+                            }
+                            else
+                            {
+                                location.href = 'admin.php';
+                            }                        
                         },500);
                     }
                     else
@@ -120,7 +137,9 @@ if(!defined('IN_TEMPLATE'))
                             <label for="LoginUserPassword">密碼</label>
                             <input type="password" class="form-control" id="LoginUserPassword" name="password" placeholder="Password">
                         </div>
-                        <!--<div class="g-recaptcha" data-sitekey="6LcLIgYTAAAAAHfjWLqtHbUiWCfrhvHfvLjsPPXO"></div>-->
+                        <?php if($_E['loginrecaptcha']): ?>      
+                        <div class="g-recaptcha" data-sitekey="6LcLIgYTAAAAAHfjWLqtHbUiWCfrhvHfvLjsPPXO"></div>
+                        <?php endif;?>
                     </form>
                 </div>
                 <div class="modal-footer">

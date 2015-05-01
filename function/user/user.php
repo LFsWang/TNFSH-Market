@@ -19,10 +19,10 @@ switch( $action )
         }
         $acct = $_POST['account'];
         $pass = $_POST['password'];
-        if( login($acct,$pass,$msg) )
+        if( $type = login($acct,$pass,$msg) )
         {
             //TODO register token
-            throwjson('SUCC','');
+            throwjson('SUCC',$type);
         }
         else
         {

@@ -23,7 +23,7 @@ if(!defined('IN_TEMPLATE'))
     <li class="dropdown <?php admin_panel_active('goods',$tname)?>">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dLabel">商品資訊<span class="caret"></span></a>
         <ul class="dropdown-menu" aria-labelledby="dLabel">
-            <li><a href="admin.php?page=goodsgroup">群組</a></li>
+            <li><a href="admin.php?page=goodlists">群組</a></li>
             <li><a href="admin.php?page=goods">商品管理</a></li>
         </ul>
     </li>

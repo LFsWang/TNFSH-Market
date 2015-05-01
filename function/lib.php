@@ -30,12 +30,14 @@ function updatesysvalue($id,$value)
     return $value;
 }
 
-function httpRequest( $url , $post = null , $usepost =true )
+function httpRequest( $url , $post = null , $usepost =true , $usessl = false )
 {
     if( is_array($post) )
     {
         ksort( $post );
+        //echo http_build_query( $post );
         $post = http_build_query( $post );
+        
     }
     
     $ch = curl_init();
@@ -45,6 +47,11 @@ function httpRequest( $url , $post = null , $usepost =true )
     {
         curl_setopt( $ch , CURLOPT_POST, true );
         curl_setopt( $ch , CURLOPT_POSTFIELDS , $post );
+    }
+    if($usessl)
+    {
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,0);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,0);
     }
     curl_setopt( $ch , CURLOPT_RETURNTRANSFER , true );
     

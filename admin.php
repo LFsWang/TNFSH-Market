@@ -6,7 +6,7 @@ if( $_G['usertype'] != 2 )
 {
     header("Location:index.php");
 }
-$allow_page = array('index','goods','edit_system_announcement');
+$allow_page = array('index','goods','edit_system_announcement','goodlists');
 $page = 'index';
 if( isset($_REQUEST['page']) )
 {

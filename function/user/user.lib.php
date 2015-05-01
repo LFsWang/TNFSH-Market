@@ -59,25 +59,34 @@ function addAdminAccount($username,$password)
 function recaptcha()
 {
     global $_E;
+    if( !$_E['loginrecaptcha'] )
+    {
+        return true;
+    }
     $res = httpRequest( 'https://www.google.com/recaptcha/api/siteverify' ,
                     array( 'secret'     =>$_E['recaptcha']['secret'] ,
-                           'response'   =>$_POST['g-recaptcha-response'],
-                           'remoteip'   =>$_SERVER['REMOTE_ADDR']));
-    var_dump($res);
-    return $res;
+                           'response'   =>$_POST['g-recaptcha-response'],) ,true ,true);
+                           #'remoteip'   =>$_SERVER['REMOTE_ADDR']));
+    $res = json_decode($res);
+    return $res->success;
 }
 
+
+#return : Account Type
+# false : fail
+# 1 :student
+# 2 :admin
 function login( $username , $password , &$error )
 {
     if( !isset( $error ) )
     {
         $error = '';
     }
-    /*if( !recaptcha() )
+    if( !recaptcha() )
     {
         $error = "Recaptcha Error!";
         return false;
-    }*/
+    }
     if( !checkAccountFormat($username) )
     {
         $error = "Account Error!";
@@ -96,25 +105,54 @@ function login( $username , $password , &$error )
     $res->execute( array($username) );
     $row = $res->fetch();
     
-    if( $row === false )
-    {
-        $error = "No Such User!";
-        return false;
-    }
-    
-    if( password_verify( $password , $row['password'] ) )
-    {
-        $error = "Something Wrong!";
-        if( !UserAccess::SetLoginToken( $row['uid'] , 2 ) )
+    if( $row !== false )
+    {#login as admin
+        if( password_verify( $password , $row['password'] ) )
+        {
+            $error = "Something Wrong!";
+            if( !UserAccess::SetLoginToken( $row['uid'] , 2 ) )
+                return false;
+            
+            $error = "Welcome! Admin";
+            $_SESSION['userdata'] = $row;
+            return 2;
+        }
+        else
+        {
+            $error = "Password Error!";
             return false;
-        
-        $error = "Welcome!";
-        $_SESSION['userdata'] = $row;
-        return true;
+        }
     }
     else
-    {
-        $error = "Password Error!";
-        return false;
+    {#login as student
+        $table = SQL::tname('student_account');
+        $sql_select = "SELECT * FROM $table WHERE `username` = ?";
+        $res = SQL::prepare($sql_select);
+        $res->execute( array($username) );
+        $data = $res->fetchAll();
+        
+        if( $data )
+        {
+            foreach( $data as $row )
+            {
+                if( password_verify( $password , $row['password'] ) )
+                {
+                    $error = "Something Wrong!";
+                    if( !UserAccess::SetLoginToken( $row['uid'] , 1 ) )
+                        return false;
+                    
+                    $error = "Welcome! User";
+                    $_SESSION['userdata'] = $row;
+                    return 1;
+                }
+            }
+            $error = "Password Error!";
+            return false;
+        }
     }
+    $error = "No Such User!";
+    return false;
 }
+    
+    
+    

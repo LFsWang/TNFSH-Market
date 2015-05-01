@@ -4,8 +4,18 @@ if(!defined('IN_TEMPLATE'))
     exit('Access denied');
 }
 ?>
+<script src="js/tinymce/tinymce.min.js"></script>
 <script>
-
+tinymce.init({
+    language:"zh_TW",
+    selector:'#detail',
+    plugins :[
+        "advlist autolink lists link charmap preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen",
+        "insertdatetime nonbreaking table contextmenu directionality",
+        "emoticons template paste textcolor colorpicker textpattern"
+    ]
+});
 function readURL(input) {
 
     if (input.files && input.files[0]) {
@@ -56,8 +66,8 @@ function editgood(gid)
         $("#defaultnum").val(info.defaultnum);
         $("#goodtype").val(info.type);
         
-        $("goodsadd").val('修改');
-        
+        $("#goodsadd").val('修改');
+        $("#collapseOne").collapse('show');
     },"json");
 }
 
@@ -69,7 +79,7 @@ function addnew()
     $("#method").val('addnew');
     $("#btnswitch").hide();
     $("#formtitle").html('新增商品');
-    $("goodsadd").val('新增');
+    $("#goodsadd").val('新增');
 }
 
 $( document ).ready(function() {        
@@ -90,75 +100,94 @@ $( document ).ready(function() {
                 <h2>商品管理</h2>
             </center>
             <hr>
-            <span class="h3" id="formtitle">新增商品</span>
-            <button class="btn btn-default" id="btnswitch" style="display: none;" onclick="addnew()">切換新增</button>
-            <form class='form-inline' method = "post" action = "admin.php?page=goods" enctype="multipart/form-data" id="form">
-                <input type="hidden" id="page" name="page" value="goods">
-                <input type="hidden" id="method" name="method" value="addnew">
-                <input type="hidden" id="gid" name="gid" value="0">
-                <!--<input type="hidden" name="token" value="">-->
-                <div class="container-fluid">
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td rowspan="4" class="col-lg-3 col-md-3 col-sm-3">
-                                    <div id="display">
-                                        <span id="nograph">沒有選擇圖片</span>
-                                        <img id="graphpreview" src="#" width='100%' max-height='100px' alt="your image" hidden />
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <span class="h3" id="formtitle">新增商品</span>
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                <!--<button class="btn btn-default" id="btnswitch" style="display: none;" onclick="addnew()">切換新增</button>-->
+                            </a>
+                        </h4>
+                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <form class='form-horizontal' method = "post" action = "admin.php?page=goods" enctype="multipart/form-data" id="form">
+                                    <input type="hidden" id="page" name="page" value="goods">
+                                    <input type="hidden" id="method" name="method" value="addnew">
+                                    <input type="hidden" id="gid" name="gid" value="0">
+                                    <!--<input type="hidden" name="token" value="">-->
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-5 col-md-5 col-sm-5 table-bordered" style="padding:0px">
+                                                <div id="display" style="min-height:200px;">
+                                                    <span id="nograph">沒有選擇圖片</span>
+                                                    <img id="graphpreview" src="#" width='100%' max-height='100px' alt="your image" hidden />
+                                                </div>
+                                                <div class="form-group text-center">
+                                                    <!--<label for="goodprice">上傳圖片</label>-->
+                                                    <input type="file" class="form-control" id="goodgraph" name="goodgraph[]" multiple accept='image/*' style="width:80%;margin-left:25px;">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-7 col-md-7 col-sm-7" style="padding:10px">
+                                                <div class="form-group">
+                                                    <label for="goodname" class="col-sm-4 col-md-4 control-label">商品名稱</label>
+                                                    <div class="col-sm-8 col-md-8">
+                                                        <input type="text" class="form-control" id="goodname" placeholder="制服" name="goodname" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="goodtype" class="col-sm-4 col-md-4 control-label">商品種類</label>
+                                                    <div class="col-sm-8 col-md-8">
+                                                        <select name="goodtype" id="goodtype">
+                                                            <option value="normal">一般商品</option>
+                                                            <option value="colthe">衣服</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="goodprice" class="col-sm-4 col-md-4 control-label">販售價格</label>
+                                                    <div class="col-sm-8 col-md-8">
+                                                        <input type="number" class="form-control" id="goodprice" placeholder="EX.100$" name="goodprice" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="defaultnum" class="col-sm-4 col-md-4 control-label">預設數量</label>
+                                                    <div class="col-sm-8 col-md-8">
+                                                        <input type="number" class="form-control" id="defaultnum" placeholder="1件" value=1 name="defaultnum" min="0">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="maxnum" class="col-sm-4 col-md-4 control-label">最大購買數量</label>
+                                                    <div class="col-sm-8 col-md-8">
+                                                        <input type="number" class="form-control" id="maxnum" placeholder="10件" value=1 name="maxnum" min="0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!--end of row-->
+                                        <hr>
+                                        <div class ="row">
+                                            <div class="col-sm-12">
+                                                <h4>商品描述</h4>
+                                                <textarea id="detail" rows="10"></textarea>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class ="row">
+                                            <div class="col-sm-12 text-right">
+                                                <input type="submit" class="btn btn-success" id="goodsadd" value='新增'>
+                                            </div>
+                                        </div>
                                     </div>
-                                </td>
-                                <td class="col-lg-6 col-lg-6 col-lg-6">
-                                    <div class="form-group">
-                                        <label for="goodname">商品名稱</label>
-                                        <input type="text" class="form-control" id="goodname" placeholder="制服" name="goodname" required>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <label for="goodtype">商品種類</label>
-                                        <select name="goodtype" id="goodtype">
-                                            <option value="normal">一般商品</option>
-                                            <option value="colthe">衣服</option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <label for="goodprice">販售價格</label>
-                                        <input type="number" class="form-control" id="goodprice" placeholder="EX.100$" name="goodprice" required>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <label for="defaultnum">預設數量</label>
-                                        <input type="number" class="form-control" id="defaultnum" placeholder="1件" value=1 name="defaultnum" min="0">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <!--<label for="goodprice">上傳圖片</label>-->
-                                        <input type="file" class="form-control" id="goodgraph" name="goodgraph[]" multiple accept='image/*'>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class='text-right'>
-                                        <small><span id="info"></span></small>
-                                        <input type="submit" class="btn btn-success" id="goodsadd" value='新增'>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                </form>
+                                <button class="btn btn-default" id="btnswitch" style="display: none;" onclick="addnew()">切換新增</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </form>
+            </div>
+            
+            
             
             <hr>
             <span class="h3">商品列表</span>
