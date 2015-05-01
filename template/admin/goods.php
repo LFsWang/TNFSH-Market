@@ -29,6 +29,49 @@ function readURL(input) {
     }
 }
 
+function editgood(gid)
+{
+    $.get( "api.php",{ action : "getgoodinfo", gid : gid },function( data ) {
+        if( data.status != "SUCC" )
+        {
+            alert(data.data);
+            if( data.data == 'Access denied!' )
+            {
+                location.href = 'index.php';
+            }
+        }
+        
+        info = data.data;
+        console.log(info);
+        $("#formtitle").html('修改商品');
+        $("#btnswitch").show();
+        
+        $("#page").val('goods');
+        $("#method").val('modify');
+        $("#gid").val(info.gid);
+        
+        
+        $("#goodname").val(info.name);
+        $("#goodprice").val(info.price);
+        $("#defaultnum").val(info.defaultnum);
+        $("#goodtype").val(info.type);
+        
+        $("goodsadd").val('修改');
+        
+    },"json");
+}
+
+function addnew()
+{
+    $("#form")[0].reset();
+    $("#page").val('goods');
+    $("#gid").val('0');
+    $("#method").val('addnew');
+    $("#btnswitch").hide();
+    $("#formtitle").html('新增商品');
+    $("goodsadd").val('新增');
+}
+
 $( document ).ready(function() {        
     $("#goodgraph").change(function(){
         readURL(this);
@@ -47,8 +90,13 @@ $( document ).ready(function() {
                 <h2>商品管理</h2>
             </center>
             <hr>
-            <span class="h3">新增商品</span>
-            <form class='form-inline'>
+            <span class="h3" id="formtitle">新增商品</span>
+            <button class="btn btn-default" id="btnswitch" style="display: none;" onclick="addnew()">切換新增</button>
+            <form class='form-inline' method = "post" action = "admin.php?page=goods" enctype="multipart/form-data" id="form">
+                <input type="hidden" id="page" name="page" value="goods">
+                <input type="hidden" id="method" name="method" value="addnew">
+                <input type="hidden" id="gid" name="gid" value="0">
+                <!--<input type="hidden" name="token" value="">-->
                 <div class="container-fluid">
                     <table class="table table-bordered">
                         <tbody>
@@ -62,17 +110,17 @@ $( document ).ready(function() {
                                 <td class="col-lg-6 col-lg-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="goodname">商品名稱</label>
-                                        <input type="text" class="form-control" id="goodname" placeholder="制服" name="goodname">
+                                        <input type="text" class="form-control" id="goodname" placeholder="制服" name="goodname" required>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <div class="form-group">
-                                        <label for="goodname">商品種類</label>
-                                        <select name="goodtype">
+                                        <label for="goodtype">商品種類</label>
+                                        <select name="goodtype" id="goodtype">
                                             <option value="normal">一般商品</option>
-                                            <option value="clouth">衣服</option>
+                                            <option value="colthe">衣服</option>
                                         </select>
                                     </div>
                                 </td>
@@ -81,15 +129,15 @@ $( document ).ready(function() {
                                 <td>
                                     <div class="form-group">
                                         <label for="goodprice">販售價格</label>
-                                        <input type="number" class="form-control" id="goodprice" placeholder="100$" name="goodprice" min="0">
+                                        <input type="number" class="form-control" id="goodprice" placeholder="EX.100$" name="goodprice" required>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <div class="form-group">
-                                        <label for="goodprice">預設數量</label>
-                                        <input type="number" class="form-control" id="goodprice" placeholder="1件" value=1 name="goodprice" min="0">
+                                        <label for="defaultnum">預設數量</label>
+                                        <input type="number" class="form-control" id="defaultnum" placeholder="1件" value=1 name="defaultnum" min="0">
                                     </div>
                                 </td>
                             </tr>
@@ -97,13 +145,13 @@ $( document ).ready(function() {
                                 <td>
                                     <div class="form-group">
                                         <!--<label for="goodprice">上傳圖片</label>-->
-                                        <input type="file" class="form-control" id="goodgraph" name="goodgraph" multiple accept='image/*'>
+                                        <input type="file" class="form-control" id="goodgraph" name="goodgraph[]" multiple accept='image/*'>
                                     </div>
                                 </td>
                                 <td>
                                     <div class='text-right'>
                                         <small><span id="info"></span></small>
-                                        <button type="button" class="btn btn-success" id="goodsadd" >新增</button>
+                                        <input type="submit" class="btn btn-success" id="goodsadd" value='新增'>
                                     </div>
                                 </td>
                             </tr>
@@ -120,17 +168,25 @@ $( document ).ready(function() {
                         <tr>
                             <th>ID</th>
                             <th>商品名稱</th>
+                            <th>種類</th>
                             <th>售價</th>
+                            <th>預設數量</th>
+                            <th>預設購買金額</th>
                             <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
+                    <?php foreach($tmpl['goodslist'] as $good){?>
                         <tr>
-                            <td>1</td>
-                            <td>風景畫</td>
-                            <td>300</td>
+                            <td><?=$good['gid']?></td>
+                            <td><?=htmlspecialchars($good['name'])?></td>
+                            <td><?=$good['type']?></td>
+                            <td><?=$good['price']?></td>
+                            <td><?=$good['defaultnum']?></td>
+                            <td><?=$good['price'] * $good['defaultnum']?></td>
+                            <?php #TOOLS?>
                             <td>
-                                <a class="icon-bttn" href="#">
+                                <a class="icon-bttn" href="#" onclick="editgood(<?=$good['gid']?>)">
                                     <span class="glyphicon glyphicon-pencil" title="編輯"></span>
                                 </a>
                                 <a class="icon-bttn" href="#">
@@ -141,22 +197,7 @@ $( document ).ready(function() {
                                 </a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>風景畫</td>
-                            <td>3015</td>
-                            <td>
-                                <a class="icon-bttn" href="#">
-                                    <span class="glyphicon glyphicon-pencil" title="編輯"></span>
-                                </a>
-                                <a class="icon-bttn" href="#">
-                                    <span class="glyphicon glyphicon-lock" title="隱藏"></span>
-                                </a>
-                                <a class="icon-bttn" href="#">
-                                    <span class="glyphicon glyphicon-trash" title="移除"></span>
-                                </a>
-                            </td>
-                        </tr>
+                    <?php }?>
                     </tbody>
                 </table>
             </div>

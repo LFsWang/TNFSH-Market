@@ -89,7 +89,6 @@ function login( $username , $password , &$error )
         return false;
     }
     
-    $pdo = SQL::getpdo();
     $table = SQL::tname('account');
     $sql_select = "SELECT * FROM $table WHERE `username` = ?";
 

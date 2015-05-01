@@ -33,6 +33,33 @@ if(!defined('IN_TEMPLATE'))
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
+    <?php if($tmpl['error']):?>
+    <div class="alert alert-danger fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <strong>Oh! System error</strong>
+        <ul>
+        <?php foreach($_E['template']['error'] as $list){ ?>
+            <li>(<?=$list['namespace']?>)<?=$list['msg']?></li>
+        <?php }?>
+        </ul>
+    </div>
+    <?php endif;?>
+    <?php if($tmpl['succ']):?>
+    <div class="alert alert-success fade in" role="alert" id="success-alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <strong>Nice!</strong>
+        <ul>
+        <?php foreach($_E['template']['succ'] as $list){ ?>
+            <li>(<?=$list['namespace']?>)<?=$list['msg']?></li>
+        <?php }?>
+        </ul>
+    </div>
+    <script>
+    $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+        $("#success-alert").alert('close');
+    });
+    </script>
+    <?php endif;?>
     
     
     

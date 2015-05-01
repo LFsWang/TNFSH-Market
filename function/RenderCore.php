@@ -104,6 +104,18 @@ class Render
         $_E['template']['error'][]=array('msg'=>nl2br(htmlspecialchars($text)),'namespace'=>$namespace);
     }
     
+    static function succmessage($text,$namespace = '')
+    {
+        global $_E;
+        if( !is_string($text) )
+        {
+            ob_start();
+            var_dump($text);
+            $text = ob_get_clean();
+        }
+        $_E['template']['succ'][]=array('msg'=>nl2br(htmlspecialchars($text)),'namespace'=>$namespace);
+    }
+    
     static function static_html($pagename , $namespace = 'common') 
     {
         ob_start();
@@ -140,3 +152,4 @@ class Render
     }
 }
 $_E['template']['error'] = array();
+$_E['template']['succ'] = array();

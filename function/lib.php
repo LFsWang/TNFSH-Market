@@ -21,7 +21,6 @@ function getsysvalue($id)
 
 function updatesysvalue($id,$value)
 {
-    //UPDATE `test_market`.`system` SET `value` = 'A' WHERE `system`.`id` = 'system_announcement';
     $table = SQL::tname('system');
     $pdo = SQL::getpdo();
     $sql_select = "UPDATE $table SET `value` = ? WHERE `id` = ?";
@@ -57,7 +56,24 @@ function httpRequest( $url , $post = null , $usepost =true )
     }
     return $data;
 }
-	
+
+function throwjson($status,$data)
+{
+    exit( json_encode( array( 'status' => $status , 'data' => $data ) ) );
+}
+
+function safe_post($name,$default = false)
+{
+    if( isset( $_POST[$name] ) )
+        return $_POST[$name];
+    return $default;
+}
+function safe_get($name,$default = false)
+{
+    if( isset( $_GET[$name] ) )
+        return $_GET[$name];
+    return $default;
+}
     
     
     

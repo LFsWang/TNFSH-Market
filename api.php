@@ -2,10 +2,7 @@
 require_once('GlobalSetting.php');
 //api only return json format data
 
-function throwjson($status,$data)
-{
-    exit( json_encode( array( 'status' => $status , 'data' => $data ) ) );
-}
+
 //UserAccess::SetToken('api',900);
 #
 UserAccess::CheckToken('api');
@@ -24,6 +21,22 @@ foreach( $case as $subpage => $act )
             require_once("function/$subpage/$subpage.php");
             exit(0);
         }
+    }
+}
+
+//ADMIN API
+$case = array( 'getgoodinfo' );
+
+if( in_array($action,$case) )
+{
+    if( $_G['usertype'] != 2 )
+    {
+        throwjson('error','Access denied!');
+    }
+    if( file_exists("function/admin/$action.php") )
+    {
+        require_once("function/admin/$action.php");
+        exit(0);
     }
 }
 throwjson('error','Error:7122');
