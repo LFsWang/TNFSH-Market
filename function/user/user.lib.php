@@ -153,6 +153,3 @@ function login( $username , $password , &$error )
     $error = "No Such User!";
     return false;
 }
-    
-    
-    

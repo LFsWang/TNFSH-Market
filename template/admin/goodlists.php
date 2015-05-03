@@ -27,8 +27,16 @@ function addnew()
     $("goodsadd").val('新增');*/
 }
 
-$( document ).ready(function() {        
-    
+function editgoodlist(id)
+{
+    console.log(id);
+}
+
+$( document ).ready(function() {
+    $('[data-toggle="popover"]').popover({html:true});
+    $("#form").submit(function(){
+        $("#detail").val(tinymce.activeEditor.getContent());
+    });
 });
 </script>
 <div class="container-fluid">
@@ -56,9 +64,9 @@ $( document ).ready(function() {
                     <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                         <div class="panel-body">
                             <form class='form-horizontal' method = "post" action = "admin.php?page=goodlists" id="form">
-                                <input type="hidden" id="page" name="page" value="goodgroups">
+                                <input type="hidden" id="page" name="page" value="goodlists">
                                 <input type="hidden" id="method" name="method" value="addnew">
-                                <input type="hidden" id="pid" name="pid" value="0">
+                                <input type="hidden" id="lid" name="lid" value="0">
                                 <input type="hidden" id="detail" name="detail" value="">
                                 <!--<input type="hidden" name="token" value="">-->
                                 <small><span id="info"></span></small>
@@ -86,10 +94,16 @@ $( document ).ready(function() {
                                     <?php foreach($tmpl['goodslist'] as $row ) {?>
                                         <div class="checkbox col-lg-3 col-md-4 col-sm-6" style="overflow:hidden;" >
                                             <label>
-                                                <input type="checkbox" name='goods' value='<?=$row['gid']?>'><span title='<?=htmlspecialchars($row['name'])?>'><?=htmlspecialchars($row['name'])?></span>
+                                                <input type="checkbox" name='goods[]' value='<?=$row['gid']?>'><span title='<?=htmlspecialchars($row['name'])?>'><?=htmlspecialchars($row['name'])?></span>
                                             </label>
                                         </div>
                                     <?php }?>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="usergroup" class="col-sm-2 control-label">對象</label>
+                                    <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="usergroup" name="usergroup" >
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -120,11 +134,30 @@ $( document ).ready(function() {
                         <tr>
                             <th>ID</th>
                             <th>購買清單名稱</th>
+                            <td>開始時間</td>
+                            <td>結束時間</td>
+                            <th>預設總價</th>
                             <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
-                    
+                        <?php foreach($tmpl['goodlists'] as $row){ ?>
+                        <tr>
+                            <td><?=$row['lid']?></td>
+                            <td>
+                                <span tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="包含商品" data-content="<?=htmlspecialchars($row['liststr'])?>"><?=htmlspecialchars($row['name'])?></span>
+                            </td>
+                            <!--<td><?=htmlspecialchars($row['name'])?></td>-->
+                            <td><?=$row['starttime']?></td>
+                            <td><?=$row['endtime']?></td>
+                            <td><?=$row['sum']?></td>
+                            <td>
+                                <a class="icon-bttn" href="#" onclick="editgoodlist(<?=$row['lid']?>)">
+                                    <span class="glyphicon glyphicon-pencil" title="編輯"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        <?php }?>
                     </tbody>
                 </table>
             </div>

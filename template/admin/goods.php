@@ -64,8 +64,9 @@ function editgood(gid)
         $("#goodname").val(info.name);
         $("#goodprice").val(info.price);
         $("#defaultnum").val(info.defaultnum);
+        $("#maxnum").val(info.maxnum);
         $("#goodtype").val(info.type);
-        
+        tinyMCE.activeEditor.setContent(info.description);
         $("#goodsadd").val('修改');
         $("#collapseOne").collapse('show');
     },"json");
@@ -80,11 +81,15 @@ function addnew()
     $("#btnswitch").hide();
     $("#formtitle").html('新增商品');
     $("#goodsadd").val('新增');
+    tinyMCE.activeEditor.setContent('');
 }
 
 $( document ).ready(function() {        
     $("#goodgraph").change(function(){
         readURL(this);
+    });
+    $("#form").submit(function(){
+        $("#description").val(tinymce.activeEditor.getContent());
     });
 });
 </script>
@@ -110,12 +115,13 @@ $( document ).ready(function() {
                                 <!--<button class="btn btn-default" id="btnswitch" style="display: none;" onclick="addnew()">切換新增</button>-->
                             </a>
                         </h4>
-                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div id="collapseOne" class="panel-collapse collapse <?php if($tmpl['opentab'])echo"in";?> " role="tabpanel" aria-labelledby="headingOne">
                             <div class="panel-body">
                                 <form class='form-horizontal' method = "post" action = "admin.php?page=goods" enctype="multipart/form-data" id="form">
                                     <input type="hidden" id="page" name="page" value="goods">
                                     <input type="hidden" id="method" name="method" value="addnew">
                                     <input type="hidden" id="gid" name="gid" value="0">
+                                    <input type="hidden" id="description" name="description" value=''>
                                     <!--<input type="hidden" name="token" value="">-->
                                     <div class="container-fluid">
                                         <div class="row">
@@ -160,7 +166,7 @@ $( document ).ready(function() {
                                                 <div class="form-group">
                                                     <label for="maxnum" class="col-sm-4 col-md-4 control-label">最大購買數量</label>
                                                     <div class="col-sm-8 col-md-8">
-                                                        <input type="number" class="form-control" id="maxnum" placeholder="10件" value=1 name="maxnum" min="0">
+                                                        <input type="number" class="form-control" id="maxnum" placeholder="10件" value=10 name="maxnum" min="0">
                                                     </div>
                                                 </div>
                                             </div>

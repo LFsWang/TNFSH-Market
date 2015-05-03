@@ -5,6 +5,7 @@ if(!defined('IN_SYSTEM'))
 }
 $allow_goodtype = array('normal','colthe');
 $goodtype_to_zhtw = array( 'normal' => '一般商品' , 'colthe' => '衣服' );
+$open_tab = false;
 if( isset($_POST['method']) )
 {
     //token etc
@@ -12,13 +13,17 @@ if( isset($_POST['method']) )
     {
         case 'addnew':
         case 'modify':
+            //Render::errormessage($_POST,"AS");
+            $open_tab = true;
             //Render::errormessage($_FILES,"??");
-            $goodname = safe_post('goodname','');
-            $goodtype = safe_post('goodtype','');
-            $goodprice= safe_post('goodprice','');
-            $defaultnum=safe_post('defaultnum','');
-            $gid      =safe_post('gid','0');
-            if( empty($goodname) || empty($goodtype) || empty($goodprice) || empty($defaultnum) )
+            $goodname = safe_post('goodname',null);
+            $goodtype = safe_post('goodtype',null);
+            $goodprice= safe_post('goodprice',null);
+            $defaultnum=safe_post('defaultnum',null);
+            $maxnum   = safe_post('maxnum',null);
+            $gid      = safe_post('gid','0');
+            $description = safe_post('description','');
+            if( !isset($goodname) || !isset($goodtype) || !isset($goodprice) || !isset($defaultnum) || !isset($maxnum) )
             {
                 Render::errormessage("欄位不得為空","Add new good");
                 break;
@@ -37,7 +42,7 @@ if( isset($_POST['method']) )
             }
             $goodprice = (int)$goodprice;
             $defaultnum= (int)$defaultnum;
-            if( $defaultnum < 0 )
+            if( $defaultnum < 0 || $maxnum < 0)
             {
                 Render::errormessage("預設數量不得低於0","Add new good");
                 break;
@@ -50,7 +55,7 @@ if( isset($_POST['method']) )
             }
             
             $table = SQL::tname('goods');
-            $sql_select = "SELECT `gid` FROM `goods` WHERE `gid` = ?";
+            
             if( $gid !=0 )
             {
                 if( !is_numeric($gid) )
@@ -59,6 +64,7 @@ if( isset($_POST['method']) )
                     break;
                 }
                 $gid = (int)$gid;
+                $sql_select = "SELECT `gid` FROM `goods` WHERE `gid` = ?";
                 $res = SQL::prepare($sql_select);
                 $res->execute(array($gid));
                 $res = $res->fetch();
@@ -68,19 +74,21 @@ if( isset($_POST['method']) )
                     break;
                 }
                 #Ok update to SQL
-                $sql_update="UPDATE `goods` SET `name`=?,`type`=?,`price`=?,`defaultnum`=?,`description`='',`graph`='' WHERE `gid` = ?";
+                $sql_update="UPDATE `goods` SET `name`=?,`type`=?,`price`=?,`defaultnum`=?,`maxnum`=?,`description`=?,`graph`='' WHERE `gid` = ?";
                 $res = SQL::prepare($sql_update);
-                $res->execute(array($goodname,$goodtype,$goodprice,$defaultnum,$gid));
+                $res->execute(array($goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description,$gid));
                 Render::succmessage("修改成功!","Add new good");
             }
             else
             {
                 $gid = null;
                 #Ok insert to SQL
-                $sql_insert = "INSERT INTO `goods`(`gid`, `name`, `type`, `price`, `defaultnum`, `description`, `graph`, `status`) VALUES (?,?,?,?,?,'','',1)";
+                $sql_insert = "INSERT INTO `goods`(`gid`, `name`, `type`, `price`, `defaultnum`, `maxnum`,`description`, `graph`, `status`) VALUES (?,?,?,?,?,?,?,'',1)";
 
                 $res = SQL::prepare($sql_insert);
-                $res->execute( array($gid,$goodname,$goodtype,$goodprice,$defaultnum) );
+                $res->execute( array($gid,$goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description) );
+                //var_dump($res->errorInfo ());
+                //Render::errormessage($res->errorInfo(),"??");
                 Render::succmessage("新增成功!","Add new good");
                 
             }
@@ -93,7 +101,7 @@ if( isset($_POST['method']) )
 
 //$_E['template']['gtoken'] = UserAccess::SetToken('goodsadd',900,false);
 //Render::errormessage($_E['template']['gtoken'],"AS");
-//Render::errormessage($_SESSION,"AS");
+
 
 #prepare list
 $table = SQL::tname('goods');
@@ -108,4 +116,5 @@ foreach( $result as &$row )
 }
 //Render::errormessage($result);
 $_E['template']['goodslist'] = $result;
+$_E['template']['opentab'] = $open_tab;
 Render::render('goods','admin');
