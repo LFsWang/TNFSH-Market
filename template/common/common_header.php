@@ -4,11 +4,11 @@ if(!defined('IN_TEMPLATE'))
     exit('Access denied');
 }
 ?>
-
 <!DOCTYPE html>
 <head>
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <title><?=$_E['site']['name']?></title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/css.css">
@@ -26,3 +26,4 @@ if(!defined('IN_TEMPLATE'))
         }
     </style>
 </head>
+<noscript style="color:#FFF;font-size:100px">我要JAVASCRIPT~ QQ</noscript>

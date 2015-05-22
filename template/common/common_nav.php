@@ -24,7 +24,7 @@ if(!defined('IN_TEMPLATE'))
                 
                 <ul class="nav navbar-nav">
                     <?php if( $_G['usertype'] == 1 ): ?>
-                    <li><a href="#">採購頁面</a></li>
+                    <li><a href="market.php">採購頁面</a></li>
                     <?php endif; ?>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -68,11 +68,39 @@ if(!defined('IN_TEMPLATE'))
     });
     </script>
     <?php endif;?>
+    <script>
+    $(function () {
+        var Sys = {};
+        var ua = navigator.userAgent.toLowerCase();
+        var s;
+        (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1] :
+        (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+        (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+        (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+        (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+        (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+        
+        if (Sys.ie) $('#whydidyouuseie').show();
+        /*if (Sys.firefox) $('span').text('Firefox: ' + Sys.firefox);
+        if (Sys.chrome) $('span').text('Chrome: ' + Sys.chrome);
+        if (Sys.opera) $('span').text('Opera: ' + Sys.opera);
+        if (Sys.safari) $('span').text('Safari: ' + Sys.safari);*/
+    });
+    </script>
+
+    <div class="alert alert-danger fade in" role="alert" id="whydidyouuseie" hidden>
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <strong>Oh My God !</strong>
+        <ul>
+            <li>還在用連美國國防部都拋棄的IE? 趕快換個瀏覽器吧</li>
+        </ul>
+    </div>
+    
+
     
     
-    
-<?php if( $_G['usertype'] == 2 ): ?>
-<?php else: /*Not Login*/?>
+<?php if( $_G['usertype'] == 0 ): ?>
+    <!--Not Login-->
     <!--LoginModal-->
     <?php if($_E['loginrecaptcha']): ?>
     <script src='https://www.google.com/recaptcha/api.js'></script>
@@ -95,7 +123,7 @@ if(!defined('IN_TEMPLATE'))
                         setTimeout( function(){
                             if( res.data == 1 )
                             {
-                                location.href = 'index.php';
+                                location.href = 'market.php';
                             }
                             else
                             {

@@ -23,7 +23,7 @@ if( isset($_POST['method']) )
             //Render::errormessage($_POST);
             if( !isset($name) || !isset($starttime) || !isset($endtime) || !isset($goodsarr) )
             {
-                Render::errormessage("欄位不得為空A","Add new list");
+                Render::errormessage("欄位不得為空","Add new list");
                 Render::errormessage($endtime);
                 break;
             }

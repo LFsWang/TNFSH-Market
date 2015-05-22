@@ -169,6 +169,16 @@ $( document ).ready(function() {
                                                         <input type="number" class="form-control" id="maxnum" placeholder="10件" value=10 name="maxnum" min="0">
                                                     </div>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="status" class="col-sm-4 control-label">公開使用</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" name='status[]' value='1'>勾選後，其他管理員的購買清單可以選擇此項物品
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div><!--end of row-->
                                         <hr>

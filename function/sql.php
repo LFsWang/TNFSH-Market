@@ -41,4 +41,30 @@ class SQL{
         global $_DB;
         return $_DB['prename'].$table;
     }
+    static function log($namespace,$description)
+    {
+        $table = SQL::tname('syslog');
+        $res = SQL::prepare("INSERT INTO `$table`(`id`,`timestamp`, `namespace`, `description`) VALUES (NULL,NULL,?,?)");
+        if( !$res->execute( array($namespace,$description) ) )
+        {
+            die('System crash! Please call admin to fix');
+        }
+        return true;
+    }
+    
+    static function execute( $object , $array = array() )
+    {
+        try{
+            if( !$object->execute( $array ) )
+            {
+                $data = $object->errorInfo();
+                SQL::log('SQL execute', $data[2] );
+                return false;
+            }
+        } catch (PDOException $e) {
+            SQL::log('SQL Exception', $e->getMessage() );
+            return false;
+        }
+        return true;
+    }
 }

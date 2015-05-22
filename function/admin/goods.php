@@ -3,27 +3,34 @@ if(!defined('IN_SYSTEM'))
 {
   exit('Access denied');
 }
+#status : 
+# 1 : public to all admin (default)
+# 0 : private
+
 $allow_goodtype = array('normal','colthe');
 $goodtype_to_zhtw = array( 'normal' => '一般商品' , 'colthe' => '衣服' );
 $open_tab = false;
+
 if( isset($_POST['method']) )
 {
-    //token etc
+    //to do : token etc
     switch( $_POST['method'] )
     {
         case 'addnew':
         case 'modify':
-            //Render::errormessage($_POST,"AS");
+        
             $open_tab = true;
-            //Render::errormessage($_FILES,"??");
             $goodname = safe_post('goodname',null);
             $goodtype = safe_post('goodtype',null);
             $goodprice= safe_post('goodprice',null);
             $defaultnum=safe_post('defaultnum',null);
             $maxnum   = safe_post('maxnum',null);
             $gid      = safe_post('gid','0');
+            $owner    = $_G['uid'];
             $description = safe_post('description','');
-            if( !isset($goodname) || !isset($goodtype) || !isset($goodprice) || !isset($defaultnum) || !isset($maxnum) )
+            $status   = safe_post('status',array('0'));
+
+            if( !isset($goodname) || !isset($goodtype) || !isset($goodprice) || !isset($defaultnum) || !isset($maxnum) || !isset($status) )
             {
                 Render::errormessage("欄位不得為空","Add new good");
                 break;
@@ -48,6 +55,18 @@ if( isset($_POST['method']) )
                 break;
             }
             
+            if( !is_numeric($status[0]) )
+            {
+                Render::errormessage("屬性錯誤","Add new good");
+                break;
+            }
+            $status = (int)$status[0];
+            if( $status !== 0 && $status !== 1)
+            {
+                Render::errormessage("屬性錯誤!","Add new good");
+                break;
+            }
+            
             //Warning
             if( $goodprice <= 0 )
             {
@@ -64,9 +83,13 @@ if( isset($_POST['method']) )
                     break;
                 }
                 $gid = (int)$gid;
-                $sql_select = "SELECT `gid` FROM `goods` WHERE `gid` = ?";
+                $sql_select = "SELECT `gid` FROM `goods` WHERE `gid` = ? AND `owner` = ?";
                 $res = SQL::prepare($sql_select);
-                $res->execute(array($gid));
+                if( !SQL::execute($res,array($gid,$owner) ) )
+                {
+                    Render::errormessage("SQL 錯誤","Add new good");
+                    break;
+                }
                 $res = $res->fetch();
                 if( !$res )
                 {
@@ -74,23 +97,32 @@ if( isset($_POST['method']) )
                     break;
                 }
                 #Ok update to SQL
-                $sql_update="UPDATE `goods` SET `name`=?,`type`=?,`price`=?,`defaultnum`=?,`maxnum`=?,`description`=?,`graph`='' WHERE `gid` = ?";
+                $sql_update="UPDATE `goods` SET `name`=?,`type`=?,`price`=?,`defaultnum`=?,`maxnum`=?,`description`=?,`graph`='',`status`=? WHERE `gid` = ?";
                 $res = SQL::prepare($sql_update);
-                $res->execute(array($goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description,$gid));
-                Render::succmessage("修改成功!","Add new good");
+                if( SQL::execute( $res , array($goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description,$status,$gid) ) )
+                {
+                    Render::succmessage("修改成功!","Add new good");
+                }
+                else
+                {
+                    Render::errormessage("修改失敗!","Add new good");
+                }             
             }
             else
             {
                 $gid = null;
                 #Ok insert to SQL
-                $sql_insert = "INSERT INTO `goods`(`gid`, `name`, `type`, `price`, `defaultnum`, `maxnum`,`description`, `graph`, `status`) VALUES (?,?,?,?,?,?,?,'',1)";
+                $sql_insert = "INSERT INTO `goods`(`gid`, `owner`, `name`, `type`, `price`, `defaultnum`, `maxnum`,`description`, `graph`, `status`) VALUES (?,?,?,?,?,?,?,?,'',?)";
 
                 $res = SQL::prepare($sql_insert);
-                $res->execute( array($gid,$goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description) );
-                //var_dump($res->errorInfo ());
-                //Render::errormessage($res->errorInfo(),"??");
-                Render::succmessage("新增成功!","Add new good");
-                
+                if( SQL::execute($res,array($gid,$owner,$goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description,$status)))
+                {
+                    Render::succmessage("新增成功!","Add new good");
+                }
+                else
+                {
+                    Render::errormessage("新增失敗!","Add new good");
+                }    
             }
             break;
             //End of Addnew
@@ -105,16 +137,24 @@ if( isset($_POST['method']) )
 
 #prepare list
 $table = SQL::tname('goods');
-$sql_select = "SELECT `gid`, `name`, `type`, `price`, `defaultnum` FROM `goods` WHERE `status` = 1";
+$sql_select = "SELECT `gid`, `name`, `type`, `price`, `defaultnum` ,`status` FROM `goods` WHERE `owner`  = ?";
 $res = SQL::prepare($sql_select);
-$res->execute();
+if( !SQL::execute($res,array($_G['uid']) ) )
+{
+    $result = array();
+    Render::errormessage("SQL ERROR WHEN GET LIST","goods");
+}
+else
+{
+    $result = $res->fetchAll();
+}
 
-$result = $res->fetchAll();
+
 foreach( $result as &$row )
 {
     $row['type'] = $goodtype_to_zhtw[$row['type']];
 }
-//Render::errormessage($result);
+
 $_E['template']['goodslist'] = $result;
 $_E['template']['opentab'] = $open_tab;
 Render::render('goods','admin');

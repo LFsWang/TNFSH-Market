@@ -22,11 +22,11 @@ function getsysvalue($id)
 function updatesysvalue($id,$value)
 {
     $table = SQL::tname('system');
-    $pdo = SQL::getpdo();
-    $sql_select = "UPDATE $table SET `value` = ? WHERE `id` = ?";
+    $sql_update = "INSERT INTO $table (`id`, `value`) VALUES (?,?) ON DUPLICATE KEY UPDATE `value` = ?";
+    //$sql_update = "UPDATE $table SET `value` = ? WHERE `id` = ?";
     
-    $res = SQL::prepare($sql_select);
-    $res->execute( array($value,$id) );
+    $res = SQL::prepare($sql_update);
+    SQL::execute( $res , array($id,$value,$value) );
     return $value;
 }
 
@@ -90,6 +90,3 @@ function checkdateformat($datestr)
         return false;
     }
 }
-
-    
-    
