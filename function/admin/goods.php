@@ -13,6 +13,7 @@ $open_tab = false;
 
 if( isset($_POST['method']) )
 {
+    //Render::errormessage($_FILES);
     //to do : token etc
     switch( $_POST['method'] )
     {
@@ -29,7 +30,11 @@ if( isset($_POST['method']) )
             $owner    = $_G['uid'];
             $description = safe_post('description','');
             $status   = safe_post('status',array('0'));
-
+            $image = array();
+            if( isset($_FILES['goodgraph']) )
+            {
+                $image = $_FILES['goodgraph'] ;
+            }
             if( !isset($goodname) || !isset($goodtype) || !isset($goodprice) || !isset($defaultnum) || !isset($maxnum) || !isset($status) )
             {
                 Render::errormessage("欄位不得為空","Add new good");
@@ -75,6 +80,9 @@ if( isset($_POST['method']) )
             
             $table = SQL::tname('goods');
             
+            //Render::errormessage($image);
+            $imgid = upload_image($image);
+            //Render::errormessage($imgid);
             if( $gid !=0 )
             {
                 if( !is_numeric($gid) )

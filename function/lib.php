@@ -75,12 +75,14 @@ function safe_post($name,$default = false)
         return $_POST[$name];
     return $default;
 }
+
 function safe_get($name,$default = false)
 {
     if( isset( $_GET[$name] ) )
         return $_GET[$name];
     return $default;
 }
+
 function checkdateformat($datestr)
 {
     if(preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$datestr))
@@ -89,4 +91,48 @@ function checkdateformat($datestr)
     }else{
         return false;
     }
+}
+
+#return array of gid
+# -1 : error
+function upload_image($files)
+{
+    global $_E;
+    if(!isset($files['name'])){
+        return array();
+    }
+    $sz = count($files['name']);
+    
+    //$allowedTypes = array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_BMP);
+    $allowedTypes = array(  IMAGETYPE_PNG  => ".png", 
+                            IMAGETYPE_JPEG => ".jpg",
+                            IMAGETYPE_BMP  => ".bmp");
+    
+    $savedir = $_E['ROOT'].'/image/';
+    $gidlist = array();
+    for( $i=0 ; $i<$sz ; ++$i )
+    {
+        $name = $files["name"][$i];
+        $type = $files["type"][$i];
+        $tmp  = $files["tmp_name"][$i];
+        $error= $files["error"][$i];
+        if( $error !==0 )
+        {
+            $gidlist[] = -1;
+            continue;
+        }
+        
+        $detectedType = exif_imagetype($tmp);
+        if( !isset($allowedTypes[$detectedType]) )
+        {
+            $gidlist[] = -1;
+            continue;
+        }
+        
+        $hash_name = md5( uniqid( $tmp , true ) ) . $allowedTypes[$detectedType];
+        move_uploaded_file($tmp,$savedir.$hash_name);
+        Render::errormessage($hash_name);
+        $gidlist[] = 1;
+    }
+    return $gidlist;
 }

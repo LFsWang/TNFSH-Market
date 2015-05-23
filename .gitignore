@@ -43,3 +43,6 @@ Temporary Items
 .apdisk
 
 /GlobalSetting.php
+/image/*.png
+/image/*.jpg
+/image/*.bmp
