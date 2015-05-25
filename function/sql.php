@@ -67,4 +67,9 @@ class SQL{
         }
         return true;
     }
+    
+    static function lastInsertId()
+    {
+        return self::$pdo->lastInsertId();
+    }
 }

@@ -20,4 +20,18 @@ if( !$data )
 {
     throwjson('error','Empty!');
 }
+$unpack = unserialize($data['image']);
+if(!is_array($unpack))
+{
+    $unpack = array();
+}
+unset($data['image']);
+$data['image'] = array();
+foreach($unpack as $id)
+{
+    if( $name = GetImageNameById($id) )
+    {
+        $data['image'][] = $name;
+    }
+}
 throwjson('SUCC',$data);

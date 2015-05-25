@@ -31,11 +31,40 @@ function readURL(input) {
         }
 
         reader.readAsDataURL(input.files[0]);
+        
+        $("#imglist-block-add").html('');
+        imglisthtml = '<h4>等候上傳的圖片</h4>';
+        for(var i = 0 ; i < input.files.length ; ++i )
+        {
+            imglisthtml += "<div class='col-md-3'>";
+            imglisthtml += "<img src='#' id='imglist-block-add-"+i+"' style='max-width:100%;'>";
+            imglisthtml += "</div>";
+        }
+        $("#imglist-block-add").html(imglisthtml);
+        
+        function createfunc(i) {
+            return function(e) { 
+                console.log( e.target.result );
+                console.log( $('#imglist-block-add-'+i) );
+                console.log( i );
+                $('#imglist-block-add-'+i).attr('src', e.target.result);
+            };
+        }
+        
+        for(var i = 0 ; i < input.files.length ; ++i )
+        {
+            console.log(input.files[i].name);
+            
+            var reader = new FileReader();
+            reader.onload = createfunc(i);
+            reader.readAsDataURL(input.files[i]);
+        }       
     }
     else
     {
         $("#graphpreview").hide();
         $("#nograph").show();
+        $("#imglist-block-add").html('');
     }
 }
 
@@ -69,6 +98,15 @@ function editgood(gid)
         tinyMCE.activeEditor.setContent(info.description);
         $("#goodsadd").val('修改');
         $("#collapseOne").collapse('show');
+        
+        $("#imglist-block").html('');
+        imglisthtml = '';
+        info.image.forEach(function(name) {
+            imglisthtml += "<div class='col-md-3'>";
+            imglisthtml += "<img src='image/"+name + "' style='max-width:100%;'>";
+            imglisthtml += "</div>";
+        });
+        $("#imglist-block").html(imglisthtml);
     },"json");
 }
 
@@ -81,6 +119,8 @@ function addnew()
     $("#btnswitch").hide();
     $("#formtitle").html('新增商品');
     $("#goodsadd").val('新增');
+    $("#imglist-block").html('');
+    $("#imglist-block-add").html('');
     tinyMCE.activeEditor.setContent('');
 }
 
@@ -128,7 +168,7 @@ $( document ).ready(function() {
                                             <div class="col-lg-5 col-md-5 col-sm-5 table-bordered" style="padding:0px">
                                                 <div id="display" style="min-height:200px;">
                                                     <span id="nograph">沒有選擇圖片</span>
-                                                    <img id="graphpreview" src="#" width='100%' max-height='100px' alt="your image" hidden />
+                                                    <img id="graphpreview" src="#" max-height='100px' alt="your image" hidden style='max-width:100%;'/>
                                                 </div>
                                                 <div class="form-group text-center">
                                                     <!--<label for="goodprice">上傳圖片</label>-->
@@ -187,6 +227,16 @@ $( document ).ready(function() {
                                                 <h4>商品描述</h4>
                                                 <textarea id="detail" rows="10"></textarea>
                                             </div>
+                                        </div>
+                                        <hr>
+                                        <div class ="row">
+                                            <div class="col-sm-12">
+                                                <h4>上傳的圖片</h4>
+                                                <div id="imglist-block"></div>
+                                            </div>
+                                        </div>
+                                        <div class ="row">
+                                            <div class="col-sm-12" id="imglist-block-add"></div>
                                         </div>
                                         <hr>
                                         <div class ="row">

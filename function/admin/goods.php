@@ -81,7 +81,11 @@ if( isset($_POST['method']) )
             $table = SQL::tname('goods');
             
             //Render::errormessage($image);
-            $imgid = upload_image($image);
+            $_imgid = upload_image($image);
+            $imgid = array();
+            foreach($_imgid as $id)
+                if( $id !== -1 )
+                    $imgid[]=$id;
             //Render::errormessage($imgid);
             if( $gid !=0 )
             {
@@ -91,7 +95,7 @@ if( isset($_POST['method']) )
                     break;
                 }
                 $gid = (int)$gid;
-                $sql_select = "SELECT `gid` FROM `goods` WHERE `gid` = ? AND `owner` = ?";
+                $sql_select = "SELECT `gid`,`image` FROM `goods` WHERE `gid` = ? AND `owner` = ?";
                 $res = SQL::prepare($sql_select);
                 if( !SQL::execute($res,array($gid,$owner) ) )
                 {
@@ -104,10 +108,17 @@ if( isset($_POST['method']) )
                     Render::errormessage("不存在的 GID","Add new good");
                     break;
                 }
+                $oldimglist = unserialize($res['image']);
+                if( !is_array($oldimglist) )
+                {
+                    $oldimglist = array();
+                }
+                $imgid = array_merge($imgid,$oldimglist);
+                $imgid = serialize($imgid);
                 #Ok update to SQL
-                $sql_update="UPDATE `goods` SET `name`=?,`type`=?,`price`=?,`defaultnum`=?,`maxnum`=?,`description`=?,`graph`='',`status`=? WHERE `gid` = ?";
+                $sql_update="UPDATE `goods` SET `name`=?,`type`=?,`price`=?,`defaultnum`=?,`maxnum`=?,`description`=?,`image`=?,`status`=? WHERE `gid` = ?";
                 $res = SQL::prepare($sql_update);
-                if( SQL::execute( $res , array($goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description,$status,$gid) ) )
+                if( SQL::execute( $res , array($goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description,$imgid,$status,$gid) ) )
                 {
                     Render::succmessage("修改成功!","Add new good");
                 }
@@ -119,11 +130,12 @@ if( isset($_POST['method']) )
             else
             {
                 $gid = null;
+                $imgid = serialize($imgid);
                 #Ok insert to SQL
-                $sql_insert = "INSERT INTO `goods`(`gid`, `owner`, `name`, `type`, `price`, `defaultnum`, `maxnum`,`description`, `graph`, `status`) VALUES (?,?,?,?,?,?,?,?,'',?)";
-
+                $sql_insert = "INSERT INTO `goods`(`gid`, `owner`, `name`, `type`, `price`, `defaultnum`, `maxnum`,`description`, `image`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+                
                 $res = SQL::prepare($sql_insert);
-                if( SQL::execute($res,array($gid,$owner,$goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description,$status)))
+                if( SQL::execute($res,array($gid,$owner,$goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description,$imgid,$status)))
                 {
                     Render::succmessage("新增成功!","Add new good");
                 }
