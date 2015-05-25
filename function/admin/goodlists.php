@@ -1,7 +1,7 @@
 <?php
 if(!defined('IN_SYSTEM'))
 {
-  exit('Access denied');
+    exit('Access denied');
 }
 $allow_goodtype = array('normal','colthe');
 $goodtype_to_zhtw = array( 'normal' => '一般商品' , 'colthe' => '衣服' );
@@ -93,11 +93,13 @@ if( isset($_POST['method']) )
 #prepare goods
 #prepare list
 $table = SQL::tname('goods');
-$sql_select = "SELECT `gid`, `name` , `price` , `defaultnum` FROM `goods` WHERE `status` = 1";
+$sql_select = "SELECT `gid`,`name`,`price`,`defaultnum` FROM `goods` WHERE `status` = 1 OR `owner` = ?";
 $res = SQL::prepare($sql_select);
-$res->execute();
-$result = $res->fetchAll();
-
+$result = array();
+if( SQL::execute($res,array($_G['uid'])) )
+{
+    $result = $res->fetchAll();
+}
 $_E['template']['goodslist'] = $result;
 
 $goodprice = array();
@@ -111,9 +113,11 @@ foreach($result as $row)
 $table = SQL::tname('goodlist');
 $sql_select = "SELECT `lid`,`name`,`starttime`,`endtime`,`goods` FROM `$table` WHERE `status` = 1";
 $res = SQL::prepare($sql_select);
-$res->execute();
-
-$result = $res->fetchAll();
+$result = array();
+if( SQL::execute($res) )
+{
+    $result = $res->fetchAll();
+}
 
 foreach($result as &$row)
 {

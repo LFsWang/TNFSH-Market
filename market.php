@@ -1,11 +1,11 @@
 <?php
 require_once('GlobalSetting.php');
 
-//addAdminAccount('admin','admin');
 if( $_G['usertype'] != 1 )
 {
     header("Location:index.php");
 }
+
 $allow_page = array('index');
 $page = 'index';
 if( isset($_REQUEST['page']) )

@@ -95,7 +95,7 @@ if( isset($_POST['method']) )
                     break;
                 }
                 $gid = (int)$gid;
-                $sql_select = "SELECT `gid`,`image` FROM `goods` WHERE `gid` = ? AND `owner` = ?";
+                $sql_select = "SELECT `gid`,`image` FROM `$table` WHERE `gid` = ? AND `owner` = ?";
                 $res = SQL::prepare($sql_select);
                 if( !SQL::execute($res,array($gid,$owner) ) )
                 {
@@ -116,7 +116,7 @@ if( isset($_POST['method']) )
                 $imgid = array_merge($imgid,$oldimglist);
                 $imgid = serialize($imgid);
                 #Ok update to SQL
-                $sql_update="UPDATE `goods` SET `name`=?,`type`=?,`price`=?,`defaultnum`=?,`maxnum`=?,`description`=?,`image`=?,`status`=? WHERE `gid` = ?";
+                $sql_update="UPDATE `$table` SET `name`=?,`type`=?,`price`=?,`defaultnum`=?,`maxnum`=?,`description`=?,`image`=?,`status`=? WHERE `gid` = ?";
                 $res = SQL::prepare($sql_update);
                 if( SQL::execute( $res , array($goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description,$imgid,$status,$gid) ) )
                 {
@@ -132,7 +132,7 @@ if( isset($_POST['method']) )
                 $gid = null;
                 $imgid = serialize($imgid);
                 #Ok insert to SQL
-                $sql_insert = "INSERT INTO `goods`(`gid`, `owner`, `name`, `type`, `price`, `defaultnum`, `maxnum`,`description`, `image`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+                $sql_insert = "INSERT INTO `$table`(`gid`, `owner`, `name`, `type`, `price`, `defaultnum`, `maxnum`,`description`, `image`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?)";
                 
                 $res = SQL::prepare($sql_insert);
                 if( SQL::execute($res,array($gid,$owner,$goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description,$imgid,$status)))
@@ -157,7 +157,7 @@ if( isset($_POST['method']) )
 
 #prepare list
 $table = SQL::tname('goods');
-$sql_select = "SELECT `gid`, `name`, `type`, `price`, `defaultnum` ,`status` FROM `goods` WHERE `owner`  = ?";
+$sql_select = "SELECT `gid`, `name`, `type`, `price`, `defaultnum` ,`status` FROM `$table` WHERE `owner`  = ?";
 $res = SQL::prepare($sql_select);
 if( !SQL::execute($res,array($_G['uid']) ) )
 {
