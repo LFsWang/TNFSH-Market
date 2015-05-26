@@ -5,4 +5,6 @@ if(!defined('IN_TEMPLATE'))
 }
 require_once('panel.php');
 
+
+
 Render::render('index','market');

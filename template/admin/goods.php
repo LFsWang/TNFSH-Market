@@ -103,8 +103,9 @@ function editgood(gid)
         imglisthtml = '';
         info.image.forEach(function(name) {
             imglisthtml += "<div class='col-md-3'>";
-            imglisthtml += "<img src='image/"+name + "' style='max-width:100%;'>";
-            imglisthtml += "</div>";
+            imglisthtml += "<a href='admin.php?page=editimg&imgid="+name[0]+"' target='_blank'>";
+            imglisthtml += "<img src='image/"+name[1] + "' style='max-width:100%;'>";
+            imglisthtml += "</a></div>";
         });
         $("#imglist-block").html(imglisthtml);
     },"json");
@@ -285,10 +286,10 @@ $( document ).ready(function() {
                                     <span class="glyphicon glyphicon-pencil" title="編輯"></span>
                                 </a>
                                 <a class="icon-bttn" href="#">
-                                    <span class="glyphicon glyphicon-lock" title="隱藏"></span>
-                                </a>
-                                <a class="icon-bttn" href="#">
                                     <span class="glyphicon glyphicon-trash" title="移除"></span>
+                                </a>
+                                <a class="icon-bttn" href="<?=$_E['SITEROOT']?>index.php?page=viewgood&gid=<?=$good['gid']?>" target="_blank">
+                                    <span class="glyphicon glyphicon-eye-open" title="預覽"></span>
                                 </a>
                             </td>
                         </tr>

@@ -31,7 +31,7 @@ foreach($unpack as $id)
 {
     if( $name = GetImageNameById($id) )
     {
-        $data['image'][] = $name;
+        $data['image'][] = array($id,$name);
     }
 }
 throwjson('SUCC',$data);

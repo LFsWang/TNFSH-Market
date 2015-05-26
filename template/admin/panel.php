@@ -38,18 +38,17 @@ if(!defined('IN_TEMPLATE'))
     -->
     
     <li class="dropdown <?php admin_panel_active('site',$tname)?>">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dLabe3">帳號管理<span class="caret"></span></a>
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dLabe3">網站管理<span class="caret"></span></a>
         <ul class="dropdown-menu" aria-labelledby="dLabe3">
             <li><a href="admin.php?page=edit_system_announcement">網站公告</a></li>
             <li><a href="#">管理員</a></li>
         </ul>
     </li>
     
-    <li class="dropdown <?php admin_panel_active('site',$tname)?>">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dLabe3">帳號管理<span class="caret"></span></a>
-        <ul class="dropdown-menu" aria-labelledby="dLabe3">
+    <li class="dropdown <?php admin_panel_active('student',$tname)?>">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dLabe4">帳號管理<span class="caret"></span></a>
+        <ul class="dropdown-menu" aria-labelledby="dLabe4">
             <li><a href="#">學生帳號</a></li>
-            <li><a href="#">管理員</a></li>
         </ul>
     </li>
     

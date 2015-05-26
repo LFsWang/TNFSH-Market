@@ -42,10 +42,13 @@ if(!is_array($imglist))
 }
 foreach($imglist as $id)
 {
-    if( $res = GetImageNameById($id) )
+    $info = array();
+    if( $res = GetImageNameById($id,$info) )
     {
         $_E['template']['img'][] = array(
-            'url' => 'image/'.$res ,
+            'url'           => 'image/'.$res ,
+            'title'         => $info['title'],
+            'description'   => $info['description'],
         );
     }
 }

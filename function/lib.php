@@ -132,9 +132,9 @@ function upload_image($files)
         $hash_name = md5( uniqid( $tmp , true ) ) . $allowedTypes[$detectedType];
         move_uploaded_file($tmp,$savedir.$hash_name);
         $table = SQL::tname('image');
-        $sql_insert = "INSERT INTO `$table`(`imgid`, `owner`, `timestamp`, `hashname`) VALUES (NULL,?,NULL,?)";
+        $sql_insert = "INSERT INTO `$table`(`imgid`, `owner`, `timestamp`,`realname`, `hashname`,`title`,`description`) VALUES (NULL,?,NULL,?,?,'',?)";
         $res = SQL::prepare($sql_insert);
-        if( !SQL::execute($res,array($_G['uid'],$hash_name)) )
+        if( !SQL::execute($res,array($_G['uid'],$name,$hash_name,$name)) )
         {
             Render::errormessage($hash_name." insert error!",'image');
             $gidlist[] = -1;
@@ -148,16 +148,24 @@ function upload_image($files)
     return $gidlist;
 }
 
-function GetImageNameById($id)
+function GetImageNameById($id,&$info = null)
 {
     $table = SQL::tname('image');
-    $sql_select = "SELECT `hashname` FROM `$table` WHERE `imgid` = ?";
+    $sql_select = "SELECT * FROM `$table` WHERE `imgid` = ?";
     $res = SQL::prepare($sql_select);
+    if( !is_numeric($id) )
+    {
+        return false;
+    }
     if( SQL::execute($res,array((int)$id)) )
     {
         $res = $res->fetch();
         if( isset($res['hashname']) )
         {
+            if( isset($info) )
+            {
+                $info = $res;
+            }
             return $res['hashname'];
         }
     }

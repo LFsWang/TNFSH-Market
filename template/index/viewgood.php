@@ -18,7 +18,7 @@ if(!defined('IN_TEMPLATE'))
     <div class="row">
         <div class="col-md-offset-2 col-md-8 trans_form_mh300">
             <center>
-                <h3><?=$data['name']?></h3>
+                
                 <div class="col-md-6">
                     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" style='height:400px;'>
                     <!-- Indicators -->
@@ -44,8 +44,8 @@ if(!defined('IN_TEMPLATE'))
                                 <?php endif; ?>
                                 <img src="<?=$img['url']?>" alt="<?=$i?>" style = "height:400px;width:auto;overflow:hidden;">
                                 <div class="carousel-caption">
-                                    <h3>測試用圖片</h3>
-                                    <p>test</p>
+                                    <h3><?=htmlentities($img['title'])?></h3>
+                                    <p><?=htmlentities($img['description'])?></p>
                                 </div>
                             </div>
                             <?php }?>
@@ -62,29 +62,45 @@ if(!defined('IN_TEMPLATE'))
                         </a>
                     </div>
                 </div>
+                
                 <div class="col-md-6">
+                    <h3><?=$data['name']?></h3>
                     <table class="table table-hover">
                         <tbody>
                             <tr>
-                                <td>提供廠商</td>
+                                <td class="col-sm-4">提供廠商</td>
                                 <td>DATA NOT SUPPORT</td>
                             </tr>
                             <tr>
                                 <td>售價/件</td>
-                                <td><?=$data['price']?></td>
+                                <td><?=$data['price']?>元</td>
                             </tr>
+                            <tr>
+                                <td>每人最大購買數量</td>
+                                <td><?=$data['maxnum']?></td>
+                            </tr>
+                            <?php if( $data['type'] == 'colthe' ): ?>
+                            <tr>
+                                <td>注意事項</td>
+                                <td>購買衣物類商品需要提供尺寸大小，請根據校方套量的結果填寫</td>
+                            </tr>
+                            <?php endif;?>
                         </tbody>
                     </table>
+                    
+                </div>
+                <div class="col-md-12">
                     <h4>商品描述</h4>
                     <div class="col-md-12" style="border:#FFFFFF 2px inset;">
                         
                         <span class="text-left">
+                            <?php if( !empty($data['description']) ): ?>
                             <?=$data['description']?>
+                            <?php else: ?>
+                            尚未提供描述
+                            <?php endif; ?>
                         </span>
                     </div>
-                </div>
-                <div class="col-md-12">
-                    
                 </div>
                 <!--<div class="fb-comments" data-href="<?=$_E['SITEROOT']?>/index.php?page=viewgood&gid=<?=$data['gid']?>" data-numposts="5" data-colorscheme="light"></div>-->
             </center>

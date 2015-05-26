@@ -19,7 +19,7 @@ $_G = $permission['guest'];
 
 class UserAccess{
     static function SetToken( $namespace, $timelimit = 900 , $usecookie = true )
-    {if( $namespace == 'goodsadd' )die('D');
+    {
         global $_E;
         $token   = md5(uniqid($namespace,true));
         $timeout = time() + $timelimit;
@@ -56,9 +56,30 @@ class UserAccess{
         return $string === $_SESSION['token'][$namespace]['token'];
     }
     
+    static function ExtendToken($namespace,$timelimit,$usecookie=true)
+    {
+        global $_E;
+        if(    !isset( $_SESSION['token'] ) 
+            || !isset( $_SESSION['token'][$namespace] )
+            || !isset( $_SESSION['token'][$namespace]['token'] )
+            || !isset( $_SESSION['token'][$namespace]['timeout'] ))
+            return false;
+        
+        $token = $_SESSION['token'][$namespace]['token'];
+        $timeout = time() + $timelimit;
+
+        $_SESSION['token'][$namespace]['timeout'] = $timeout;
+        if( $usecookie )
+        {
+            setcookie(  $namespace , $token , $timeout , 
+                        $_E['SITEDIR'] , '' , false , true );
+        }
+        return $token;
+    }
+    
     static function SetLoginToken($uid,$utype)
     {
-        UserAccess::SetToken('token',1800);
+        UserAccess::SetToken('token',900);
         $_SESSION['uid'] = (string)$uid;
         $_SESSION['usertype'] = (int) $utype;
         return true;
@@ -80,6 +101,7 @@ class UserAccess{
             $_G = $_SESSION['userdata'];
             $_G['uid'] = $_SESSION['uid'];
             $_G['usertype'] = $_SESSION['usertype'];
+            UserAccess::ExtendToken('token',900);
         }
     }
 };
