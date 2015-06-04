@@ -3,7 +3,17 @@ if(!defined('IN_SYSTEM'))
 {
     exit('Access denied');
 }
+//Common Error Code
+define('ERROR_NO',0);
+define('ERROR_DATA_MISSING',1);
 
+define('ERROR_TIME_FORMAT',2);
+define('ERROR_ARRAY_FORMAT',3);
+define('ERROR_INT_FORMAT',4);
+
+define('ERROR_SQL_EXEC',100);
+
+define('ERROR_OTHERS',9999);
 function getsysvalue($id)
 {
     $table = SQL::tname('system');

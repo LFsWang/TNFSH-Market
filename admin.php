@@ -1,11 +1,12 @@
 <?php
 require_once('GlobalSetting.php');
-
 //addAdminAccount('admin','admin');
 if( $_G['usertype'] != 2 )
 {
     header("Location:index.php");
 }
+require_once('/function/admin/admin.lib.php');
+
 $allow_page = array('index','goods','edit_system_announcement','goodlists','editimg');
 $page = 'index';
 if( isset($_REQUEST['page']) )
