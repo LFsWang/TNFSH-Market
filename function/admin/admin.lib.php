@@ -3,6 +3,10 @@ if(!defined('IN_SYSTEM'))
 {
     exit('Access denied');
 }
+if( $_G['usertype'] !== USER_ADMIN )
+{
+    exit('Access denied (T)');
+}
 
 /*Good List*/
 function modify_goodlist( $data , $lid = null , &$error = null )
@@ -126,4 +130,49 @@ function modify_goodlist( $data , $lid = null , &$error = null )
     }
     return true;
 }
-    
+
+#Image admin functions
+function modifyImageInfo( $info , $imgid )
+{
+    #info format
+    /*
+    info => title
+         => description
+    */
+    global $_G;
+    if( !is_array($info) )
+    {
+        return ERROR_ARRAY_FORMAT;
+    }
+    if( !isset($info['title']) || !isset($info['description']) )
+    {
+        return ERROR_STRING_FORMAT;
+    }
+    if( !is_numeric($imgid) )
+    {
+        return ERROR_INT_FORMAT;
+    }
+    $imgid = (int)$imgid;
+    $timage = SQL::tname('image');
+    $sql_select = "SELECT `imgid` FROM `$timage` WHERE `owner` = ? AND `imgid` = ?";
+    $res = SQL::prepare($sql_select);
+    if( SQL::execute($res,array($_G['uid'],$imgid)) )
+    {
+        $res = $res->fetch();
+        if( !$res )
+        {
+            return ERROR_PREMISSION_DENIED;
+        }
+    }
+    else
+    {
+        return ERROR_SQL_EXEC;
+    }
+    $sql_update = "UPDATE `image` SET `title` = ?,`description` = ? WHERE `imgid` = ?";
+    $res = SQL::prepare($sql_update);
+    if( !SQL::execute($res,array($info['title'],$info['description'],$imgid)) )
+    {
+        return ERROR_SQL_EXEC;
+    }
+    return ERROR_NO;
+}

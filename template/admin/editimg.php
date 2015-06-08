@@ -7,6 +7,33 @@ if(!defined('IN_TEMPLATE'))
 <?php $img=$tmpl['imgdata']; ?>
 <script>
 
+$(document).ready(function()
+{
+    $("#submitimginfo").submit(function(e)
+    {
+        e.preventDefault();
+        $("#api-action").val('editimage');
+        $.post("api.php",
+            $("#submitimginfo").serialize(),
+            function(res){
+                if(res.status == 'error')
+                {
+                    $("#info-show").html(res.data);
+                    $("#info-show").css('color','Red');
+                }
+                else
+                {
+                    $("#info-show").css('color','Lime');
+                    $("#info-show").html('Success!');
+                    setTimeout(function(){
+                        location.reload();
+                    }, 500);
+                }
+                console.log(res);
+        },"json");
+        return true;
+    });
+})
 </script>
 <div class="container-fluid">
     <div class="row">
@@ -27,7 +54,9 @@ if(!defined('IN_TEMPLATE'))
                     </a>
                 </div>
                 <div class="col-md-6">
-                    <form>
+                    <form id="submitimginfo" method="post">
+                        <input type="hidden" name="action" id="api-action">
+                        <input type="hidden" name="imgid" value="<?=$img['imgid']?>">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
@@ -64,6 +93,7 @@ if(!defined('IN_TEMPLATE'))
                                     <td></td>
                                     <td>
                                         <div class="col-sm-12 text-right">
+                                            <span id="info-show"></span>
                                             <button class="btn btn-danger">移除圖片</button>
                                             <input type="submit" class="btn btn-success" value='修改內容'>
                                         </div>

@@ -1,9 +1,12 @@
 <?php
 if(!defined('IN_SYSTEM'))
 {
-  exit('Access denied');
+    exit('Access denied');
 }
-
+if( $_G['usertype'] !== USER_ADMIN )
+{
+    exit('Access denied (T)');
+}
 $gid = safe_get('gid');
 if( !is_numeric($gid) )
 {

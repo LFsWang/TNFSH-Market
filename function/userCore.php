@@ -3,17 +3,18 @@ if(!defined('IN_SYSTEM'))
 {
   exit('Access denied');
 }
-
-
+define('USER_GUEST', 0 );
+define('USER_NORMAL', 1 );
+define('USER_ADMIN' , 2 );
 $permission = array();
 $permission['guest']['uid'] = "0";
-$permission['guest']['usertype'] = 0;
+$permission['guest']['usertype'] = USER_GUEST;
 
 $permission['admin']['uid'] = "0";
-$permission['admin']['usertype'] = 1;
+$permission['admin']['usertype'] = USER_NORMAL;
 
 $permission['user']['uid'] = "0";
-$permission['user']['usertype'] = 2;
+$permission['user']['usertype'] = USER_ADMIN ;
 
 $_G = $permission['guest'];
 

@@ -25,7 +25,7 @@ foreach( $case as $subpage => $act )
 }
 
 //ADMIN API
-$case = array( 'getgoodinfo' );
+$case = array( 'getgoodinfo' , 'editimage' );
 
 if( in_array($action,$case) )
 {
@@ -33,10 +33,11 @@ if( in_array($action,$case) )
     {
         throwjson('error','Access denied!');
     }
-    if( file_exists("function/admin/$action.php") )
+    if( file_exists("function/adminapi/$action.php") )
     {
-        require_once("function/admin/$action.php");
+        require_once("function/adminapi/$action.php");
         exit(0);
     }
 }
+echo $action;
 throwjson('error','Error:7122');
