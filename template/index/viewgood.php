@@ -6,6 +6,12 @@ if(!defined('IN_TEMPLATE'))
 ?>
 <?php $data = $tmpl['data'] ?>
 <script>$('.carousel').carousel();</script>
+<script>
+function runModal(imgurl){
+    $("#modal-img").attr('src',imgurl);
+    $('#ViewModal').modal();
+}
+</script>
 <div id="fb-root"></div>
 <!--<script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -42,7 +48,7 @@ if(!defined('IN_TEMPLATE'))
                                 <?php else:?>
                             <div class="item">
                                 <?php endif; ?>
-                                <img src="<?=$img['url']?>" alt="<?=$i?>" style = "height:400px;width:auto;overflow:hidden;">
+                                <a onclick="runModal('<?=$img['url']?>');"><img src="<?=$img['url']?>" alt="<?=$i?>" style = "height:400px;width:auto;overflow:hidden;"></a>
                                 <div class="carousel-caption">
                                     <h3><?=htmlentities($img['title'])?></h3>
                                     <p><?=htmlentities($img['description'])?></p>
@@ -107,3 +113,21 @@ if(!defined('IN_TEMPLATE'))
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">檢視</h4>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modal-img" style="max-width:100%">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--ViewModal-->

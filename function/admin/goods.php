@@ -21,131 +21,39 @@ if( isset($_POST['method']) )
         case 'modify':
         
             $open_tab = true;
-            $goodname = safe_post('goodname',null);
-            $goodtype = safe_post('goodtype',null);
-            $goodprice= safe_post('goodprice',null);
-            $defaultnum=safe_post('defaultnum',null);
-            $maxnum   = safe_post('maxnum',null);
+            $data['name'] = safe_post('goodname',null);
+            $data['type'] = safe_post('goodtype',null);
+            $data['price'] = safe_post('goodprice',null);
+            $data['goodprice']= safe_post('goodprice',null);
+            $data['defaultnum']=safe_post('defaultnum',null);
+            $data['maxnum']   = safe_post('maxnum',null);
+            $data['description'] = safe_post('description','');
+            
+            $data['status']   = safe_post('status',null);
+            $data['status'] = (int)$data['status'][0];
+            
             $gid      = safe_post('gid','0');
-            $owner    = $_G['uid'];
-            $description = safe_post('description','');
-            $status   = safe_post('status',array('0'));
-            $image = array();
+            if( $gid == 0 ) $gid = null;
+            
             if( isset($_FILES['goodgraph']) )
             {
                 $image = $_FILES['goodgraph'] ;
             }
-            if( !isset($goodname) || !isset($goodtype) || !isset($goodprice) || !isset($defaultnum) || !isset($maxnum) || !isset($status) )
-            {
-                Render::errormessage("欄位不得為空","Add new good");
-                break;
-            }
             
-            if( !in_array($goodtype,$allow_goodtype) )
-            {
-                Render::errormessage("商品型態錯誤","Add new good");
-                break;
-            }
-            
-            if( !is_numeric($goodprice) || !is_numeric($defaultnum) )
-            {
-                Render::errormessage("價格/預設數量需為數字","Add new good");
-                break;
-            }
-            $goodprice = (int)$goodprice;
-            $defaultnum= (int)$defaultnum;
-            if( $defaultnum < 0 || $maxnum < 0)
-            {
-                Render::errormessage("預設數量不得低於0","Add new good");
-                break;
-            }
-            
-            if( !is_numeric($status[0]) )
-            {
-                Render::errormessage("屬性錯誤","Add new good");
-                break;
-            }
-            $status = (int)$status[0];
-            if( $status !== 0 && $status !== 1)
-            {
-                Render::errormessage("屬性錯誤!","Add new good");
-                break;
-            }
-            
-            //Warning
-            if( $goodprice <= 0 )
-            {
-                Render::errormessage("價格低於0!","Add new good");
-            }
-            
-            $table = SQL::tname('goods');
-            
-            //Render::errormessage($image);
             $_imgid = upload_image($image);
-            $imgid = array();
+            $data['image']= array();
             foreach($_imgid as $id)
                 if( $id !== -1 )
-                    $imgid[]=$id;
-            //Render::errormessage($imgid);
-            if( $gid !=0 )
+                    $data['image'][]=$id;
+            if( modify_good( $data , $gid  , $err ) )
             {
-                if( !is_numeric($gid) )
-                {
-                    Render::errormessage("GID 錯誤","Add new good");
-                    break;
-                }
-                $gid = (int)$gid;
-                $sql_select = "SELECT `gid`,`image` FROM `$table` WHERE `gid` = ? AND `owner` = ?";
-                $res = SQL::prepare($sql_select);
-                if( !SQL::execute($res,array($gid,$owner) ) )
-                {
-                    Render::errormessage("SQL 錯誤","Add new good");
-                    break;
-                }
-                $res = $res->fetch();
-                if( !$res )
-                {
-                    Render::errormessage("不存在的 GID","Add new good");
-                    break;
-                }
-                $oldimglist = unserialize($res['image']);
-                if( !is_array($oldimglist) )
-                {
-                    $oldimglist = array();
-                }
-                $imgid = array_merge($imgid,$oldimglist);
-                $imgid = serialize($imgid);
-                #Ok update to SQL
-                $sql_update="UPDATE `$table` SET `name`=?,`type`=?,`price`=?,`defaultnum`=?,`maxnum`=?,`description`=?,`image`=?,`status`=? WHERE `gid` = ?";
-                $res = SQL::prepare($sql_update);
-                if( SQL::execute( $res , array($goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description,$imgid,$status,$gid) ) )
-                {
-                    Render::succmessage("修改成功!","Add new good");
-                }
-                else
-                {
-                    Render::errormessage("修改失敗!","Add new good");
-                }             
+                Render::succmessage("修改成功!","Add new good");
             }
             else
             {
-                $gid = null;
-                $imgid = serialize($imgid);
-                #Ok insert to SQL
-                $sql_insert = "INSERT INTO `$table`(`gid`, `owner`, `name`, `type`, `price`, `defaultnum`, `maxnum`,`description`, `image`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?)";
-                
-                $res = SQL::prepare($sql_insert);
-                if( SQL::execute($res,array($gid,$owner,$goodname,$goodtype,$goodprice,$defaultnum,$maxnum,$description,$imgid,$status)))
-                {
-                    Render::succmessage("新增成功!","Add new good");
-                }
-                else
-                {
-                    Render::errormessage("新增失敗!","Add new good");
-                }    
+                Render::errormessage("修改失敗!","Add new good : error $err");
             }
             break;
-            //End of Addnew
         default :
             Render::errormessage("??","??");
     }

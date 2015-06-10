@@ -182,3 +182,18 @@ function GetImageNameById($id,&$info = null)
     }
     return false;
 }
+
+#GetTimeFlag
+define('TF_NOTYET',1);
+define('TF_NOW',2);
+define('TF_PASS',3);
+function GetTimeFlag($timestart,$timeend)
+{
+    $date1 = new DateTime($timestart);
+    $date2 = new DateTime($timeend);
+    $datenow=new DateTime('NOW');
+    if( $date1 > $date2 ) return false;
+    if( $datenow < $date1 ) return TF_NOTYET;
+    if( $date2 < $datenow ) return TF_PASS;
+    return TF_NOW;
+}

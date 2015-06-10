@@ -35,24 +35,25 @@ if(!$data)
 $_E['template']['data'] = $data;
 
 $_E['template']['img'] = array();
-$imglist = unserialize($data['image']);
-if(!is_array($imglist))
+
+$tgoods_image = SQL::tname('goods_image');
+$sql_select = "SELECT `imgid` FROM `$tgoods_image` WHERE `gid` = ?";
+$res = SQL::prepare($sql_select);
+if( SQL::execute($res,array($gid)) )
 {
-    $imglist = array();
-}
-foreach($imglist as $id)
-{
-    $info = array();
-    if( $res = GetImageNameById($id,$info) )
+    while( $row = $res->fetch() )
     {
-        $_E['template']['img'][] = array(
-            'url'           => 'image/'.$res ,
-            'title'         => $info['title'],
-            'description'   => $info['description'],
-        );
+        $id = $row['imgid'];
+        $info = array();
+        if( $dat = GetImageNameById($id,$info) )
+        {
+            $_E['template']['img'][] = array(
+                'url'           => 'image/'.$dat ,
+                'title'         => $info['title'],
+                'description'   => $info['description'],
+            );
+        }
     }
 }
-//Render::errormessage($_E['template']['img']);
-//Render::errormessage($_E['template']['data']);
 Render::render('viewgood','index');
 //header("HTTP/1.0 404 Not Found");

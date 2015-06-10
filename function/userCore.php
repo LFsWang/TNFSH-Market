@@ -10,7 +10,7 @@ $permission = array();
 $permission['guest']['uid'] = "0";
 $permission['guest']['usertype'] = USER_GUEST;
 
-$permission['admin']['uid'] = "0";
+$permission['admin']['suid'] = "0";
 $permission['admin']['usertype'] = USER_NORMAL;
 
 $permission['user']['uid'] = "0";

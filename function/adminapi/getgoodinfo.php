@@ -23,18 +23,23 @@ if( !$data )
 {
     throwjson('error','Empty!');
 }
-$unpack = unserialize($data['image']);
-if(!is_array($unpack))
-{
-    $unpack = array();
-}
+
 unset($data['image']);
 $data['image'] = array();
-foreach($unpack as $id)
+$tgoods_image = SQL::tname('goods_image');
+$sql_select = "SELECT `imgid` FROM `$tgoods_image` WHERE `gid` = ?";
+
+$res = SQL::prepare($sql_select);
+if( SQL::execute($res,array($data['gid'])) )
 {
-    if( $name = GetImageNameById($id) )
+    while( $row = $res->fetch() )
     {
-        $data['image'][] = array($id,$name);
+        $id = $row['imgid'];
+        if( $name = GetImageNameById($id) )
+        {
+            $data['image'][] = array($id,$name);
+        }
     }
 }
+
 throwjson('SUCC',$data);

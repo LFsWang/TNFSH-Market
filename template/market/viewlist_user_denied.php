@@ -13,9 +13,10 @@ if(!defined('IN_TEMPLATE'))
         <div class="col-lg-1 col-md-1 col-sm-1"><br></div>
         <div class="col-lg-8 col-md-8 col-sm-8 trans_form_mh300 panel panel-default">
             <center>
-                <h3>MARKET</h3>
+                <h3>無法使用</h3>
+                未向使用者開放
             </center>
-            <?=$tmpl['system_announcement']?>
+            
         </div>
     </div>
 </div>

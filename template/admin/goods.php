@@ -98,6 +98,14 @@ function editgood(gid)
         tinyMCE.activeEditor.setContent(info.description);
         $("#goodsadd").val('修改');
         $("#collapseOne").collapse('show');
+        if( info.status == 0 )
+        {
+            $("#status").prop('checked', false );
+        }
+        else
+        {
+            $("#status").prop('checked', true );
+        }
         
         $("#imglist-block").html('');
         imglisthtml = '';
@@ -122,6 +130,7 @@ function addnew()
     $("#goodsadd").val('新增');
     $("#imglist-block").html('');
     $("#imglist-block-add").html('');
+    $("#status").prop('checked', false );
     tinyMCE.activeEditor.setContent('');
 }
 
@@ -215,7 +224,7 @@ $( document ).ready(function() {
                                                     <div class="col-sm-8">
                                                         <div class="checkbox">
                                                             <label>
-                                                                <input type="checkbox" name='status[]' value='1'>勾選後，其他管理員的購買清單可以選擇此項物品
+                                                                <input type="checkbox" name='status[]' value='1' id="status">勾選後，其他管理員的購買清單可以選擇此項物品
                                                             </label>
                                                         </div>
                                                     </div>
@@ -253,9 +262,7 @@ $( document ).ready(function() {
                     </div>
                 </div>
             </div>
-            
-            
-            
+
             <hr>
             <span class="h3">商品列表</span>
             <div class="container-fluid">

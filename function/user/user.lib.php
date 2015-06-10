@@ -102,7 +102,10 @@ function login( $username , $password , &$error )
     $sql_select = "SELECT * FROM $table WHERE `username` = ?";
 
     $res = SQL::prepare($sql_select);
-    $res->execute( array($username) );
+    if( !SQL::execute($res,array($username) ) )
+    {
+        return false;
+    }
     $row = $res->fetch();
     
     if( $row !== false )
@@ -138,7 +141,7 @@ function login( $username , $password , &$error )
                 if( password_verify( $password , $row['password'] ) )
                 {
                     $error = "Something Wrong!";
-                    if( !UserAccess::SetLoginToken( $row['uid'] , 1 ) )
+                    if( !UserAccess::SetLoginToken( $row['suid'] , 1 ) )
                         return false;
                     
                     $error = "Welcome! User";

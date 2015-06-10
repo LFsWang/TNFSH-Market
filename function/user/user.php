@@ -32,7 +32,7 @@ switch( $action )
     case 'logout':
         if( $_G['uid'] == 0 || $_G['usertype'] ==0 )
         {
-            throwjson('error','Not login!');
+            //throwjson('error','Not login!');
         }
         UserAccess::SetLogout();
         header("Location:index.php");
