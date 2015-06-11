@@ -26,6 +26,7 @@ switch( $action )
         }
         else
         {
+            SQL::log('login',"[$acct]want to login but fail : $msg");
             throwjson('error',$msg);
         }
         break;

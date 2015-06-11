@@ -119,21 +119,6 @@ function editgood(gid)
     },"json");
 }
 
-function addnew()
-{
-    $("#form")[0].reset();
-    $("#page").val('goods');
-    $("#gid").val('0');
-    $("#method").val('addnew');
-    $("#btnswitch").hide();
-    $("#formtitle").html('新增商品');
-    $("#goodsadd").val('新增');
-    $("#imglist-block").html('');
-    $("#imglist-block-add").html('');
-    $("#status").prop('checked', false );
-    tinyMCE.activeEditor.setContent('');
-}
-
 $( document ).ready(function() {        
     $("#goodgraph").change(function(){
         readURL(this);
@@ -256,7 +241,7 @@ $( document ).ready(function() {
                                         </div>
                                     </div>
                                 </form>
-                                <button class="btn btn-default" id="btnswitch" style="display: none;" onclick="addnew()">切換新增</button>
+                                <button class="btn btn-default" id="btnswitch" style="display: none;" onclick="location.reload();">切換新增</button>
                             </div>
                         </div>
                     </div>

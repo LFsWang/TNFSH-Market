@@ -25,12 +25,26 @@ if( isset($_POST['method']) )
             $data['goods'] = safe_post('goods',null);
             //Render::errormessage($_POST);
             if( $lid == 0 )$lid = null;
-            modify_goodlist($data,$lid,$errcode);
-            Render::errormessage($errcode);
-            Render::errormessage($data);
+            $res = modify_goodlist($data,$lid,$errcode);
+            if( $res === ERROR_NO )
+            {
+                $_SESSION['editgoodlistsflag'] = 1;
+                header("location: admin.php?page=goodlists");
+                exit(0);
+            }
+            else
+            {
+                Render::errormessage("修改失敗! Error:$res","goodlists");
+            }
             break;
     }
 }
+if( isset( $_SESSION['editgoodlistsflag'] ) )
+{
+    unset($_SESSION['editgoodlistsflag']);
+    Render::succmessage("修改成功!","goodlists");
+}
+
 
 //$_E['template']['gtoken'] = UserAccess::SetToken('goodsadd',900,false);
 //Render::errormessage($_E['template']['gtoken'],"AS");
@@ -39,12 +53,10 @@ if( isset($_POST['method']) )
 #prepare goods
 #prepare list
 $table = SQL::tname('goods');
-$sql_select = "SELECT `gid`,`name`,`price`,`defaultnum` FROM `goods` WHERE `status` = 1 OR `owner` = ?";
-$res = SQL::prepare($sql_select);
-$result = array();
-if( SQL::execute($res,array($_G['uid'])) )
+$sql_select = "SELECT `gid`,`name`,`price`,`defaultnum` FROM `goods` WHERE `owner` = ? OR ?";
+if(!( $result = SQL::fetchAll($sql_select,array($_G['uid'],$_G['root'])) ))
 {
-    $result = $res->fetchAll();
+    $result = array();
 }
 $_E['template']['goodslist'] = $result;
 
@@ -58,23 +70,20 @@ foreach($result as $row)
 
 #prepare goodlists
 $table = SQL::tname('goodlist');
-$sql_select = "SELECT `lid`,`name`,`starttime`,`endtime` FROM `$table` WHERE `status` = 1";
-$res = SQL::prepare($sql_select);
-$result = array();
-if( SQL::execute($res) )
+$sql_select = "SELECT `lid`,`name`,`starttime`,`endtime` FROM `$table` WHERE `owner` = ? OR ?";
+if(!( $result = SQL::fetchAll($sql_select,array($_G['uid'],$_G['root'])) ))
 {
-    $result = $res->fetchAll();
+    $result = array();
 }
 
 $tgoodlist_goodstable = SQL::tname('goodlist_goodstable');
 $sql_select = "SELECT `lid`,`gid` FROM `$tgoodlist_goodstable` WHERE 1";
-$res = SQL::prepare($sql_select);
-$goods_tmp = array();
 $goods = array();
-if( SQL::execute($res) )
+if(!( $goods_tmp = SQL::fetchAll($sql_select )))
 {
-    $goods_tmp = $res->fetchAll();
+    $goods_tmp = array();
 }
+
 foreach($goods_tmp as $row)
 {
     $goods[$row['lid']][]=$row['gid'];

@@ -16,20 +16,31 @@ tinymce.init({
         "emoticons template paste textcolor colorpicker textpattern"
     ]
 });
-function addnew()
-{
-    $("#form")[0].reset();
-    /*$("#page").val('goods');
-    $("#gid").val('0');
-    $("#method").val('addnew');
-    $("#btnswitch").hide();
-    $("#formtitle").html('新增商品');
-    $("goodsadd").val('新增');*/
-}
 
-function editgoodlist(id)
+function editgoodlist(lid)
 {
-    console.log(id);
+    console.log(lid);
+    $.get( "api.php",{ action : "getgoodlist", lid : lid },function( data ) {
+        console.log(data);
+        info = data.data;
+        $("#formtitle").html('修改購買清單');
+        $("#method").val('modify');
+        $("#lid").val(info.lid);
+        $("#listname").val(info.name);
+        $("#starttime").val(info.starttime);
+        $("#endtime").val(info.endtime);
+        $(".chbox-gid").prop('checked', false );
+        
+        info.goods.forEach(function(gid) {
+            $("#gid-"+gid).prop('checked', true );
+        });
+        
+        tinyMCE.activeEditor.setContent(info.description);
+        $("#listadd").val('修改');
+        $("#btnswitch").show();
+        $("#collapseOne").collapse('show');
+        
+    },"json");
 }
 
 $( document ).ready(function() {
@@ -94,7 +105,7 @@ $( document ).ready(function() {
                                     <?php foreach($tmpl['goodslist'] as $row ) {?>
                                         <div class="checkbox col-lg-3 col-md-4 col-sm-6" style="overflow:hidden;" >
                                             <label>
-                                                <input type="checkbox" name='goods[]' value='<?=$row['gid']?>'><span title='<?=htmlspecialchars($row['name'])?>'><?=htmlspecialchars($row['name'])?></span>
+                                                <input type="checkbox" name='goods[]' value='<?=$row['gid']?>' id="gid-<?=$row['gid']?>" class="chbox-gid"><span title='<?=htmlspecialchars($row['name'])?>'><?=htmlspecialchars($row['name'])?></span>
                                             </label>
                                         </div>
                                     <?php }?>
@@ -119,6 +130,7 @@ $( document ).ready(function() {
                                     </div>
                                 </div>             
                             </form>
+                            <button class="btn btn-default" id="btnswitch" style="display: none;" onclick="location.reload();">切換新增</button>
                         </div>
                     </div>
                 </div>

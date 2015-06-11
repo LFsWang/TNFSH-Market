@@ -23,8 +23,8 @@ function updatemoney(num,price)
             <?php $tmpl['admin_panel_active'] = 'overview'; ?>
             <?php Render::renderSingleTemplate('panel','market'); ?>
         </div>
-        <div class="col-lg-1 col-md-1 col-sm-1"><br></div>
-        <div class="col-lg-8 col-md-8 col-sm-8 trans_form_mh300 panel panel-default">
+        <div class="col-sm-1"><br></div>
+        <div class="col-sm-8 trans_form_mh300 panel panel-default">
             <center>
                 <h3><?=htmlentities($tmpl['listinfo']['name'])?><br><small>開放時間 <?=$tmpl['listinfo']['starttime']?> ~ <?=$tmpl['listinfo']['endtime']?></small></h3>
                 <form>
@@ -47,19 +47,31 @@ function updatemoney(num,price)
                                     <td> <a href = "index.php?page=viewgood&gid="<?=$row['gid']?> target="_blank"><?=$row['name']?></a></td>
                                     <td> <?=$row['price']?> </td>
                                     <td>
-                                        <input type="number" class="form-control" id="gid-<?=$row['gid']?>" placeholder="數量" value="<?=$row['defaultnum']?>" name="gid-<?=$row['gid']?>" min="0" max="<?=$row['maxnum']?>" onchange="updatemoney(<?=$row['gid']?>,<?=$row['price']?>)">
+                                        <input type="number" class="form-control" id="gid-<?=$row['gid']?>" placeholder="數量" value="<?=$row['defaultnum']?>" name="gid-<?=$row['gid']?>" min="0" max="<?=$row['maxnum']?>" onchange="updatemoney(<?=$row['gid']?>,<?=$row['price']?>)" required>
                                     </td>
                                     <td> <span id="m-<?=$row['gid']?>"><?=$row['total']?></span></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
                     </table>
-                    <div class = "row text-right">
-                        <div class = "col-sm-offset-4 col-sm-6">
-                            <h4 style="color:red">總價格：<span id='totalmoney'><?=$totalsum?></span>元整</h4>
+                    <div class = "container-fluid">
+                        <div class = "row text-left">
+                            <h4>套量尺寸<small>請依據廠商套量結果填寫</small></h4>
+                            <div class ="col-sm-1">胸圍：</div>
+                            <div class ="col-sm-2"><input type="number" class="form-control" id="chest" placeholder="胸圍" name="chest" min="38" max="42" required></div>
+                            <div class ="col-sm-1">腰圍：</div>
+                            <div class ="col-sm-2"><input type="number" class="form-control" id="chest" placeholder="胸圍" name="chest" min="38" max="42" required></div>
+                            <div class ="col-sm-1">褲長：</div>
+                            <div class ="col-sm-2"><input type="number" class="form-control" id="chest" placeholder="胸圍" name="chest" min="38" max="42" required></div>
                         </div>
-                        <div class = "col-sm-2">
-                            <button type="button" class="btn btn-success">訂購</button>
+                    
+                        <div class = "row text-right">
+                            <div class = "col-sm-offset-4 col-sm-6">
+                                <h4 style="color:red">總價格：<span id='totalmoney'><?=$totalsum?></span>元整</h4>
+                            </div>
+                            <div class = "col-sm-2">
+                                <button type="submit" class="btn btn-success">訂購</button>
+                            </div>
                         </div>
                     </div>
                 </form>

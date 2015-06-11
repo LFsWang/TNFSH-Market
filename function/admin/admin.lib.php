@@ -271,7 +271,7 @@ function modify_goodlist( $data , $lid = null , &$error = null )
             return false;
         }
     }
-    return true;
+    return ERROR_NO;
 }
 
 #Image admin functions

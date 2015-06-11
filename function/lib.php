@@ -197,3 +197,20 @@ function GetTimeFlag($timestart,$timeend)
     if( $date2 < $datenow ) return TF_PASS;
     return TF_NOW;
 }
+
+function GetGoodlistByLID($lid)
+{
+    $tgoodlist = SQL::tname('goodlist');
+    $tgoodlist_goodstable = SQL::tname('goodlist_goodstable');
+    $data = SQL::fetch("SELECT * FROM $tgoodlist WHERE `lid` = ?",array($lid));
+    if( !$data )return false;
+    if( !$data['lid'] ) return false;
+    
+    $data['goods'] = array();
+    $tmp = SQL::fetchAll("SELECT `gid` FROM $tgoodlist_goodstable WHERE `lid` = ?",array($lid));
+    foreach( $tmp as $row )
+    {
+        $data['goods'][] = $row['gid'];
+    }
+    return $data;
+}

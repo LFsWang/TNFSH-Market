@@ -47,6 +47,9 @@ if( isset($_POST['method']) )
                     $data['image'][]=$id;
             if( modify_good( $data , $gid  , $err ) )
             {
+                $_SESSION['editgoodsflag'] = 1;
+                header("location: admin.php?page=goods");
+                exit(0);
                 Render::succmessage("修改成功!","Add new good");
             }
             else
@@ -62,6 +65,11 @@ if( isset($_POST['method']) )
 //$_E['template']['gtoken'] = UserAccess::SetToken('goodsadd',900,false);
 //Render::errormessage($_E['template']['gtoken'],"AS");
 
+if( isset( $_SESSION['editgoodsflag'] ) )
+{
+    unset($_SESSION['editgoodsflag']);
+    Render::succmessage("修改成功!","Add new good");
+}
 
 #prepare list
 $table = SQL::tname('goods');
