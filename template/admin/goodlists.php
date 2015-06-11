@@ -134,8 +134,8 @@ $( document ).ready(function() {
                         <tr>
                             <th>ID</th>
                             <th>購買清單名稱</th>
-                            <td>開始時間</td>
-                            <td>結束時間</td>
+                            <th>開始時間</th>
+                            <th>結束時間</th>
                             <th>預設總價</th>
                             <th>操作</th>
                         </tr>

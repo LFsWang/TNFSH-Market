@@ -9,6 +9,7 @@ define('USER_ADMIN' , 2 );
 $permission = array();
 $permission['guest']['uid'] = "0";
 $permission['guest']['usertype'] = USER_GUEST;
+$permission['guest']['root'] = false;
 
 $permission['admin']['suid'] = "0";
 $permission['admin']['usertype'] = USER_NORMAL;
@@ -78,11 +79,12 @@ class UserAccess{
         return $token;
     }
     
-    static function SetLoginToken($uid,$utype)
+    static function SetLoginToken($uid,$utype,$root = false)
     {
         UserAccess::SetToken('token',900);
         $_SESSION['uid'] = (string)$uid;
         $_SESSION['usertype'] = (int) $utype;
+        $_SESSION['root'] = $root;
         return true;
     }
     
@@ -102,6 +104,7 @@ class UserAccess{
             $_G = $_SESSION['userdata'];
             $_G['uid'] = $_SESSION['uid'];
             $_G['usertype'] = $_SESSION['usertype'];
+            $_G['root'] = $_SESSION['root'];
             UserAccess::ExtendToken('token',900);
         }
     }

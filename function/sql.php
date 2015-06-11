@@ -68,6 +68,28 @@ class SQL{
         return true;
     }
     
+    static function query( $str , $val = array() )
+    {
+        $res = SQL::prepare($str);
+        if( SQL::execute($res,$val) )
+            return $res;
+        return false;
+    }
+    
+    static function fetch( $str , $val = array() )
+    {
+        if( $res = SQL::query($str,$val) )
+            return $res->fetch();
+        return false;
+    }
+    
+    static function fetchAll( $str , $val = array() )
+    {
+        if( $res = SQL::query($str,$val) )
+            return $res->fetchAll();
+        return false;
+    }
+    
     static function lastInsertId()
     {
         return self::$pdo->lastInsertId();

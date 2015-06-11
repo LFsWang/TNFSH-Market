@@ -47,7 +47,7 @@ function updatemoney(num,price)
                                     <td> <a href = "index.php?page=viewgood&gid="<?=$row['gid']?> target="_blank"><?=$row['name']?></a></td>
                                     <td> <?=$row['price']?> </td>
                                     <td>
-                                        <input type="number" class="form-control" id="gid-<?=$row['gid']?>" placeholder="數量" value="<?=$row['defaultnum']?>" name="gid-<?=$row['gid']?>" min="0" max="$row['maxnum']" onchange="updatemoney(<?=$row['gid']?>,<?=$row['price']?>)">
+                                        <input type="number" class="form-control" id="gid-<?=$row['gid']?>" placeholder="數量" value="<?=$row['defaultnum']?>" name="gid-<?=$row['gid']?>" min="0" max="<?=$row['maxnum']?>" onchange="updatemoney(<?=$row['gid']?>,<?=$row['price']?>)">
                                     </td>
                                     <td> <span id="m-<?=$row['gid']?>"><?=$row['total']?></span></td>
                                 </tr>

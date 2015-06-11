@@ -34,26 +34,29 @@ function GetPasswordHash($realPass)
     return $hash;
 }
 
-function addAdminAccount($username,$password)
+function addAdminAccount($username,$password,$root)
 {
     if( !checkAccountFormat($username) )
     {
-        return false;
+        return ERROR_STRING_FORMAT;
     }
     if( !checkPasswordFormat($password) )
     {
-        return false;
+        return ERROR_STRING_FORMAT;
     }
-    
+    if( $root ) $root = true ;
+    else $root = false ;
     $password = GetPasswordHash($password);
 
     $table = SQL::tname('account');
-    $sql_insert = "INSERT INTO `$table` (`uid`, `username`, `password`, `stats`) VALUES (NULL,?,?,'1');";
+    $sql_insert = "INSERT INTO `$table` (`uid`,`username`,`password`,`root`,`stats`) VALUES (NULL,?,?,?,'1');";
     
     $res = SQL::prepare($sql_insert);
-    $res->execute( array($username,$password) );
-
-    return true;
+    if( SQL::execute($res,array($username,$password,$root)) )
+    {
+        return ERROR_NO;
+    }
+    return ERROR_SQL_EXEC;
 }
 
 function recaptcha()
@@ -113,7 +116,7 @@ function login( $username , $password , &$error )
         if( password_verify( $password , $row['password'] ) )
         {
             $error = "Something Wrong!";
-            if( !UserAccess::SetLoginToken( $row['uid'] , 2 ) )
+            if( !UserAccess::SetLoginToken( $row['uid'] , 2 ,$row['root'] ) )
                 return false;
             
             $error = "Welcome! Admin";

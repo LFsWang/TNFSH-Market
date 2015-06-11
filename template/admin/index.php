@@ -15,7 +15,9 @@ if(!defined('IN_TEMPLATE'))
             <center>
                 <h3>ADMIN</h3>
             </center>
+            <?php if( isset($tmpl['system_announcement']) ): ?>
             <?=$tmpl['system_announcement']?>
+            <?php endif; ?>
             <?php //var_dump($_SESSION);?>
         </div>
     </div>

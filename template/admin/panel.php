@@ -41,7 +41,8 @@ if(!defined('IN_TEMPLATE'))
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dLabe3">網站管理<span class="caret"></span></a>
         <ul class="dropdown-menu" aria-labelledby="dLabe3">
             <li><a href="admin.php?page=edit_system_announcement">網站公告</a></li>
-            <li><a href="#">管理員</a></li>
+            <li><a href="admin.php?page=listadmin">管理員列表</a></li>
+            <li><a href="admin.php?page=syslog">系統紀錄</a></li>
         </ul>
     </li>
     
@@ -51,7 +52,7 @@ if(!defined('IN_TEMPLATE'))
             <li><a href="#">學生帳號</a></li>
         </ul>
     </li>
-    
+    <li><a href="admin.php?page=admininfo&uid=<?=$_G['uid']?>">個人資料</a></li>
     
     <!--
     <li><a href="#">網站管理</a></li>
