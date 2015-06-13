@@ -1,7 +1,7 @@
 <?php
 require_once('GlobalSetting.php');
 
-$allow_page = array('viewgood');
+$allow_page = array('viewgood','develop');
 $page = 'index';
 if( isset($_REQUEST['page']) )
 {

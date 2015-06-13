@@ -214,3 +214,20 @@ function GetGoodlistByLID($lid)
     }
     return $data;
 }
+
+function GetGoodByGID($gid)
+{
+    $tgoods = SQL::tname('goods');
+    $tgoods_image = SQL::tname('goods_image');
+    $data = SQL::fetch("SELECT * FROM $tgoods WHERE `gid` = ?",array($gid));
+    if( !$data )return false;
+    if( !$data['gid'] ) return false;
+    
+    $data['image'] = array();
+    $tmp = SQL::fetchAll("SELECT `imgid` FROM $tgoods_image WHERE `gid` = ?",array($gid));
+    foreach( $tmp as $row )
+    {
+        $data['image'][] = $row['imgid'];
+    }
+    return $data;
+}

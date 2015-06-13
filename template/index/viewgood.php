@@ -75,7 +75,7 @@ function runModal(imgurl){
                         <tbody>
                             <tr>
                                 <td class="col-sm-4">提供廠商</td>
-                                <td>DATA NOT SUPPORT</td>
+                                <td><?=$tmpl['ownername']?></td>
                             </tr>
                             <tr>
                                 <td>售價/件</td>

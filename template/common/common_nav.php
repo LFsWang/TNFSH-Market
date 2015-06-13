@@ -96,9 +96,6 @@ if(!defined('IN_TEMPLATE'))
         </ul>
     </div>
     
-
-    
-    
 <?php if( $_G['usertype'] == 0 ): ?>
     <!--Not Login-->
     <!--LoginModal-->
@@ -112,7 +109,6 @@ if(!defined('IN_TEMPLATE'))
                 $("#login_form").serialize(),
                 function(res){
                     console.log(res);
-                    //console.log($("#login_form").serialize());
                     if( res.status == 'SUCC' )
                     {
                         $('#info').css('color','Lime');
@@ -164,6 +160,14 @@ if(!defined('IN_TEMPLATE'))
                         <div class="form-group">
                             <label for="LoginUserPassword">密碼</label>
                             <input type="password" class="form-control" id="LoginUserPassword" name="password" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label>身分類別</label>
+                            <select name="type" class="form-control">
+                                <option value="user">在校學生</option>
+                                <option value="newbie">新生</option>
+                                <option value="admin">管理員</option>
+                            </select>
                         </div>
                         <?php if($_E['loginrecaptcha']): ?>      
                         <div class="g-recaptcha" data-sitekey="6LcLIgYTAAAAAHfjWLqtHbUiWCfrhvHfvLjsPPXO"></div>

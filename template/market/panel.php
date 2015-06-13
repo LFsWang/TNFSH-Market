@@ -20,7 +20,7 @@ if(!defined('IN_TEMPLATE'))
 <ul class="nav nav-pills nav-stacked">
     <li role="presentation"><a href="market.php">購買列表</a></li>
     <?php foreach($tmpl['panel_list'] as $row) { ?>
-    <li role="presentation" class="<?php market_panel_active('site',$tname)?>"><a href="market.php?id=<?=$row['lid']?>"><?=htmlspecialchars($row['name'])?></a></li>
+    <li role="presentation" class="<?php market_panel_active("mlist-".$row['lid'],$tname)?>"><a href="market.php?id=<?=$row['lid']?>"><?=htmlspecialchars($row['name'])?></a></li>
     <?php }?>
     
     <li class="dropdown <?php market_panel_active('site',$tname)?>">

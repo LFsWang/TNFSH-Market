@@ -102,9 +102,9 @@ function modify_good( $data , $gid = null , &$error = null )
     }        
     if( isset($gid) )
     {
-        $sql_select = "SELECT `gid` FROM `$tgoods` WHERE `gid` = ? AND `owner` = ?";
+        $sql_select = "SELECT `gid` FROM `$tgoods` WHERE `gid` = ? AND `owner` = ? OR ?";
         $res = SQL::prepare($sql_select);
-        if( !SQL::execute($res,array($gid,$_G['uid'])) )
+        if( !SQL::execute($res,array($gid,$_G['uid'],$_G['root'])) )
         {
             $error = ERROR_SQL_EXEC;
             return false;

@@ -29,7 +29,7 @@ if( !is_numeric($id) )
 $id =(int) $id;
 
 $taccount = SQL::tname('account');
-$sql_select = "SELECT `uid`,`username`,`root` FROM $taccount WHERE `uid` = ?";
+$sql_select = "SELECT `uid`,`username`,`title`,`root` FROM $taccount WHERE `uid` = ?";
 $res = SQL::prepare($sql_select);
 
 if( SQL::execute($res,array($id)) )

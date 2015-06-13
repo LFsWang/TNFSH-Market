@@ -100,8 +100,13 @@ class Render
             ob_start();
             var_dump($text);
             $text = ob_get_clean();
+            $text = "<pre>".nl2br(htmlspecialchars($text))."</pre>";
+            $_E['template']['error'][]=array('msg'=>$text,'namespace'=>$namespace);
         }
-        $_E['template']['error'][]=array('msg'=>nl2br(htmlspecialchars($text)),'namespace'=>$namespace);
+        else
+        {
+            $_E['template']['error'][]=array('msg'=>nl2br(htmlspecialchars($text)),'namespace'=>$namespace);
+        }
     }
     
     static function succmessage($text,$namespace = '')

@@ -167,6 +167,9 @@ $( document ).ready(function() {
                                 <a class="icon-bttn" href="#" onclick="editgoodlist(<?=$row['lid']?>)">
                                     <span class="glyphicon glyphicon-pencil" title="編輯"></span>
                                 </a>
+                                <a class="icon-bttn" href="admin.php?page=goodlists_summary&lid=<?=$row['lid']?>">
+                                    <span class="glyphicon glyphicon-stats" title="統計"></span>
+                                </a>
                             </td>
                         </tr>
                         <?php }?>

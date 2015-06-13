@@ -79,7 +79,12 @@ function recaptcha()
 # false : fail
 # 1 :student
 # 2 :admin
-function login( $username , $password , &$error )
+define('LOGIN_NO_SUCH_ACCOUNT',"無此帳號");
+define('LOGIN_INVLID_ACCOUNT' ,"帳號錯誤");
+define('LOGIN_INVLID_PASSWORD',"密碼錯誤");
+define('LOGIN_UA_FUNC_ERROR'  ,"系統錯誤");
+define('LOGIN_TYPE_ERROR'     ,"登入類別錯誤");
+function login( $username , $password , $type , &$error )
 {
     if( !isset( $error ) )
     {
@@ -92,70 +97,66 @@ function login( $username , $password , &$error )
     }
     if( !checkAccountFormat($username) )
     {
-        $error = "Account Error!";
+        $error = LOGIN_INVLID_ACCOUNT;
         return false;
     }
     if( !checkPasswordFormat($password) )
     {
-        $error = "Password Error!";
+        $error = LOGIN_INVLID_PASSWORD;
         return false;
     }
-    
-    $table = SQL::tname('account');
-    $sql_select = "SELECT * FROM $table WHERE `username` = ?";
-
-    $res = SQL::prepare($sql_select);
-    if( !SQL::execute($res,array($username) ) )
+    switch( $type )
     {
-        return false;
-    }
-    $row = $res->fetch();
-    
-    if( $row !== false )
-    {#login as admin
-        if( password_verify( $password , $row['password'] ) )
-        {
-            $error = "Something Wrong!";
-            if( !UserAccess::SetLoginToken( $row['uid'] , 2 ,$row['root'] ) )
+        case 'admin' :
+            $taccount = SQL::tname('account');
+            $row = SQL::fetch("SELECT * FROM $taccount WHERE `username` = ?",array($username) );
+            if( !$row ){
+                $error = LOGIN_NO_SUCH_ACCOUNT;
                 return false;
-            
+            }
+            if( !password_verify( $password , $row['password'] ) )
+            {
+                $error = LOGIN_INVLID_PASSWORD;
+                return false;
+            }        
+            if( !UserAccess::SetLoginToken( $row['uid'] , USER_ADMIN ,$row['root'] ) )
+            {
+                $error = LOGIN_UA_FUNC_ERROR;
+                return false;
+            }
             $error = "Welcome! Admin";
             $_SESSION['userdata'] = $row;
-            return 2;
-        }
-        else
-        {
-            $error = "Password Error!";
-            return false;
-        }
-    }
-    else
-    {#login as student
-        $table = SQL::tname('student_account');
-        $sql_select = "SELECT * FROM $table WHERE `username` = ?";
-        $res = SQL::prepare($sql_select);
-        $res->execute( array($username) );
-        $data = $res->fetchAll();
-        
-        if( $data )
-        {
-            foreach( $data as $row )
-            {
-                if( password_verify( $password , $row['password'] ) )
-                {
-                    $error = "Something Wrong!";
-                    if( !UserAccess::SetLoginToken( $row['suid'] , 1 ) )
-                        return false;
-                    
-                    $error = "Welcome! User";
-                    $_SESSION['userdata'] = $row;
-                    return 1;
-                }
+            return USER_ADMIN;
+            break;
+            
+        case 'user'  :
+        case 'newbie': #TODO use ID / Birthday to login
+            $tstudent_account = SQL::tname('student_account');
+            $row = SQL::fetch("SELECT * FROM $tstudent_account WHERE `username` = ?",array($username) );
+            if( !$row ){
+                $error = LOGIN_NO_SUCH_ACCOUNT;
+                return false;
             }
-            $error = "Password Error!";
+            if( !password_verify( $password , $row['password'] ) )
+            {
+                $error = LOGIN_INVLID_PASSWORD;
+                return false;
+            }
+            if( !UserAccess::SetLoginToken( $row['suid'] , USER_NORMAL ) )
+            {
+                $error = LOGIN_UA_FUNC_ERROR;
+                return false;
+            }
+            $error = "Welcome! User";
+            $_SESSION['userdata'] = $row;
+            return USER_NORMAL;
+            break;
+            
+        default :
+            $error = LOGIN_TYPE_ERROR;
             return false;
-        }
+            break;
     }
-    $error = "No Such User!";
+    $error = LOGIN_TYPE_ERROR;
     return false;
 }

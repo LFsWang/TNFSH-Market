@@ -73,6 +73,7 @@ $( document ).ready(function() {
                         <tr>
                             <th>UID</th>
                             <th>帳號</th>
+                            <th>名稱</th>
                             <th>權限</th>
                             <th>操作</th>
                         </tr>
@@ -82,6 +83,7 @@ $( document ).ready(function() {
                         <tr>
                             <td><?=$row['uid']?></td>
                             <td><?=htmlspecialchars($row['username'])?></td>
+                            <td><?=htmlspecialchars($row['title'])?></td>
                             <td>
                                 <?php if( $row['root'] ): ?>
                                 <span class="glyphicon glyphicon-king" title="最高權限"></span>ROOT

@@ -12,7 +12,7 @@ if( !$_G['root'] )
 }
 
 $taccount = SQL::tname('account');
-$sql_select = "SELECT `uid`,`username`,`root` FROM $taccount";
+$sql_select = "SELECT `uid`,`username`,`title`,`root` FROM $taccount";
 $res = SQL::prepare($sql_select);
 
 if( SQL::execute($res) )

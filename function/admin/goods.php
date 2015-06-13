@@ -73,9 +73,9 @@ if( isset( $_SESSION['editgoodsflag'] ) )
 
 #prepare list
 $table = SQL::tname('goods');
-$sql_select = "SELECT `gid`, `name`, `type`, `price`, `defaultnum` ,`status` FROM `$table` WHERE `owner`  = ?";
+$sql_select = "SELECT `gid`, `name`, `type`, `price`, `defaultnum` ,`status` FROM `$table` WHERE `owner`  = ? OR ?";
 $res = SQL::prepare($sql_select);
-if( !SQL::execute($res,array($_G['uid']) ) )
+if( !SQL::execute($res,array($_G['uid'],$_G['root']) ) )
 {
     $result = array();
     Render::errormessage("SQL ERROR WHEN GET LIST","goods");

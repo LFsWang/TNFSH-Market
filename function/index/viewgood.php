@@ -55,5 +55,15 @@ if( SQL::execute($res,array($gid)) )
         }
     }
 }
+$taccount = SQL::tname('account');
+$title = SQL::fetch("SELECT `title` FROM `$taccount` WHERE `uid` = ?",array($data['owner']) );
+if( $title )
+{
+    $_E['template']['ownername'] = $title['title'];
+}
+else
+{
+    $_E['template']['ownername'] = 'DATA NOT SUPPORT';
+}
 Render::render('viewgood','index');
 //header("HTTP/1.0 404 Not Found");

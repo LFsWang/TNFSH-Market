@@ -1,5 +1,6 @@
 <?php
 require_once('GlobalSetting.php');
+//require_once('function/user/user.lib.php');
 //addAdminAccount('admin','admin');
 if( $_G['usertype'] != 2 )
 {
@@ -7,7 +8,7 @@ if( $_G['usertype'] != 2 )
 }
 require_once('/function/admin/admin.lib.php');
 
-$allow_page = array('index','goods','edit_system_announcement','goodlists','editimg','admininfo','listadmin','admininfoedit','syslog');
+$allow_page = array('index','goods','edit_system_announcement','goodlists','editimg','admininfo','listadmin','goodlists_summary','admininfoedit','syslog');
 $page = 'index';
 if( isset($_REQUEST['page']) )
 {

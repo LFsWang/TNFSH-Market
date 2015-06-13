@@ -50,6 +50,12 @@ $( document ).ready(function() {
             <form class="form-horizontal" method="post" action="admin.php">
                 <input type="hidden" name="page" value="admininfoedit">
                 <input type="hidden" name="uid" value="<?=$tmpl['users']['uid']?>">
+                <div class="form-group">
+                    <label for="title" class="col-sm-2 control-label">廠商名稱</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="title" name="title" value="<?=$tmpl['users']['title']?>">
+                    </div>
+                </div>
                 <?php if( $tmpl['users']['uid'] == $_G['uid'] ): ?>
                 <div class="form-group">
                     <label for="passwordold" class="col-sm-2 control-label">舊密碼</label>

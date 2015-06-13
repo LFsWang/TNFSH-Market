@@ -9,7 +9,7 @@ $id = safe_post('uid');
 $passwordold = safe_post('passwordold','');
 $password = safe_post('password','');
 $root = safe_post('root')?true:false;
-
+$title = safe_post('title','');
 if( !is_numeric($id) )
 {
     Render::errormessage('UID錯誤');
@@ -70,6 +70,12 @@ if( $flag )
             $flag = false;
         }
     }
+    if( !SQL::query("UPDATE `$taccount` SET `title`= ? WHERE `uid`=?",array($title,$id)) )
+    {
+        Render::errormessage('SQL錯誤');
+        $flag = false;
+    }
+    
 }
 
 if( $flag )

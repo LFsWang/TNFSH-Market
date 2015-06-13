@@ -59,7 +59,18 @@ if( $gidnum !== 0 )
 $timeflag = GetTimeFlag($data['starttime'],$data['endtime']);
 //Render::errormessage($timeflag);
 //Render::errormessage($data);
-
 $_E['template']['listinfo'] = $data;
 $_E['template']['goodinfo'] = $goodinfo;
-Render::render('viewlist','market');
+$_E['template']['market_panel_active'] = "mlist-$lid";
+if( $timeflag == TF_NOTYET )
+{
+    Render::render('viewlist_notyet','market');
+}
+elseif( $timeflag == TF_PASS )
+{
+    Render::render('viewlist_pass','market');
+}
+else
+{
+    Render::render('viewlist','market');
+}
