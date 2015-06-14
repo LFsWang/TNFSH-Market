@@ -20,7 +20,25 @@ $permission['user']['usertype'] = USER_ADMIN ;
 $_G = $permission['guest'];
 
 class UserAccess{
-    static function SetToken( $namespace, $timelimit = 900 , $usecookie = true )
+    static function SetHashToken($namespace){
+        if( !isset($_SESSION['htoken']) )$_SESSION['htoken'] = array();
+        $token   = md5(uniqid($namespace,true));
+        $_SESSION['htoken'][$namespace] = $token;
+        return $token;
+    }
+    static function CheckHashToken($namespace,$value = null){
+        if( !isset($_SESSION['htoken']) ) return false;
+        if( !isset($_SESSION['htoken'][$namespace]) )return false;
+        if( $value === null ) $value = safe_post('token');
+        return $value === $_SESSION['htoken'][$namespace];
+    }
+    static function RemoveHashToken($namespace){
+        if( !isset($_SESSION['htoken']) ) return ;
+        if( !isset($_SESSION['htoken'][$namespace]) )return ;
+        unset( $_SESSION['htoken'][$namespace] );
+    }
+    
+    static function SetToken( $namespace, $timelimit = 900 )
     {
         global $_E;
         $token   = md5(uniqid($namespace,true));
@@ -29,12 +47,10 @@ class UserAccess{
         $_SESSION['token'][$namespace] = array();
         $_SESSION['token'][$namespace]['token'] = $token;
         $_SESSION['token'][$namespace]['timeout'] = $timeout;
-        if( $usecookie )
-        {
+
             //$_E['DOMAIN'] ?
-            setcookie(  $namespace , $token , $timeout , 
-                        $_E['SITEDIR'] , '' , false , true );
-        }
+        setcookie(  $namespace , $token , $timeout , 
+                    $_E['SITEDIR'] , '' , false , true );
         return $token;
     }
     
@@ -58,7 +74,7 @@ class UserAccess{
         return $string === $_SESSION['token'][$namespace]['token'];
     }
     
-    static function ExtendToken($namespace,$timelimit,$usecookie=true)
+    static function ExtendToken($namespace,$timelimit)
     {
         global $_E;
         if(    !isset( $_SESSION['token'] ) 
@@ -71,11 +87,9 @@ class UserAccess{
         $timeout = time() + $timelimit;
 
         $_SESSION['token'][$namespace]['timeout'] = $timeout;
-        if( $usecookie )
-        {
-            setcookie(  $namespace , $token , $timeout , 
-                        $_E['SITEDIR'] , '' , false , true );
-        }
+
+        setcookie(  $namespace , $token , $timeout , 
+                    $_E['SITEDIR'] , '' , false , true );
         return $token;
     }
     

@@ -27,7 +27,7 @@ if(!defined('IN_TEMPLATE'))
                         </thead>
                         <tbody>
                             <?php $totalsum = 0; ?>
-                            <?php foreach($tmpl['goodinfo'] as $row ) { ?>
+                            <?php foreach($tmpl['goodsinfo'] as $row ) { ?>
                                 <?php $totalsum += $row['price']*$row['defaultnum']; ?>
                                 <tr>
                                     <td> <?=$row['gid']?> </td>

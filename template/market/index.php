@@ -15,7 +15,9 @@ if(!defined('IN_TEMPLATE'))
             <center>
                 <h3>MARKET</h3>
             </center>
+            <?php if( isset($tmpl['system_announcement']) ): ?>
             <?=$tmpl['system_announcement']?>
+            <?php endif;?>
         </div>
     </div>
 </div>

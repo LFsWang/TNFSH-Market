@@ -4,17 +4,7 @@ if(!defined('IN_TEMPLATE'))
     exit('Access denied');
 }
 ?>
-<script>
-function updatemoney(num,price)
-{
-    v = $("#gid-"+num).val();
-    oldsum = $("#m-"+num).html();
-    $("#m-"+num).html( v * price );
-    oldtotal = $('#totalmoney').html();
-    oldtotal = oldtotal - oldsum + v * price;
-    $('#totalmoney').html(oldtotal);
-}
-</script>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-2 col-md-2 col-sm-2 trans_form">
@@ -24,8 +14,9 @@ function updatemoney(num,price)
         <div class="col-sm-1"><br></div>
         <div class="col-sm-8 trans_form_mh300 panel panel-default">
             <center>
-                <h3><?=htmlentities($tmpl['listinfo']['name'])?><br><small>開放時間 <?=$tmpl['listinfo']['starttime']?> ~ <?=$tmpl['listinfo']['endtime']?></small></h3>
-                <form method="post" action="market.php?page=check&id=<?=$tmpl['listinfo']['lid']?>">
+                <h3>確認訂單</h3>
+                <h3><?=htmlentities($tmpl['listinfo']['name'])?><br></h3>
+                <form method="post">
                     <input type='hidden' name='token' value='<?=$tmpl['token']?>'>
                     <input type='hidden' name='lid' value='<?=$tmpl['listinfo']['lid']?>'>
                     <table class="table table-striped table-hover">
@@ -41,36 +32,35 @@ function updatemoney(num,price)
                         <tbody>
                             <?php $totalsum = 0; ?>
                             <?php foreach($tmpl['goodsinfo'] as $row ) { ?>
-                                <?php $totalsum += $row['price']*$row['defaultnum']; ?>
+                                <?php $totalsum += ($tmp= $row['price']*$tmpl['userin']['gid'][$row['gid']]); ?>
                                 <tr>
                                     <td> <?=$row['gid']?> </td>
                                     <td> <a href = "index.php?page=viewgood&gid="<?=$row['gid']?> target="_blank"><?=$row['name']?></a></td>
                                     <td> <?=$row['price']?> </td>
-                                    <td>
-                                        <input type="number" class="form-control" id="gid-<?=$row['gid']?>" placeholder="數量" value="<?=$row['defaultnum']?>" name="gid-<?=$row['gid']?>" min="0" max="<?=$row['maxnum']?>" onchange="updatemoney(<?=$row['gid']?>,<?=$row['price']?>)" required>
-                                    </td>
-                                    <td> <span id="m-<?=$row['gid']?>"><?=$row['total']?></span></td>
+                                    <td> <?=$tmpl['userin']['gid'][$row['gid']]?></td>
+                                    <td><?=$tmp?></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
                     </table>
                     <div class = "container-fluid">
+                        <?php if($tmpl['colthe']): ?>
                         <div class = "row text-left">
                             <h4>套量尺寸<small>請依據廠商套量結果填寫</small></h4>
                             <div class ="col-sm-1">胸圍(X10)：</div>
-                            <div class ="col-sm-2"><input type="number" class="form-control" id="bust" placeholder="胸圍" name="bust" min="145" max="210" value="155" step="5" required></div>
+                            <div class ="col-sm-2"><?=$tmpl['userin']['bust']?></div>
                             <div class ="col-sm-1">腰圍：</div>
-                            <div class ="col-sm-2"><input type="number" class="form-control" id="waistline" placeholder="腰圍" name="waistline" min="27" max="46" value="30" step="1" required></div>
+                            <div class ="col-sm-2"><?=$tmpl['userin']['waistline']?></div>
                             <div class ="col-sm-1">褲長：</div>
-                            <div class ="col-sm-2"><input type="number" class="form-control" id="lpants" placeholder="褲長" name="lpants" min="38" max="46" value="42" step="2" required></div>
+                            <div class ="col-sm-2"><?=$tmpl['userin']['lpants']?></div>
                         </div>
-                    
+                        <?php endif; ?>
                         <div class = "row text-right">
                             <div class = "col-sm-offset-4 col-sm-6">
                                 <h4 style="color:red">總價格：<span id='totalmoney'><?=$totalsum?></span>元整</h4>
                             </div>
                             <div class = "col-sm-2">
-                                <button class="btn btn-success" type="submit">確認</button>
+                                <button class="btn btn-success" type="submit">送出訂單</button>
                             </div>
                         </div>
                     </div>
