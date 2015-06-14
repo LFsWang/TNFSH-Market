@@ -4,17 +4,22 @@ if(!defined('IN_SYSTEM'))
     exit('Access denied');
 }
 //Common Error Code
-define('ERROR_NO',0);
-define('ERROR_DATA_MISSING',1);
+function __df($X){
+    if( !defined ($X) )
+        define($X,$X);
+}
+__df('ERROR_NO');
+__df('ERROR_DATA_MISSING');
 
-define('ERROR_TIME_FORMAT',2);
-define('ERROR_ARRAY_FORMAT',3);
-define('ERROR_INT_FORMAT',4);
-define('ERROR_STRING_FORMAT',4);
-define('ERROR_SQL_EXEC',100);
+__df('ERROR_TIME_FORMAT');
+__df('ERROR_ARRAY_FORMAT');
+__df('ERROR_INT_FORMAT');
+__df('ERROR_STRING_FORMAT');
+__df('ERROR_SAME_INDEX');
+__df('ERROR_SQL_EXEC');
 
-define('ERROR_PREMISSION_DENIED',9000);
-define('ERROR_OTHERS',9999);
+__df('ERROR_PREMISSION_DENIED');
+__df('ERROR_OTHERS');
 function getsysvalue($id)
 {
     $table = SQL::tname('system');
@@ -202,6 +207,7 @@ function GetGoodlistByLID($lid)
 {
     $tgoodlist = SQL::tname('goodlist');
     $tgoodlist_goodstable = SQL::tname('goodlist_goodstable');
+    $tgoodlist_accountgroup = SQL::tname('goodlist_accountgroup');
     $data = SQL::fetch("SELECT * FROM $tgoodlist WHERE `lid` = ?",array($lid));
     if( !$data )return false;
     if( !$data['lid'] ) return false;
@@ -211,6 +217,11 @@ function GetGoodlistByLID($lid)
     foreach( $tmp as $row )
     {
         $data['goods'][] = $row['gid'];
+    }
+    $tmp = SQL::fetchAll("SELECT `gpid` FROM $tgoodlist_accountgroup WHERE `lid` = ?",array($lid));
+    foreach( $tmp as $row )
+    {
+        $data['accountgroups'][] = $row['gpid'];
     }
     return $data;
 }
@@ -230,4 +241,22 @@ function GetGoodByGID($gid)
         $data['image'][] = $row['imgid'];
     }
     return $data;
+}
+
+function CheckArrayAllNumber(&$array)
+{
+    if( !is_array($array) )return false;
+    foreach( $array as $var )
+    {
+        if( !is_numeric($var) )
+        {
+            return false;
+        }
+        $var = (int) $var;
+        if( $var <= 0 )
+        {
+            return false;
+        }
+    }
+    return true;
 }

@@ -34,6 +34,9 @@ function editgoodlist(lid)
         info.goods.forEach(function(gid) {
             $("#gid-"+gid).prop('checked', true );
         });
+        info.accountgroups.forEach(function(gpid) {
+            $("#gpid-"+gpid).prop('checked', true );
+        });
         
         tinyMCE.activeEditor.setContent(info.description);
         $("#listadd").val('修改');
@@ -114,7 +117,13 @@ $( document ).ready(function() {
                                 <div class="form-group">
                                     <label for="usergroup" class="col-sm-2 control-label">對象</label>
                                     <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="usergroup" name="usergroup" >
+                                    <?php foreach($tmpl['accountgroup'] as $row ) {?>
+                                        <div class="checkbox col-lg-3 col-md-4 col-sm-6" style="overflow:hidden;" >
+                                            <label>
+                                                <input type="checkbox" name='accountgroups[]' value='<?=$row['gpid']?>' id="gpid-<?=$row['gpid']?>" class="chbox-gid"><span title='<?=htmlspecialchars($row['title'])?>'><?=htmlspecialchars($row['title'])?></span>
+                                            </label>
+                                        </div>
+                                    <?php }?>
                                     </div>
                                 </div>
                                 <div class="form-group">

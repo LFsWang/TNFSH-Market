@@ -25,7 +25,7 @@ foreach( $case as $subpage => $act )
 }
 
 //ADMIN API
-$case = array( 'getgoodinfo' , 'getgoodlist' , 'editimage' , 'addadmin' );
+$case = array( 'getgoodinfo' , 'getgoodlist' , 'editimage' , 'addadmin' ,'addsgroup','addsastudent');
 if( in_array($action,$case) )
 {
     if( $_G['usertype'] != 2 )
@@ -38,5 +38,4 @@ if( in_array($action,$case) )
         exit(0);
     }
 }
-echo $action;
 throwjson('error','Error:7122');

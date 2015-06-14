@@ -3,7 +3,7 @@ if(!defined('IN_SYSTEM'))
 {
   exit('Access denied');
 }
-
+define('NEWBIE_PRE','~new@');
 
 
 #Account
@@ -53,6 +53,82 @@ function addAdminAccount($username,$password,$root)
     
     $res = SQL::prepare($sql_insert);
     if( SQL::execute($res,array($username,$password,$root)) )
+    {
+        return ERROR_NO;
+    }
+    return ERROR_SQL_EXEC;
+}
+
+function addUserAccount($username,$password,$group,$newbie = false,$data = array())
+{
+    #data
+    /*
+        name
+        grade (int)
+        class (int)
+        number(int)
+    */
+    if( !checkAccountFormat($username) )
+    {
+        return ERROR_STRING_FORMAT;
+    }
+    if( !checkPasswordFormat($password) )
+    {
+        return ERROR_STRING_FORMAT;
+    }
+    if( !is_numeric($group) )
+    {
+        return ERROR_INT_FORMAT."Group";
+    }
+    $group = (int)$group;
+    
+    if( $newbie ) $newbie = true ;
+    else $newbie = false;
+
+    $args = array('grade','class','number');
+    foreach( $args as $i )
+    {
+        if( isset($data[$i]) && !empty($data[$i]) )
+        {
+            if( !is_numeric($data[$i]) )
+            {
+                return ERROR_INT_FORMAT.$i;
+            }
+            $data[$i] = (int)$data[$i];
+        }
+        else
+        {
+            $data[$i] = null;
+        }
+    }
+    if( !isset($data['name']) )
+    {
+        $data['name'] = null;
+    }
+    
+    $tstudent_account = SQL::tname('student_account');
+    //check username avaible
+    $sql_count = "SELECT COUNT(`suid`) AS `sum` FROM `$tstudent_account` WHERE `username` = ? OR `username` = ?";
+    if( $res = SQL::fetch($sql_count,array(NEWBIE_PRE.$username,$username)) )
+    {
+        if( $res['sum'] != 0 )
+        {
+            return ERROR_SAME_INDEX."帳號重複";
+        }
+    }
+    else
+    {
+        return ERROR_SQL_EXEC;
+    }
+    if( $newbie )
+    {
+        $username = NEWBIE_PRE.$username;
+    }
+    #insert
+    $password = GetPasswordHash($password);
+    $sql_insert = "INSERT INTO `$tstudent_account`(`suid`, `username`, `password`, `gpid`, `name`, `grade`, `class`, `number`) VALUES (NULL,?,?,?,?,?,?,?)";
+
+    if( SQL::query($sql_insert,array($username,$password,$group,$data['name'],$data['grade'],$data['class'],$data['number'])) )
     {
         return ERROR_NO;
     }
@@ -129,8 +205,9 @@ function login( $username , $password , $type , &$error )
             return USER_ADMIN;
             break;
             
+        case 'newbie':
+            $username = NEWBIE_PRE.$username;
         case 'user'  :
-        case 'newbie': #TODO use ID / Birthday to login
             $tstudent_account = SQL::tname('student_account');
             $row = SQL::fetch("SELECT * FROM $tstudent_account WHERE `username` = ?",array($username) );
             if( !$row ){

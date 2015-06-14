@@ -152,21 +152,24 @@ function modify_good( $data , $gid = null , &$error = null )
     return true;
 }
 /*Good List*/
-function modify_goodlist( $data , $lid = null , &$error = null )
+#BUG : this function did not check owner when updating !
+function modify_goodlist( $data , $lid = null )
 {
     global $_G;
-    $tgoodlist_goodstable = SQL::tname('goodlist_goodstable');
     $tgoodlist = SQL::tname('goodlist');
-    #deta format
+    $tgoodlist_goodstable = SQL::tname('goodlist_goodstable');
+    $tgoodlist_accountgroup = SQL::tname('goodlist_accountgroup');
+    
+    #data format
     /*
         $data   => name
                 => starttime
                 => endtime
                 => description
                 => array of goods
+                => array of accountgroup
     */
     #Check data
-    
     if( $lid === null ){
     }
     else if( is_numeric($lid) )
@@ -174,60 +177,45 @@ function modify_goodlist( $data , $lid = null , &$error = null )
         $lid = (int) $lid;
         if( $lid <= 0 )
         {
-            $error = ERROR_INT_FORMAT;
-            return false;
+            return ERROR_INT_FORMAT;
         }
     }
     else
     {
-        $error = ERROR_DATA_MISSING;
-        return false;
+        return ERROR_DATA_MISSING;
     }
-    
-    $args_str = array('name','starttime','endtime','description','goods');
+    $args_str = array('name','starttime','endtime','description');
     foreach( $args_str as $var )
     {
         if( !isset( $data[$var] ) )
         {
-            $error = ERROR_DATA_MISSING;
-            return false;
+            return ERROR_DATA_MISSING.$var;
         }
     }
     
     if( !checkdateformat($data['starttime']) || !checkdateformat($data['endtime']) )
     {
-        $error = ERROR_TIME_FORMAT;
-        return false;
+        return ERROR_TIME_FORMAT;
     }
     
     $date1 = new DateTime($data['starttime']);
     $date2 = new DateTime($data['endtime']);
     if( $date1 > $date2 )
     {
-        $error = ERROR_TIME_FORMAT;
-        return false;
+        return ERROR_TIME_FORMAT;
     }
     
-    if( !is_array($data['goods']) )
+    if( !is_array($data['goods']) || !is_array($data['accountgroups']) )
     {
-        $error = ERROR_ARRAY_FORMAT;
-        return false;
+        return ERROR_ARRAY_FORMAT;
     }
-    foreach( $data['goods'] as &$id )
+    if( !CheckArrayAllNumber($data['goods']) || !CheckArrayAllNumber($data['accountgroups']) )
     {
-        if( !is_numeric($id) )
-        {
-            $error = ERROR_INT_FORMAT;
-            return false;
-        }
-        $id = (int) $id;
-        if( $id <= 0 )
-        {
-            $error = ERROR_INT_FORMAT;
-            return false;
-        }
+        return ERROR_INT_FORMAT;
     }
     $data['goods'] = array_unique($data['goods']);
+    $data['accountgroups'] = array_unique($data['accountgroups']);
+    
     //Check owner?
     //First insert into goodlist
     $sql_insert="
@@ -238,13 +226,11 @@ function modify_goodlist( $data , $lid = null , &$error = null )
     `endtime` = ?,
     `description` = ?,
     `status` = ?;";
-    $res = SQL::prepare($sql_insert);
     $var = array($lid,$_G['uid'],$data['name'],$data['starttime'],$data['endtime'],$data['description'],1,
     $data['name'],$data['starttime'],$data['endtime'],$data['description'],1,);
-    if( !SQL::execute($res,$var) )
+    if( !SQL::query($sql_insert,$var) )
     {
-        $error = ERROR_SQL_EXEC;
-        return false;
+        return ERROR_SQL_EXEC;
     }
     
     //2.Get Lid
@@ -254,21 +240,32 @@ function modify_goodlist( $data , $lid = null , &$error = null )
     }
     //3. del old data in $tgoodlist_goodstable
     $sql_delete = "DELETE FROM `$tgoodlist_goodstable` WHERE `lid` = ?";
-    $res = SQL::prepare($sql_delete);
-    if( !SQL::execute($res,array($lid)) )
+    if( !SQL::query($sql_delete,array($lid)) )
     {
-        $error = ERROR_SQL_EXEC;
-        return false;
+        return ERROR_SQL_EXEC;
     }
     //4.add goods
     $sql_insert = "INSERT INTO $tgoodlist_goodstable (`lid`, `gid`) VALUES (?,?)";
     foreach( $data['goods'] as $gid )
     {
-        $res = SQL::prepare($sql_insert);
-        if(!SQL::execute($res,array($lid,$gid)))
+        if(!SQL::query($sql_insert,array($lid,$gid)))
         {
-            $error = ERROR_SQL_EXEC;
-            return false;
+            return ERROR_SQL_EXEC;
+        }
+    }
+    //5. del old data in $tgoodlist_accountgroup
+    $sql_delete = "DELETE FROM `$tgoodlist_accountgroup` WHERE `lid` = ?";
+    if( !SQL::query($sql_delete,array($lid)) )
+    {
+        return ERROR_SQL_EXEC;
+    }
+    //4.add accountgroup
+    $sql_insert = "INSERT INTO $tgoodlist_accountgroup (`lid`, `gpid`) VALUES (?,?)";
+    foreach( $data['accountgroups'] as $gpid )
+    {
+        if(!SQL::query($sql_insert,array($lid,$gpid)))
+        {
+            return ERROR_SQL_EXEC;
         }
     }
     return ERROR_NO;

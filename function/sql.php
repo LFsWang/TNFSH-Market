@@ -31,7 +31,7 @@ class SQL{
         try {
             $res = self::$pdo->prepare($string);
         } catch (PDOException $e) {
-            echo "Error!: " . $e->getMessage() . "<br/>";
+            echo "Error!: " . $e->getMessage() . "<br/> $string <br/>";
             die();
         }
         return $res;
@@ -58,11 +58,11 @@ class SQL{
             if( !$object->execute( $array ) )
             {
                 $data = $object->errorInfo();
-                SQL::log('SQL execute', $data[2] );
+                SQL::log('SQL execute', $data[2] .", \nString : " . $object->queryString );
                 return false;
             }
         } catch (PDOException $e) {
-            SQL::log('SQL Exception', $e->getMessage() );
+            SQL::log('SQL Exception', $e->getMessage() .", \nString : " . $object->queryString );
             return false;
         }
         return true;

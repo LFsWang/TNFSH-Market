@@ -30,15 +30,9 @@ $id =(int) $id;
 
 $taccount = SQL::tname('account');
 $sql_select = "SELECT `uid`,`username`,`title`,`root` FROM $taccount WHERE `uid` = ?";
-$res = SQL::prepare($sql_select);
-
-if( SQL::execute($res,array($id)) )
+if( $res = SQL::query($sql_select,array($id)) )
 {
-    if( $users = $res->fetch() )
-    {
-        
-    }
-    else
+    if(!( $users = $res->fetch() ))
     {
         Render::errormessage('不存在的使用者');
         Render::render('index','admin');

@@ -5,6 +5,7 @@ if(!defined('IN_SYSTEM'))
 }
 $tgoodlist = SQL::tname('goodlist');
 $tgoodlist_goodstable = SQL::tname('goodlist_goodstable');
+$tgoodlist_accountgroup =SQL::tname('goodlist_accountgroup');
 $tgoods = SQL::tname('goods');
 
 // it should check user access!
@@ -15,44 +16,33 @@ if( !is_numeric($lid) )
 }
 $lid = (int)$lid;
 
+if( !SQL::fetch("SELECT `lid` FROM $tgoodlist_accountgroup WHERE `lid` = ? AND `gpid`=?",array($lid,$_G['gpid'])) )
+{
+    Render::errormessage('權限不足');
+    Render::render('viewlist_user_denied','market');
+}
+
+#Get all goodlist info
 $sql_select = "SELECT * from `$tgoodlist` WHERE `lid` = ?";
-$res = SQL::prepare($sql_select);
-if( !SQL::execute($res,array($lid)) )
+if(!( $data = SQL::fetch($sql_select ,array($lid)) ))
 {
+    Render::errormessage('SQL ERROR');
     Render::render('viewlist_user_denied','market');
 }
 
-$data = $res->fetch();
-
-$sql_select = "SELECT `gid` FROM `$tgoodlist_goodstable` WHERE `lid` = ?";
-$res = SQL::prepare($sql_select);
-if( !SQL::execute($res,array($lid)) )
+#Get all goods info
+$sql_select = "SELECT *,`defaultnum` * `price` AS `total` FROM `$tgoods` WHERE `gid` IN (SELECT `gid` FROM `$tgoodlist_goodstable` WHERE `lid` = ?)";
+if( $res = SQL::query($sql_select,array($lid)) )
 {
-    Render::render('viewlist_user_denied','market');
-}
-$t_gidlist = $res->fetchAll();
-$gidlist = array(); 
-foreach($t_gidlist as $row)
-{
-    $gidlist[] = $row['gid'];
-}
-$gidlist = array_unique($gidlist);
-$gidnum = count($gidlist);
-$goodinfo = array();
-if( $gidnum !== 0 )
-{
-    $questionmark = str_repeat("?,",$gidnum-1) . "?";
-    $sql_select = "SELECT *,`defaultnum` * `price` AS `total` FROM `$tgoods` WHERE `gid` IN ($questionmark)";
-    $res = SQL::prepare($sql_select);
-    if( !SQL::execute($res,$gidlist) )
-    {
-        Render::errormessage('SQL ERROR');
-        Render::render('viewlist_user_denied','market');
-    }
     while( $row = $res->fetch() )
     {
         $goodinfo[ $row['gid'] ] = $row;
     }
+}
+else
+{
+    Render::errormessage('SQL ERROR');
+    Render::render('viewlist_user_denied','market');
 }
 
 #time
@@ -62,6 +52,8 @@ $timeflag = GetTimeFlag($data['starttime'],$data['endtime']);
 $_E['template']['listinfo'] = $data;
 $_E['template']['goodinfo'] = $goodinfo;
 $_E['template']['market_panel_active'] = "mlist-$lid";
+
+
 if( $timeflag == TF_NOTYET )
 {
     Render::render('viewlist_notyet','market');

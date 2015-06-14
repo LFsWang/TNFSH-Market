@@ -22,10 +22,11 @@ if( isset($_POST['method']) )
             
             $usergroups = '';//usergroup;
             $data['description'] = safe_post('detail','');
-            $data['goods'] = safe_post('goods',null);
+            $data['goods'] = safe_post('goods',array());
+            $data['accountgroups'] = safe_post('accountgroups',array());
             //Render::errormessage($_POST);
             if( $lid == 0 )$lid = null;
-            $res = modify_goodlist($data,$lid,$errcode);
+            $res = modify_goodlist($data,$lid);
             if( $res === ERROR_NO )
             {
                 $_SESSION['editgoodlistsflag'] = 1;
@@ -67,6 +68,15 @@ foreach($result as $row)
     $goodprice[ (int)$row['gid'] ] = $row['price'] * $row['defaultnum'];
     $goodname [ (int)$row['gid'] ] = htmlspecialchars($row['name']);
 }
+
+#prepare accountgroup list
+$table = SQL::tname('saccount_group');
+$sql_select = "SELECT `gpid`,`title` FROM `$table` WHERE `hidden` = false";
+if(!( $result = SQL::fetchAll($sql_select) ))
+{
+    $result = array();
+}
+$_E['template']['accountgroup'] = $result;
 
 #prepare goodlists
 $table = SQL::tname('goodlist');

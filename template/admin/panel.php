@@ -47,9 +47,13 @@ if(!defined('IN_TEMPLATE'))
     </li>
     
     <li class="dropdown <?php admin_panel_active('student',$tname)?>">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dLabe4">帳號管理<span class="caret"></span></a>
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dLabe4">學生管理<span class="caret"></span></a>
         <ul class="dropdown-menu" aria-labelledby="dLabe4">
-            <li><a href="#">學生帳號</a></li>
+            <li><a href="admin.php?page=saccount_groups">學生帳號群組</a></li>
+            <?php if( $_G['root'] ): ?>
+            <li><a href="admin.php?page=addastudent">新增單一學生帳號</a></li>
+            <li><a href="admin.php?page=modifyastudent">修改單一學生帳號</a></li>
+            <?php endif; ?>
         </ul>
     </li>
     <li><a href="admin.php?page=admininfo&uid=<?=$_G['uid']?>">個人資料</a></li>

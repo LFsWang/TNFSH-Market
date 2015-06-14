@@ -28,7 +28,11 @@ $( document ).ready(function() {
                         <td class="col-sm-8"><?=$tmpl['goodlist']['starttime']?>~<?=$tmpl['goodlist']['endtime']?></td>
                     </tr>
                     <tr>
+                        <td>應購買人數: <?=$tmpl['goodlist']['totaluser']?></td>
                         <td>已下單人數: 0</td>
+                    </tr>
+                    <tr>
+                        
                     </tr>
                 </tbody>
             </table>
