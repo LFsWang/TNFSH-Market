@@ -109,7 +109,7 @@ if(!defined('IN_TEMPLATE'))
                 $("#login_form").serialize(),
                 function(res){
                     console.log(res);
-                    /*if( res.status == 'SUCC' )
+                    if( res.status == 'SUCC' )
                     {
                         $('#info').css('color','Lime');
                         $('#info').html('Success! reload page');
@@ -131,8 +131,8 @@ if(!defined('IN_TEMPLATE'))
                     {
                         $('#info').css('color','Red');
                         $('#info').html(res.data);
-                    }*/
-                }/*,"json"*/);
+                    }
+                },"json");
             return true;
         }
         $( document ).ready(function() {        

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.9
+-- version 4.4.7
 -- http://www.phpmyadmin.net
 --
--- 主機: localhost
--- 產生時間： 2015-06-12 09:50:44
--- 伺服器版本: 5.6.24
--- PHP 版本： 5.6.8
+-- 主機: 192.168.7.191
+-- 產生時間： 2015-06-14 08:18:39
+-- 伺服器版本: 5.6.15-log
+-- PHP 版本： 5.6.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- 資料庫： `test_market`
@@ -30,10 +30,17 @@ CREATE TABLE IF NOT EXISTS `account` (
   `uid` int(11) NOT NULL,
   `username` char(80) COLLATE utf8_bin NOT NULL,
   `password` text COLLATE utf8_bin NOT NULL,
-  `title` text COLLATE utf8_bin NOT NULL,
+  `title` text COLLATE utf8_bin,
   `root` tinyint(1) NOT NULL,
   `stats` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- 資料表的匯出資料 `account`
+--
+
+INSERT INTO `account` (`uid`, `username`, `password`, `title`, `root`, `stats`) VALUES
+(1, 'admin', '$2y$10$f4XIFngfQsPF31Pit.TRM.7HuvceN4jM3PPDffdSs/0x6oRNLTJ82', NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -126,7 +133,8 @@ CREATE TABLE IF NOT EXISTS `image` (
 
 CREATE TABLE IF NOT EXISTS `saccount_group` (
   `gpid` int(11) NOT NULL,
-  `title` text COLLATE utf8_bin NOT NULL
+  `title` char(80) COLLATE utf8_bin NOT NULL,
+  `hidden` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
@@ -139,7 +147,11 @@ CREATE TABLE IF NOT EXISTS `student_account` (
   `suid` int(11) NOT NULL,
   `username` char(80) COLLATE utf8_bin NOT NULL,
   `password` text COLLATE utf8_bin NOT NULL,
-  `account_group` int(11) NOT NULL
+  `gpid` int(11) NOT NULL,
+  `name` text COLLATE utf8_bin NOT NULL,
+  `grade` int(11) DEFAULT NULL,
+  `class` int(11) DEFAULT NULL,
+  `number` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
@@ -153,7 +165,17 @@ CREATE TABLE IF NOT EXISTS `syslog` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `namespace` varchar(60) CHARACTER SET latin1 NOT NULL,
   `description` text CHARACTER SET latin1 NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- 資料表的匯出資料 `syslog`
+--
+
+INSERT INTO `syslog` (`id`, `timestamp`, `namespace`, `description`) VALUES
+(1, '2015-06-14 07:34:02', 'SQL execute', 'Field ''title'' doesn''t have a default value, \nString : INSERT INTO `account` (`uid`,`username`,`password`,`root`,`stats`) VALUES (NULL,?,?,?,''1'');'),
+(2, '2015-06-14 07:35:47', 'SQL execute', 'Incorrect integer value: '''' for column ''root'' at row 1, \nString : INSERT INTO `account` (`uid`,`username`,`password`,`root`,`stats`) VALUES (NULL,?,?,?,''1'');'),
+(3, '2015-06-14 07:35:47', 'SQL execute', 'Incorrect integer value: '''' for column ''root'' at row 1, \nString : INSERT INTO `account` (`uid`,`username`,`password`,`root`,`stats`) VALUES (NULL,?,?,?,''1'');'),
+(4, '2015-06-14 07:36:27', 'SQL execute', 'Duplicate entry ''admin'' for key ''username'', \nString : INSERT INTO `account` (`uid`,`username`,`password`,`root`,`stats`) VALUES (NULL,?,?,?,''1'');');
 
 -- --------------------------------------------------------
 
@@ -225,13 +247,18 @@ ALTER TABLE `image`
 -- 資料表索引 `saccount_group`
 --
 ALTER TABLE `saccount_group`
-  ADD PRIMARY KEY (`gpid`);
+  ADD PRIMARY KEY (`gpid`),
+  ADD UNIQUE KEY `title` (`title`);
 
 --
 -- 資料表索引 `student_account`
 --
 ALTER TABLE `student_account`
-  ADD PRIMARY KEY (`suid`);
+  ADD PRIMARY KEY (`suid`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD KEY `gpid` (`gpid`),
+  ADD KEY `username_2` (`username`),
+  ADD KEY `suid` (`suid`);
 
 --
 -- 資料表索引 `syslog`
@@ -254,7 +281,7 @@ ALTER TABLE `system`
 -- 使用資料表 AUTO_INCREMENT `account`
 --
 ALTER TABLE `account`
-  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- 使用資料表 AUTO_INCREMENT `goodlist`
 --
@@ -284,7 +311,7 @@ ALTER TABLE `student_account`
 -- 使用資料表 AUTO_INCREMENT `syslog`
 --
 ALTER TABLE `syslog`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- 已匯出資料表的限制(Constraint)
 --
@@ -321,6 +348,12 @@ ALTER TABLE `goods`
 ALTER TABLE `goods_image`
   ADD CONSTRAINT `goods_image_ibfk_1` FOREIGN KEY (`gid`) REFERENCES `goods` (`gid`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `goods_image_ibfk_2` FOREIGN KEY (`imgid`) REFERENCES `image` (`imgid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 資料表的 Constraints `student_account`
+--
+ALTER TABLE `student_account`
+  ADD CONSTRAINT `student_account_ibfk_1` FOREIGN KEY (`gpid`) REFERENCES `saccount_group` (`gpid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
