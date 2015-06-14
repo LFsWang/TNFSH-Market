@@ -22,7 +22,8 @@ require_once($_E['ROOT'].'/function/user/user.lib.php');
 $username = safe_post('username');
 $password = safe_post('password');
 $root = safe_post('root',false);
-if( $root != false ) $root = true;
+if( $root != false ) $root = 1;
+else $root = 0;
 $res = addAdminAccount($username,$password,$root);
 if( $res === ERROR_NO )
 {

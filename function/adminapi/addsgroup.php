@@ -20,8 +20,8 @@ require_once($_E['ROOT'].'/function/user/user.lib.php');
 
 $title = safe_post('title');
 $hidden = safe_post('hidden',false);
-if( $hidden != false ) $hidden = true;
-else $hidden = false;
+if( $hidden != false ) $hidden = 1;
+else $hidden = 0;
 
 $tsaccount_group = SQL::tname('saccount_group');
 if( SQL::query("INSERT INTO `$tsaccount_group`(`gpid`, `title`, `hidden`) VALUES (NULL,?,?)" , array($title,$hidden)) )

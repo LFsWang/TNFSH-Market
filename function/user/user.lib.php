@@ -44,8 +44,8 @@ function addAdminAccount($username,$password,$root)
     {
         return ERROR_STRING_FORMAT;
     }
-    if( $root ) $root = true ;
-    else $root = false ;
+    if( $root ) $root = 1 ;
+    else $root = 0 ;
     $password = GetPasswordHash($password);
 
     $table = SQL::tname('account');
