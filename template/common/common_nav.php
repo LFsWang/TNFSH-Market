@@ -164,9 +164,12 @@ if(!defined('IN_TEMPLATE'))
                         <div class="form-group">
                             <label>身分類別</label>
                             <select name="type" class="form-control">
-                                <option value="user">在校學生</option>
+                                <?php if( !isset($tmpl['loginadmin']) ): ?>
                                 <option value="newbie">新生</option>
+                                <option value="user">在校學生</option>
+                                <?php else: ?>
                                 <option value="admin">管理員</option>
+                                <?php endif; ?>
                             </select>
                         </div>
                         <?php if($_E['loginrecaptcha']): ?>      

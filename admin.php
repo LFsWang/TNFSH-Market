@@ -4,7 +4,7 @@ require_once('GlobalSetting.php');
 //addAdminAccount('admin','admin',true);
 if( $_G['usertype'] != 2 )
 {
-    header("Location:index.php");
+    header("Location:index.php?login=adm");
 }
 require_once('/function/admin/admin.lib.php');
 
