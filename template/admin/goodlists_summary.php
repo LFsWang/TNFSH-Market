@@ -29,7 +29,7 @@ $( document ).ready(function() {
                     </tr>
                     <tr>
                         <td>應購買人數: <?=$tmpl['goodlist']['totaluser']?></td>
-                        <td>已下單人數: 0</td>
+                        <td>已下單人數: <?=$tmpl['totalbuyuser']?></td>
                     </tr>
                     <tr>
                         
@@ -52,11 +52,11 @@ $( document ).ready(function() {
                     <?php foreach( $tmpl['goods'] as $row ){ ?>
                         <?php if( $row['type'] != 'normal') continue; ?>
                     <tr>
-                        <td><a href="#"><?=$row['name']?></a></td>
+                        <td><a href="index.php?page=viewgood&gid=<?=$row['gid']?>" target="_blank"><?=$row['name']?></a></td>
                         <td><?=$row['price']?></td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
+                        <td><?=$tmpl['totalguser'][$row['gid']]?> </td>
+                        <td><?=$tmpl['totalgnum'][$row['gid']]?></td>
+                        <td><?=$tmpl['totalgnum'][$row['gid']]*$row['price']?></td>
                     </tr>
                     <?php }?>
                 </tbody>
@@ -81,9 +81,9 @@ $( document ).ready(function() {
                     <tr>
                         <td><a href="index.php?page=viewgood&gid=<?=$row['gid']?>" target="_blank"><?=$row['name']?></a></td>
                         <td><?=$row['price']?></td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
+                        <td><?=$tmpl['totalguser'][$row['gid']]?> </td>
+                        <td><?=$tmpl['totalgnum'][$row['gid']]?></td>
+                        <td><?=$tmpl['totalgnum'][$row['gid']]*$row['price']?></td>
                     </tr>
                     <?php }?>
                 </tbody>

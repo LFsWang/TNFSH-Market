@@ -37,10 +37,36 @@ $timeflag = GetTimeFlag($data['starttime'],$data['endtime']);
 //Render::errormessage($data);
 $_E['template']['listinfo'] = $data;
 $_E['template']['goodsinfo'] = $data['goodsinfo'];
+$_E['template']['buy'] = array();
+$_E['template']['buyinfo'] = array();
 $_E['template']['market_panel_active'] = "mlist-$lid";
+$_E['template']['buyflag'] = false;
 
-
-if( $timeflag == TF_NOTYET )
+#buy?
+$torderlist = SQL::tname('orderlist');
+$torderlist_detail = SQL::tname('orderlist_detail');
+if( $row = SQL::fetch("SELECT * FROM `$torderlist` WHERE `suid` = ? AND `lid` =? ",array($_G['suid'],$lid)))
+{
+    $_E['template']['buy'] = $row;
+    $_E['template']['buyflag'] = true;
+    if( $res = SQL::fetchAll("SELECT * FROM `$torderlist_detail` WHERE `odid` = ?",array($row['odid'])) )
+    {
+        foreach( $res as $row )
+        {
+            $_E['template']['buyinfo'][$row['gid']] = $row['num'];
+        }
+    }
+    else
+    {
+        Render::errormessage('取得清單時發生意外的錯誤');
+        Render::render('viewlist_user_denied','market');
+    }
+}
+if( $_E['template']['buyflag'] )
+{
+    Render::render('viewlist_passbuy','market');
+}
+elseif( $timeflag == TF_NOTYET )
 {
     Render::render('viewlist_notyet','market');
 }
@@ -50,6 +76,6 @@ elseif( $timeflag == TF_PASS )
 }
 else
 {
-    $_E['template']['token'] = UserAccess::SetHashToken('viewlist');
+    $_E['template']['token'] = UserAccess::SetHashToken('viewlist-'.$lid);
     Render::render('viewlist','market');
 }

@@ -5,6 +5,7 @@ if(!defined('IN_SYSTEM'))
 }
 $tstudent_account = SQL::tname('student_account');
 $tgoodlist_accountgroup = SQL::tname('goodlist_accountgroup');
+$torderlist_detail = SQL::tname('orderlist_detail');
 
 $lid = safe_get('lid');
 if( !is_numeric($lid) )
@@ -23,6 +24,7 @@ if( !$data )
     exit(0);
 }
 
+#人數
 $data['totaluser'] = 0;
 $cusers = SQL::fetch("SELECT COUNT(`suid`) FROM `$tstudent_account` WHERE `gpid` IN (SELECT `gpid` FROM `$tgoodlist_accountgroup` WHERE `lid` = ?)",array($lid));
 if( $cusers )
@@ -31,10 +33,30 @@ if( $cusers )
 }
 
 $goods = array();
+$totalgnum = array();
+$totalguser = array();
 foreach( $data['goods'] as $gid )
 {
     $goods[$gid] = GetGoodByGID($gid);
+    $totalgnum[$gid] = 0;
+    $totalguser[$gid] = 0;
 }
+
+#取得所有細節加以統計
+$orderlist_detail = SQL::fetchAll("SELECT * FROM `$torderlist_detail` WHERE `lid` = ?",array($lid));
+if( !$orderlist_detail ) $orderlist_detail = array();
+
+$totalbuyuser = array();
+foreach( $orderlist_detail as $row )
+{
+    $totalbuyuser[$row['odid']]=1;
+    $totalgnum[ $row['gid'] ] += $row['gid'];
+    $totalguser[$row['gid'] ] ++;
+}
+
+$_E['template']['totalbuyuser'] = count($totalbuyuser);
+$_E['template']['totalgnum'] = $totalgnum;
+$_E['template']['totalguser'] = $totalguser;
 //Render::errormessage($result);
 $_E['template']['goodlist'] = $data;
 $_E['template']['goods'] = $goods;

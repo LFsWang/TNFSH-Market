@@ -16,7 +16,7 @@ if(!defined('IN_TEMPLATE'))
             <center>
                 <h3>確認訂單</h3>
                 <h3><?=htmlentities($tmpl['listinfo']['name'])?><br></h3>
-                <form method="post">
+                <form method="post" action="market.php?page=buy">
                     <input type='hidden' name='token' value='<?=$tmpl['token']?>'>
                     <input type='hidden' name='lid' value='<?=$tmpl['listinfo']['lid']?>'>
                     <table class="table table-striped table-hover">
@@ -56,11 +56,14 @@ if(!defined('IN_TEMPLATE'))
                         </div>
                         <?php endif; ?>
                         <div class = "row text-right">
-                            <div class = "col-sm-offset-4 col-sm-6">
+                            <div class = "col-sm-offset-5 col-sm-3">
                                 <h4 style="color:red">總價格：<span id='totalmoney'><?=$totalsum?></span>元整</h4>
                             </div>
                             <div class = "col-sm-2">
                                 <button class="btn btn-success" type="submit">送出訂單</button>
+                            </div>
+                            <div class = "col-sm-2">
+                                <button class="btn btn-warning" onclick="location.href='market.php?id=<?=$tmpl['listinfo']['lid']?>';return false;">重新選擇</button>
                             </div>
                         </div>
                     </div>

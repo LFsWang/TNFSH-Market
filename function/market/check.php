@@ -18,9 +18,9 @@ if( !CheckUserListAccess($lid,$_G['suid'] ) )
     Render::errormessage('權限不足');
     Render::render('viewlist_user_denied','market');
 }
-if( !UserAccess::CheckHashToken('viewlist') )
+if( !UserAccess::CheckHashToken('viewlist-'.$lid) )
 {
-    Render::errormessage('CLRF token error');
+    Render::errormessage('驗證碼失效，請重新填寫表單。');
     Render::render('viewlist_user_denied','market');
 }
 
@@ -66,6 +66,12 @@ if( $colthe )
     $userin['lpants'] = $lpants;
     
 }
+else
+{
+    $userin['bust'] = 0;
+    $userin['waistline'] = 0;
+    $userin['lpants'] = 0;
+}
 $userin['lid'] = $lid;
 $userin['timestamp'] = time();
 //Render::errormessage($userin);
@@ -80,4 +86,5 @@ $_E['template']['goodsinfo'] = $data['goodsinfo'];
 $_E['template']['userin'] = $userin;
 $_E['template']['colthe'] = $colthe ;
 $_SESSION[$token] = $userin;
+$_SESSION[$token.'hash'] = md5(serialize($userin));
 Render::render('check','market');

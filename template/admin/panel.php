@@ -56,7 +56,7 @@ if(!defined('IN_TEMPLATE'))
             <?php endif; ?>
         </ul>
     </li>
-    <li><a href="admin.php?page=admininfo&uid=<?=$_G['uid']?>">個人資料</a></li>
+    <li class="dropdown <?php admin_panel_active('profile',$tname)?>"><a href="admin.php?page=admininfo&uid=<?=$_G['uid']?>">個人資料</a></li>
     
     <!--
     <li><a href="#">網站管理</a></li>
