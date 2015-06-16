@@ -50,7 +50,7 @@ $totalbuyuser = array();
 foreach( $orderlist_detail as $row )
 {
     $totalbuyuser[$row['odid']]=1;
-    $totalgnum[ $row['gid'] ] += $row['gid'];
+    $totalgnum[ $row['gid'] ] += $row['num'];
     $totalguser[$row['gid'] ] ++;
 }
 
