@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.7
+-- version 4.4.9
 -- http://www.phpmyadmin.net
 --
--- 主機: 192.168.7.191
--- 產生時間： 2015-06-14 08:18:39
--- 伺服器版本: 5.6.15-log
--- PHP 版本： 5.6.9
+-- 主機: localhost
+-- 產生時間： 2015-06-16 04:40:50
+-- 伺服器版本: 5.6.24
+-- PHP 版本： 5.6.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- 資料庫： `test_market`
@@ -33,14 +33,7 @@ CREATE TABLE IF NOT EXISTS `account` (
   `title` text COLLATE utf8_bin,
   `root` tinyint(1) NOT NULL,
   `stats` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- 資料表的匯出資料 `account`
---
-
-INSERT INTO `account` (`uid`, `username`, `password`, `title`, `root`, `stats`) VALUES
-(1, 'admin', '$2y$10$f4XIFngfQsPF31Pit.TRM.7HuvceN4jM3PPDffdSs/0x6oRNLTJ82', NULL, 1, 1);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -128,6 +121,37 @@ CREATE TABLE IF NOT EXISTS `image` (
 -- --------------------------------------------------------
 
 --
+-- 資料表結構 `orderlist`
+--
+
+CREATE TABLE IF NOT EXISTS `orderlist` (
+  `odid` int(11) NOT NULL,
+  `suid` int(11) NOT NULL,
+  `gpid` int(11) NOT NULL,
+  `lid` int(11) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `orderhash` text COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `orderlist_detail`
+--
+
+CREATE TABLE IF NOT EXISTS `orderlist_detail` (
+  `odid` int(11) NOT NULL,
+  `lid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL,
+  `num` int(11) NOT NULL,
+  `bust` int(11) NOT NULL DEFAULT '0',
+  `waistline` int(11) NOT NULL DEFAULT '0',
+  `lpants` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
 -- 資料表結構 `saccount_group`
 --
 
@@ -163,19 +187,9 @@ CREATE TABLE IF NOT EXISTS `student_account` (
 CREATE TABLE IF NOT EXISTS `syslog` (
   `id` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `namespace` varchar(60) CHARACTER SET latin1 NOT NULL,
+  `namespace` varchar(60) COLLATE utf8_bin NOT NULL,
   `description` text CHARACTER SET latin1 NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- 資料表的匯出資料 `syslog`
---
-
-INSERT INTO `syslog` (`id`, `timestamp`, `namespace`, `description`) VALUES
-(1, '2015-06-14 07:34:02', 'SQL execute', 'Field ''title'' doesn''t have a default value, \nString : INSERT INTO `account` (`uid`,`username`,`password`,`root`,`stats`) VALUES (NULL,?,?,?,''1'');'),
-(2, '2015-06-14 07:35:47', 'SQL execute', 'Incorrect integer value: '''' for column ''root'' at row 1, \nString : INSERT INTO `account` (`uid`,`username`,`password`,`root`,`stats`) VALUES (NULL,?,?,?,''1'');'),
-(3, '2015-06-14 07:35:47', 'SQL execute', 'Incorrect integer value: '''' for column ''root'' at row 1, \nString : INSERT INTO `account` (`uid`,`username`,`password`,`root`,`stats`) VALUES (NULL,?,?,?,''1'');'),
-(4, '2015-06-14 07:36:27', 'SQL execute', 'Duplicate entry ''admin'' for key ''username'', \nString : INSERT INTO `account` (`uid`,`username`,`password`,`root`,`stats`) VALUES (NULL,?,?,?,''1'');');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -244,6 +258,20 @@ ALTER TABLE `image`
   ADD PRIMARY KEY (`imgid`);
 
 --
+-- 資料表索引 `orderlist`
+--
+ALTER TABLE `orderlist`
+  ADD PRIMARY KEY (`odid`),
+  ADD UNIQUE KEY `odid` (`odid`),
+  ADD UNIQUE KEY `suid_2` (`suid`,`lid`);
+
+--
+-- 資料表索引 `orderlist_detail`
+--
+ALTER TABLE `orderlist_detail`
+  ADD UNIQUE KEY `odid` (`odid`,`lid`,`gid`);
+
+--
 -- 資料表索引 `saccount_group`
 --
 ALTER TABLE `saccount_group`
@@ -281,7 +309,7 @@ ALTER TABLE `system`
 -- 使用資料表 AUTO_INCREMENT `account`
 --
 ALTER TABLE `account`
-  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- 使用資料表 AUTO_INCREMENT `goodlist`
 --
@@ -298,6 +326,11 @@ ALTER TABLE `goods`
 ALTER TABLE `image`
   MODIFY `imgid` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- 使用資料表 AUTO_INCREMENT `orderlist`
+--
+ALTER TABLE `orderlist`
+  MODIFY `odid` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- 使用資料表 AUTO_INCREMENT `saccount_group`
 --
 ALTER TABLE `saccount_group`
@@ -311,7 +344,7 @@ ALTER TABLE `student_account`
 -- 使用資料表 AUTO_INCREMENT `syslog`
 --
 ALTER TABLE `syslog`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- 已匯出資料表的限制(Constraint)
 --
@@ -348,6 +381,12 @@ ALTER TABLE `goods`
 ALTER TABLE `goods_image`
   ADD CONSTRAINT `goods_image_ibfk_1` FOREIGN KEY (`gid`) REFERENCES `goods` (`gid`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `goods_image_ibfk_2` FOREIGN KEY (`imgid`) REFERENCES `image` (`imgid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 資料表的 Constraints `orderlist_detail`
+--
+ALTER TABLE `orderlist_detail`
+  ADD CONSTRAINT `orderlist_detail_ibfk_1` FOREIGN KEY (`odid`) REFERENCES `orderlist` (`odid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 資料表的 Constraints `student_account`

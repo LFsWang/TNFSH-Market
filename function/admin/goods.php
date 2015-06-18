@@ -7,8 +7,8 @@ if(!defined('IN_SYSTEM'))
 # 1 : public to all admin (default)
 # 0 : private
 
-$allow_goodtype = array('normal','colthe');
-$goodtype_to_zhtw = array( 'normal' => '一般商品' , 'colthe' => '衣服' );
+$allow_goodtype = array('normal','clothe');
+$goodtype_to_zhtw = array( 'normal' => '一般商品' , 'clothe' => '衣服' );
 $open_tab = false;
 
 if( isset($_POST['method']) )

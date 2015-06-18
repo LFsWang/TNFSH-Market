@@ -20,13 +20,12 @@ if( !$_G['root'] && $_G['uid'] != $id )
     exit(0);
 }
 
-if( !is_numeric($id) )
+if( !makeint($id) )
 {
     Render::errormessage('UID錯誤');
     Render::render('index','admin');
     exit(0);
 }
-$id =(int) $id;
 
 $taccount = SQL::tname('account');
 $sql_select = "SELECT `uid`,`username`,`title`,`root` FROM $taccount WHERE `uid` = ?";

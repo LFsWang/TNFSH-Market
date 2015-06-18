@@ -40,6 +40,11 @@ foreach( $data['goods'] as $gid )
     $goods[$gid] = GetGoodByGID($gid);
     $totalgnum[$gid] = 0;
     $totalguser[$gid] = 0;
+    if( $goods[$gid]['type'] == 'clothe' )
+    {
+        //need a mask
+        $goods[$gid]['sz'] = array();
+    }
 }
 
 #取得所有細節加以統計
@@ -52,6 +57,10 @@ foreach( $orderlist_detail as $row )
     $totalbuyuser[$row['odid']]=1;
     $totalgnum[ $row['gid'] ] += $row['num'];
     $totalguser[$row['gid'] ] ++;
+  
+    if( !isset( $goods[$gid]['sz'][ $row['lpants'] ] ) )
+        $goods[$gid]['sz'][ $row['lpants'] ] = 0;
+    $goods[$gid]['sz'][ $row['lpants'] ] += $row['num'];
 }
 
 $_E['template']['totalbuyuser'] = count($totalbuyuser);

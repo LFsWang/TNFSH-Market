@@ -4,8 +4,8 @@ if(!defined('IN_SYSTEM'))
     exit('Access denied');
 }
 
-$allow_goodtype = array('normal','colthe');
-$goodtype_to_zhtw = array( 'normal' => '一般商品' , 'colthe' => '衣服' );
+$allow_goodtype = array('normal','clothe');
+$goodtype_to_zhtw = array( 'normal' => '一般商品' , 'clothe' => '衣服' );
 
 
 if( isset($_POST['method']) )

@@ -43,7 +43,7 @@ if( $userin['lid'] != $lid || md5(serialize($userin)) !== $userinhash )
 #OK insert to SQL 
 $torderlist = SQL::tname('orderlist');
 $torderlist_detail = SQL::tname('orderlist_detail');
-if( !SQL::query("INSERT INTO `$torderlist` (`odid`, `suid`, `gpid`, `lid`, `timestamp`, `orderhash`) VALUES (NULL,?,?,?,NULL,?)",array($_G['suid'],$_G['gpid'],$lid,$userinhash)) )
+if( !SQL::query("INSERT INTO `$torderlist` (`odid`, `suid`, `gpid`, `lid`, `bust`, `waistline`, `lpants`,`timestamp`, `orderhash`) VALUES (NULL,?,?,?,?,?,?,NULL,?)",array($_G['suid'],$_G['gpid'],$lid,$userin['bust'],$userin['waistline'],$userin['lpants'],$userinhash)) )
 {
     Render::errormessage('SQL 發生錯誤，交易已被取消');
     Render::render('viewlist_user_denied','market');

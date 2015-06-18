@@ -31,13 +31,19 @@ function editgoodlist(lid)
         $("#endtime").val(info.endtime);
         $(".chbox-gid").prop('checked', false );
         
-        info.goods.forEach(function(gid) {
-            $("#gid-"+gid).prop('checked', true );
-        });
-        info.accountgroups.forEach(function(gpid) {
-            $("#gpid-"+gpid).prop('checked', true );
-        });
+        if (typeof info.goods !== "undefined") {
+            info.goods.forEach(function(gid) {
+                $("#gid-"+gid).prop('checked', true );
+            });
+            
+        }
         
+        if (typeof info.accountgroups !== "undefined") {
+            info.accountgroups.forEach(function(gpid) {
+                $("#gpid-"+gpid).prop('checked', true );
+            });
+        }
+
         tinyMCE.activeEditor.setContent(info.description);
         $("#listadd").val('修改');
         $("#btnswitch").show();

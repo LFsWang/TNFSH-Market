@@ -20,6 +20,15 @@ __df('ERROR_SQL_EXEC');
 
 __df('ERROR_PREMISSION_DENIED');
 __df('ERROR_OTHERS');
+
+function makeint($var)
+{
+    if( !is_numeric($var) )
+            return false;
+    $var = (int) $var;
+    return true;
+}
+
 function getsysvalue($id)
 {
     $table = SQL::tname('system');
@@ -205,6 +214,7 @@ function GetTimeFlag($timestart,$timeend)
 
 function GetGoodlistByLID($lid)
 {
+    $tgoods = SQL::tname('goods');
     $tgoodlist = SQL::tname('goodlist');
     $tgoodlist_goodstable = SQL::tname('goodlist_goodstable');
     $tgoodlist_accountgroup = SQL::tname('goodlist_accountgroup');
@@ -213,15 +223,46 @@ function GetGoodlistByLID($lid)
     if( !$data['lid'] ) return false;
     
     $data['goods'] = array();
-    $tmp = SQL::fetchAll("SELECT `gid` FROM $tgoodlist_goodstable WHERE `lid` = ?",array($lid));
+    $data['needclothe'] = false;
+    $tmp = SQL::fetchAll("SELECT `$tgoods`.`gid`,`type` FROM `$tgoodlist_goodstable` 
+    INNER JOIN `$tgoods` ON `$tgoods`.`gid` = `$tgoodlist_goodstable`.`gid` 
+    WHERE `lid` = ?",array($lid));
     foreach( $tmp as $row )
     {
         $data['goods'][] = $row['gid'];
+        if( $row['type'] == 'clothe' )
+        {
+            $data['needclothe'] = true;
+        }
     }
     $tmp = SQL::fetchAll("SELECT `gpid` FROM $tgoodlist_accountgroup WHERE `lid` = ?",array($lid));
     foreach( $tmp as $row )
     {
         $data['accountgroups'][] = $row['gpid'];
+    }
+    return $data;
+}
+
+function GetGoodlistDetail($lid)
+{
+    $tgoods = SQL::tname('goods');
+    $tgoodlist_goodstable = SQL::tname('goodlist_goodstable');
+    if(!( $data = GetGoodlistByLID($lid) ))
+    {
+        return false;
+    }
+    $sql_select = "SELECT *,`defaultnum` * `price` AS `total` FROM `$tgoods` WHERE `gid` IN (SELECT `gid` FROM `$tgoodlist_goodstable` WHERE `lid` = ?)";
+    if( $res = SQL::query($sql_select,array($lid)) )
+    {
+        $data['goodsinfo'] = array();
+        while( $row = $res->fetch() )
+        {
+            $data['goodsinfo'][ $row['gid'] ] = $row;
+        }
+    }
+    else
+    {
+        return false;
     }
     return $data;
 }

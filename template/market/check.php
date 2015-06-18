@@ -4,6 +4,16 @@ if(!defined('IN_TEMPLATE'))
     exit('Access denied');
 }
 ?>
+<script>
+function check()
+{
+    if (confirm('確認送出訂單? 送出後無法再進行修改，請詳加確認。')) {
+        return true;
+    } else {
+        return false;
+    }
+};
+</script>
 
 <div class="container-fluid">
     <div class="row">
@@ -16,7 +26,7 @@ if(!defined('IN_TEMPLATE'))
             <center>
                 <h3>確認訂單</h3>
                 <h3><?=htmlentities($tmpl['listinfo']['name'])?><br></h3>
-                <form method="post" action="market.php?page=buy">
+                <form method="post" action="market.php?page=buy" id="checkbuyform" onsubmit="return check()">
                     <input type='hidden' name='token' value='<?=$tmpl['token']?>'>
                     <input type='hidden' name='lid' value='<?=$tmpl['listinfo']['lid']?>'>
                     <table class="table table-striped table-hover">
@@ -44,7 +54,7 @@ if(!defined('IN_TEMPLATE'))
                         </tbody>
                     </table>
                     <div class = "container-fluid">
-                        <?php if($tmpl['colthe']): ?>
+                        <?php if($tmpl['clothe']): ?>
                         <div class = "row text-left">
                             <h4>套量尺寸<small>請依據廠商套量結果填寫</small></h4>
                             <div class ="col-sm-1">胸圍(X10)：</div>

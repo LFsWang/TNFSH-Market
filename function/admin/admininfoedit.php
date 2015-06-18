@@ -10,13 +10,12 @@ $passwordold = safe_post('passwordold','');
 $password = safe_post('password','');
 $root = safe_post('root')?true:false;
 $title = safe_post('title','');
-if( !is_numeric($id) )
+if( !makeint($id) )
 {
     Render::errormessage('UID錯誤');
     Render::render('index','admin');
     exit(0);
 }
-$id =(int) $id;
 
 if( !$_G['root'] && $_G['uid'] != $id )
 {
@@ -24,7 +23,6 @@ if( !$_G['root'] && $_G['uid'] != $id )
     Render::render('index','admin');
     exit(0);
 }
-
 
 $taccount = SQL::tname('account');
 $flag = true;

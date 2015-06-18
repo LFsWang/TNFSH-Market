@@ -36,13 +36,9 @@ if( $data === false )
 $userin = array();
 $userin['gid'] = array();
 $acflag = true;
-$colthe = false;
+$clothe = $data['needclothe'];
 foreach( $data['goodsinfo'] as $row )
 {
-    if( $row['type'] == 'colthe' )
-    {
-        $colthe = true;
-    }
     $num = safe_post( 'gid-'.$row['gid'] , 0 );
     if( empty($num) || !is_numeric($num) ){
         $num = 0;
@@ -54,12 +50,29 @@ foreach( $data['goodsinfo'] as $row )
     }
     $userin['gid'][$row['gid']] = $num;
 }
-if( $colthe )
+if( $clothe )
 {
     $bust = safe_post('bust');
     $waistline = safe_post('waistline');
     $lpants = safe_post('lpants');
     //lalala
+    
+    //bust 34 ~ 60 % 2 = 0 
+    //waistline 27 ~ 46
+    //lpants 38 ~ 46 % 2 = 0 
+    if( !makeint($bust) || !makeint($waistline) || !makeint($lpants) )
+    {
+        Render::errormessage('尺寸輸入錯誤');
+        Render::render('viewlist_user_denied','market');
+    }
+
+    if( $bust < 34 || 60 < $bust || $bust % 2 != 0 
+      ||$waistline < 27 || 46 < $waistline
+      ||$lpants < 38 || 46 < $lpants || $lpants % 2 != 0 )
+    {
+        Render::errormessage('衣物尺寸輸入錯誤');
+        Render::render('viewlist_user_denied','market');
+    }
     
     $userin['bust'] = $bust;
     $userin['waistline'] = $waistline;
@@ -84,7 +97,7 @@ $_E['template']['token'] = $token = UserAccess::SetHashToken('checklist-'.$lid);
 $_E['template']['listinfo'] = $data;
 $_E['template']['goodsinfo'] = $data['goodsinfo'];
 $_E['template']['userin'] = $userin;
-$_E['template']['colthe'] = $colthe ;
+$_E['template']['clothe'] = $clothe ;
 $_SESSION[$token] = $userin;
 $_SESSION[$token.'hash'] = md5(serialize($userin));
 Render::render('check','market');

@@ -55,16 +55,17 @@ function updatemoney(num,price)
                         </tbody>
                     </table>
                     <div class = "container-fluid">
+                        <?php if( $tmpl['listinfo']['needclothe'] ): ?>
                         <div class = "row text-left">
                             <h4>套量尺寸<small>請依據廠商套量結果填寫</small></h4>
                             <div class ="col-sm-1">胸圍(X10)：</div>
-                            <div class ="col-sm-2"><input type="number" class="form-control" id="bust" placeholder="胸圍" name="bust" min="145" max="210" value="155" step="5" required></div>
+                            <div class ="col-sm-2"><input type="number" class="form-control" id="bust" placeholder="胸圍" name="bust" min="34" max="60" value="38" step="2" required></div>
                             <div class ="col-sm-1">腰圍：</div>
                             <div class ="col-sm-2"><input type="number" class="form-control" id="waistline" placeholder="腰圍" name="waistline" min="27" max="46" value="30" step="1" required></div>
                             <div class ="col-sm-1">褲長：</div>
                             <div class ="col-sm-2"><input type="number" class="form-control" id="lpants" placeholder="褲長" name="lpants" min="38" max="46" value="42" step="2" required></div>
                         </div>
-                    
+                        <?php endif; ?>
                         <div class = "row text-right">
                             <div class = "col-sm-offset-4 col-sm-6">
                                 <h4 style="color:red">總價格：<span id='totalmoney'><?=$totalsum?></span>元整</h4>

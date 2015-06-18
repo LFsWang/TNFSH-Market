@@ -182,7 +182,7 @@ $( document ).ready(function() {
                                                     <div class="col-sm-8 col-md-8">
                                                         <select name="goodtype" id="goodtype">
                                                             <option value="normal">一般商品</option>
-                                                            <option value="colthe">衣服</option>
+                                                            <option value="clothe">衣服</option>
                                                         </select>
                                                     </div>
                                                 </div>

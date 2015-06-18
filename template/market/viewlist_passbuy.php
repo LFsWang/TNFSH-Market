@@ -39,7 +39,19 @@ if(!defined('IN_TEMPLATE'))
                             <?php } ?>
                         </tbody>
                     </table>
+                    <?php if($tmpl['listinfo']['needclothe']): ?>
+                    <div class = "row text-left">
+                        <h4>套量尺寸</h4>
+                        <div class ="col-sm-1">胸圍(X10)：</div>
+                        <div class ="col-sm-2"><?=$tmpl['buy']['bust']?></div>
+                        <div class ="col-sm-1">腰圍：</div>
+                        <div class ="col-sm-2"><?=$tmpl['buy']['waistline']?></div>
+                        <div class ="col-sm-1">褲長：</div>
+                        <div class ="col-sm-2"><?=$tmpl['buy']['lpants']?></div>
+                    </div>
+                    <?php endif; ?>
                     <div class = "row text-right">
+                        
                         <div class = "col-sm-offset-6 col-sm-6">
                             <h4 style="color:red">應繳費用：<span id='totalmoney'><?=$totalsum?></span>元整</h4>
                         </div>

@@ -5,7 +5,7 @@ if(!defined('IN_TEMPLATE'))
 }
 ?>
 
-<script>
+
 $( document ).ready(function() {
     
 });
@@ -90,9 +90,6 @@ $( document ).ready(function() {
             </table>
             <?php if(isset($clotheflag)) : ?>
             <h4>尺寸總表</h4>
-            <?php foreach( $tmpl['goods'] as $row ){ ?>
-                        <?php if( $row['type'] != 'clothe') continue; ?>
-            <?php }?>
             <?php endif;?>
             <hr>
             <h3>DEGUB</h3>
