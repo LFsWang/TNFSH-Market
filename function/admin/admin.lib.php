@@ -22,6 +22,7 @@ function modify_good( $data , $gid = null , &$error = null )
                 =>  price
                 =>  defaultnum
                 =>  maxnum
+                =>  tbmatch
                 =>  description
                 =>  status
                 =>  array of image
@@ -45,7 +46,7 @@ function modify_good( $data , $gid = null , &$error = null )
         return false;
     }
     
-    $args_str = array('name','type','price','defaultnum','maxnum','description','status','image');
+    $args_str = array('name','type','price','defaultnum','maxnum','tbmatch','description','status','image');
     foreach( $args_str as $var )
     {
         if( !isset( $data[$var] ) )
@@ -60,30 +61,44 @@ function modify_good( $data , $gid = null , &$error = null )
         $error = ERROR_DATA_MISSING;
         return false;
     }
-    
-    if( $data['type'] != GD_PRIVATE && $data['type'] != GD_PUBLIC )
+
+    if( $data['status'] != GD_PRIVATE && $data['status'] != GD_PUBLIC )
     {
-        $error = ERROR_INT_FORMAT."type";
+        $error = ERROR_INT_FORMAT."status";
         return false;
     }
     
-    if( !is_numeric($data['price']) || !is_numeric($data['defaultnum']) || !is_numeric($data['maxnum']) )
+    if( $data['type'] !== 'clothe' && $data['type'] !== 'normal' )
+    {
+        $error = ERROR_STRING_FORMAT."type";
+        return false;
+    }
+    if( $data['type'] === 'normal' )
+    {
+        $data['tbmatch'] = 0;
+    } 
+    else
+    {
+        if( !makeint($data['tbmatch']) )
+        {
+            $error = ERROR_INT_FORMAT."tbmatch";
+            return false;
+        }
+        if( $data['tbmatch'] < 0 || 7 < $data['tbmatch'] )
+        {
+            $error = ERROR_INT_FORMAT."tbmatch range".$data['tbmatch'];
+            return false;
+        }
+    }
+    
+    if( !makeint($data['price']) || !makeint($data['defaultnum']) || !makeint($data['maxnum']) )
     {
         $error = ERROR_INT_FORMAT."$";
         return false;
     }
-    $data['price'] = (int) $data['price'];
-    $data['defaultnum'] = (int) $data['defaultnum'];
-    $data['maxnum'] = (int) $data['maxnum'];
     if( $data['price'] < 0 || $data['defaultnum'] < 0 || $data['maxnum'] < 0 || $data['defaultnum'] > $data['maxnum'] )
     {
         $error = ERROR_INT_FORMAT."ZERO";
-        return false;
-    }
-    
-    if( $data['status'] != 0 && $data['status'] != 1 )
-    {
-        $error = ERROR_INT_FORMAT."status";
         return false;
     }
     
@@ -116,18 +131,19 @@ function modify_good( $data , $gid = null , &$error = null )
         }
     }
     $sql_insert="
-    INSERT INTO `$tgoods`(`gid`, `owner`, `name`, `type`, `price`, `defaultnum`, `maxnum`, `description`, `status`) VALUES (?,?,?,?,?,?,?,?,?) 
+    INSERT INTO `$tgoods`(`gid`, `owner`, `name`, `type`, `price`, `defaultnum`, `maxnum`, `tbmatch`, `description`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?) 
     ON DUPLICATE KEY UPDATE
     `name` = ? ,
     `type` = ? ,
     `price` = ?,
     `defaultnum` = ?,
     `maxnum` = ?,
+    `tbmatch`= ?,
     `description`=?,
     `status`=?;";
     
     $res = SQL::prepare($sql_insert);
-    if( !SQL::execute($res,array($gid,$_G['uid'],$data['name'],$data['type'],$data['price'],$data['defaultnum'],$data['maxnum'],$data['description'],$data['status'],$data['name'],$data['type'],$data['price'],$data['defaultnum'],$data['maxnum'],$data['description'],$data['status'])) )
+    if( !SQL::execute($res,array($gid,$_G['uid'],$data['name'],$data['type'],$data['price'],$data['defaultnum'],$data['maxnum'],$data['tbmatch'],$data['description'],$data['status'],$data['name'],$data['type'],$data['price'],$data['defaultnum'],$data['maxnum'],$data['tbmatch'],$data['description'],$data['status'])) )
     {
         $error = ERROR_SQL_EXEC;
         return false;

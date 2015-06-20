@@ -16,6 +16,17 @@ tinymce.init({
         "emoticons template paste textcolor colorpicker textpattern"
     ]
 });
+function cmatchtb()
+{
+    if( $("#goodtype").val() == 'clothe' )
+    {
+        $("#ftbmatch").show();
+    }
+    else
+    {
+        $("#ftbmatch").hide();
+    }
+}
 function readURL(input) {
 
     if (input.files && input.files[0]) {
@@ -94,6 +105,7 @@ function editgood(gid)
         $("#goodprice").val(info.price);
         $("#defaultnum").val(info.defaultnum);
         $("#maxnum").val(info.maxnum);
+        $("#tbmatch").val(info.tbmatch);
         $("#goodtype").val(info.type);
         tinyMCE.activeEditor.setContent(info.description);
         $("#goodsadd").val('修改');
@@ -116,6 +128,7 @@ function editgood(gid)
             imglisthtml += "</a></div>";
         });
         $("#imglist-block").html(imglisthtml);
+        cmatchtb();
     },"json");
 }
 
@@ -127,6 +140,7 @@ $( document ).ready(function() {
         $("#description").val(tinymce.activeEditor.getContent());
     });
 });
+
 </script>
 <div class="container-fluid">
     <div class="row">
@@ -180,9 +194,21 @@ $( document ).ready(function() {
                                                 <div class="form-group">
                                                     <label for="goodtype" class="col-sm-4 col-md-4 control-label">商品種類</label>
                                                     <div class="col-sm-8 col-md-8">
-                                                        <select name="goodtype" id="goodtype">
+                                                        <select name="goodtype" id="goodtype" onchange="cmatchtb();">
                                                             <option value="normal">一般商品</option>
                                                             <option value="clothe">衣服</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" id="ftbmatch" hidden>
+                                                    <label for="goodtype" class="col-sm-4 col-md-4 control-label">匹配表格</label>
+                                                    <div class="col-sm-8 col-md-8">
+                                                        <select name="tbmatch" id="tbmatch">
+                                                            <option value="0">不使用</option>
+                                                            <option value="1">胸圍</option>
+                                                            <option value="2">腰圍</option>
+                                                            <option value="4">褲長</option>
+                                                            <option value="6">褲長/腰圍</option>
                                                         </select>
                                                     </div>
                                                 </div>

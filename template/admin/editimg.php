@@ -6,7 +6,31 @@ if(!defined('IN_TEMPLATE'))
 ?>
 <?php $img=$tmpl['imgdata']; ?>
 <script>
-
+function delimg()
+{
+    if (!confirm('確認要刪除圖片? 送出後無法再進行修改，請詳加確認。')) {
+        return false;
+    }
+    $("#api-action").val('delimage');
+    $.post("api.php",
+        $("#submitimginfo").serialize(),
+        function(res){
+            if(res.status == 'error')
+            {
+                $("#info-show").html(res.data);
+                $("#info-show").css('color','Red');
+            }
+            else
+            {
+                $("#info-show").css('color','Lime');
+                $("#info-show").html('Success!');
+                setTimeout(function(){
+                    location.href = 'admin.php';
+                }, 500);
+            }
+            console.log(res);
+    },'json');
+}
 $(document).ready(function()
 {
     $("#submitimginfo").submit(function(e)
@@ -94,7 +118,7 @@ $(document).ready(function()
                                     <td>
                                         <div class="col-sm-12 text-right">
                                             <span id="info-show"></span>
-                                            <button class="btn btn-danger">移除圖片</button>
+                                            <button class="btn btn-danger" onclick="delimg();return false;">移除圖片</button>
                                             <input type="submit" class="btn btn-success" value='修改內容'>
                                         </div>
                                     </td>

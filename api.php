@@ -25,7 +25,7 @@ foreach( $case as $subpage => $act )
 }
 
 //ADMIN API
-$case = array( 'getgoodinfo' , 'getgoodlist' , 'editimage' , 'addadmin' ,'addsgroup','addsastudent');
+$case = array( 'getgoodinfo' , 'getgoodlist' , 'editimage', 'delimage' , 'addadmin' ,'addsgroup','addsastudent');
 if( in_array($action,$case) )
 {
     if( $_G['usertype'] != 2 )

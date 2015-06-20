@@ -27,6 +27,7 @@ if( isset($_POST['method']) )
             $data['goodprice']= safe_post('goodprice',null);
             $data['defaultnum']=safe_post('defaultnum',null);
             $data['maxnum']   = safe_post('maxnum',null);
+            $data['tbmatch']   = safe_post('tbmatch',null);
             $data['description'] = safe_post('description','');
             
             $data['status']   = safe_post('status',null);
