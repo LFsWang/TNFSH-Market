@@ -8,13 +8,12 @@ $tgoodlist_accountgroup = SQL::tname('goodlist_accountgroup');
 $torderlist_detail = SQL::tname('orderlist_detail');
 
 $lid = safe_get('lid');
-if( !is_numeric($lid) )
+if( !makeint($lid) )
 {
     Render::errormessage('ERROR LID');
     Render::render('index','admin');
     exit(0);
 }
-$lid = (int)$lid;
 $data = GetGoodlistByLID($lid);
 
 if( !$data )

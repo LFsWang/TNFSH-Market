@@ -46,6 +46,7 @@ $( document ).ready(function() {
                         <th>購買人數</th>
                         <th>購買數量</th>
                         <th>銷售額</th>
+                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,9 +55,17 @@ $( document ).ready(function() {
                     <tr>
                         <td><a href="index.php?page=viewgood&gid=<?=$row['gid']?>" target="_blank"><?=$row['name']?></a></td>
                         <td><?=$row['price']?></td>
-                        <td><?=$tmpl['totalguser'][$row['gid']]?> </td>
+                        <td><?=$tmpl['totalguser'][$row['gid']]?></td>
                         <td><?=$tmpl['totalgnum'][$row['gid']]?></td>
                         <td><?=$tmpl['totalgnum'][$row['gid']]*$row['price']?></td>
+                        <td>
+                            <a class="icon-bttn" href="admin.php?page=good_summary&lid=<?=$tmpl['goodlist']['lid']?>&gid=<?=$row['gid']?>&class=all">
+                                <span class="glyphicon glyphicon-th-list" title="總表"></span>
+                            </a>
+                            <a class="icon-bttn" href="admin.php?page=good_summary&lid=<?=$tmpl['goodlist']['lid']?>&gid=<?=$row['gid']?>&class=all&pdf">
+                                <span class="glyphicon glyphicon-print" title="列印"></span>
+                            </a>
+                        </td>
                     </tr>
                     <?php }?>
                 </tbody>
@@ -71,7 +80,7 @@ $( document ).ready(function() {
                         <th>購買人數</th>
                         <th>購買數量</th>
                         <th>銷售額</th>
-                        
+                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,22 +93,18 @@ $( document ).ready(function() {
                         <td><?=$tmpl['totalguser'][$row['gid']]?> </td>
                         <td><?=$tmpl['totalgnum'][$row['gid']]?></td>
                         <td><?=$tmpl['totalgnum'][$row['gid']]*$row['price']?></td>
+                        <td>
+                            <a class="icon-bttn" href="admin.php?page=good_summary&lid=<?=$tmpl['goodlist']['lid']?>&gid=<?=$row['gid']?>&class=all">
+                                <span class="glyphicon glyphicon-th-list" title="總表"></span>
+                            </a>
+                            <a class="icon-bttn" href="admin.php?page=good_summary&lid=<?=$tmpl['goodlist']['lid']?>&gid=<?=$row['gid']?>&class=all&pdf">
+                                <span class="glyphicon glyphicon-print" title="列印"></span>
+                            </a>
+                        </td>
                     </tr>
                     <?php }?>
                 </tbody>
             </table>
-            <?php if(isset($clotheflag)) : ?>
-            <h4>尺寸總表</h4>
-            <?php foreach( $tmpl['goods'] as $row ){ ?>
-                        <?php if( $row['type'] != 'clothe') continue; ?>
-            <?php }?>
-            <?php endif;?>
-            <hr>
-            <h3>DEGUB</h3>
-            <pre>
-            <?php var_dump($tmpl['goodlist']); ?><br>
-            <?php var_dump($tmpl['goods']); ?>
-            </pre>
         </div>
     </div>
 </div>

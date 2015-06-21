@@ -20,16 +20,10 @@ if(!defined('IN_TEMPLATE'))
     <![endif]-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script>
-        $('.dropdown-toggle').dropdown();
-    </script>
     <style>
-        body{
-            background-image: url('src/index-background.jpg');
-            background-size: cover;
-            background-repeat:no-repeat;
-            background-attachment:fixed
-        }
+    body { height:297mm; width:210mm; margin-left:auto; margin-right:auto; }
     </style>
 </head>
-<noscript style="color:#FFF;font-size:100px">我要JAVASCRIPT~ QQ</noscript>
+<body>
+    <div class = "containor">
+        <div class = "row">
