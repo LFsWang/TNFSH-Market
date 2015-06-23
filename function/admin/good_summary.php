@@ -12,6 +12,7 @@ $lid = safe_get('lid');
 $gid = safe_get('gid');
 $grade = safe_get('grade');
 $class = safe_get('class');
+$addin = safe_get('addin',array());
 $optAsPDF = safe_get('pdf',null);
 
 if( !makeint($lid) )
@@ -90,44 +91,85 @@ switch( $gooddata['tbmatch'] )
     case 0 :
         if( $class == 'all' )
         {
-            $res = SQL::fetchAll("
-SELECT `$tstudent_account`.`grade`,`$tstudent_account`.`class`, SUM(`$torderlist_detail`.`num`) AS `sum` FROM `$torderlist_detail` 
-    INNER JOIN `$torderlist` ON `$torderlist_detail`.`odid` = `$torderlist`.`odid` 
-    INNER JOIN `$tstudent_account` ON `$torderlist`.`suid` = `$tstudent_account`.`suid` 
-WHERE `$torderlist`.`lid` = ? AND `$torderlist_detail`.`gid` = ? 
-GROUP BY `$tstudent_account`.`grade`,`$tstudent_account`.`class`
-ORDER BY `grade` ASC",array($lid,$gid));
+            $res = GetGoodSumOnListByClassGroup($lid,$gid);
             if( $res === false ) break;
             $_E['template']['maintb']='good_summary.0.all';
             
         }
         else
         {
-            $res = SQL::fetchAll("
-SELECT `$tstudent_account`.`grade`,`$tstudent_account`.`class`,`$tstudent_account`.`number`,`$tstudent_account`.`username`,`$torderlist_detail`.`num`
-FROM `$torderlist_detail`
-	INNER JOIN `$torderlist` ON `$torderlist_detail`.`odid` = `$torderlist`.`odid`
-	INNER JOIN `$tstudent_account` ON `$torderlist`.`suid` = `$tstudent_account`.`suid`
-WHERE `$torderlist`.`lid` = ? AND `$torderlist_detail`.`gid` = ? AND `$tstudent_account`.`grade` = ? AND `$tstudent_account`.`class` = ?
-ORDER BY `student_account`.`number` ASC",array($lid,$gid,$grade,$class));
+            $res = GetGoodNumOnListByClassStudent($lid,$gid,$grade,$class);
             if( $res === false ) break;
             $_E['template']['maintb']='good_summary.0.class';
         }
         $_E['template']['data'] = $res;
         break;
-    case 6 :
+    case 1 ://bust
+        //need support muilt list
+        //put in $addin
+        $allgoods = array(GetGoodByGID($gid));
+        if( is_array($addin) )
+        {
+            foreach( $addin as $g )
+            {
+                $r = GetGoodByGID($g);
+                if( $r )$allgoods[] = $r;
+            }
+        }
+        //Render::errormessage($allgoods);
+        $data = array(array());
+        // gid => array[size] => num
         if( $class == 'all' )
         {
-            $res = SQL::fetchAll("SELECT `num`,`lpants`,`waistline` FROM `$torderlist_detail` WHERE `lid`=? AND `gid`=?",array($lid,$gid));
+            foreach( $allgoods as $g )
+            {
+                $_gid = (int)$g['gid'];
+                $data[ $_gid ] = array();
+                $res = GetGoodNumWithSize($lid,$_gid);
+                if( $res === false )continue;
+                foreach( $res as $row )
+                {
+                    @$data[ $_gid ][ (int)$row['bust'] ] += $row['num'];
+                }
+            }
+            $_E['template']['data'] = $data;
+            $_E['template']['allgoods'] = $allgoods;
+            $_E['template']['maintb']='good_summary.1.all';
         }
         else
         {
-            $res = SQL::fetchAll(
-"SELECT `$torderlist_detail`.`num`,`$torderlist_detail`.`waistline`,`$torderlist_detail`.`lpants`
-FROM `$torderlist_detail` 
-	INNER JOIN `$torderlist` ON `$torderlist`.`odid` = `$torderlist_detail`.`odid` 
-    INNER JOIN `$tstudent_account` ON  `$torderlist`.`suid` = `$tstudent_account`.`suid`
-WHERE `$torderlist`.`lid` = ? AND `$torderlist_detail`.`gid` = ? AND `$tstudent_account`.`grade` = ? AND `$tstudent_account`.`class` = ?",array($lid,$gid,$grade,$class));
+            $studentnumber = array();
+            $data = array();
+            //gid=>number=>num
+            foreach( $allgoods as $g )
+            {
+                $_gid = (int)$g['gid'];
+                $data[ $_gid ] = array();
+                $res = GetGoodNumWithSizeByClassStudent($lid,$_gid,$grade,$class);
+                if( $res === false )continue;
+                //$data[ $_gid ] = $res;
+                foreach( $res as $row )
+                {
+                    $data[$_gid][(int)$row['number']] = array($row['num'],$row['bust']);
+                    $studentnumber[ (int)$row['number'] ] = $row['username'];
+                }
+            }
+            $_E['template']['data'] = $data;
+            $_E['template']['allgoods'] = $allgoods;
+            $_E['template']['grade']=$grade;
+            $_E['template']['class']=$class;
+            $_E['template']['studentnumber']=$studentnumber;
+            $_E['template']['maintb']='good_summary.1.class';
+        }
+        break;
+    case 6 :
+        if( $class == 'all' )
+        {
+            $res = GetGoodNumWithSize($lid,$gid);
+        }
+        else
+        {
+            $res = GetGoodNumWithSizeByClassStudent($lid,$gid,$grade,$class);
         }
         if( $res === false ) break;
         foreach( $res as $row )

@@ -40,10 +40,9 @@ $clothe = $data['needclothe'];
 foreach( $data['goodsinfo'] as $row )
 {
     $num = safe_post( 'gid-'.$row['gid'] , 0 );
-    if( empty($num) || !is_numeric($num) ){
+    if( empty($num) || !makeint($num) ){
         $num = 0;
     }
-    $num = (int) $num;
     if( $num < 0 ||  $row['maxnum'] < $num ){
         $acflag = false;
         continue;

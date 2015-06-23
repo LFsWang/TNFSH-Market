@@ -301,3 +301,50 @@ function CheckArrayAllNumber(&$array)
     }
     return true;
 }
+
+function GetGoodSumOnListByClassGroup($lid,$gid)
+{
+    $tstudent_account = SQL::tname('student_account');
+    $torderlist_detail = SQL::tname('orderlist_detail');
+    $torderlist = SQL::tname('orderlist');
+    return SQL::fetchAll("
+SELECT `$tstudent_account`.`grade`,`$tstudent_account`.`class`, SUM(`$torderlist_detail`.`num`) AS `sum` FROM `$torderlist_detail` 
+    INNER JOIN `$torderlist` ON `$torderlist_detail`.`odid` = `$torderlist`.`odid` 
+    INNER JOIN `$tstudent_account` ON `$torderlist`.`suid` = `$tstudent_account`.`suid` 
+WHERE `$torderlist`.`lid` = ? AND `$torderlist_detail`.`gid` = ? 
+GROUP BY `$tstudent_account`.`grade`,`$tstudent_account`.`class`
+ORDER BY `grade` ASC",array($lid,$gid));
+}
+
+function GetGoodNumOnListByClassStudent($lid,$gid,$grade,$class)
+{
+    $tstudent_account = SQL::tname('student_account');
+    $torderlist_detail = SQL::tname('orderlist_detail');
+    $torderlist = SQL::tname('orderlist');
+    return SQL::fetchAll("
+SELECT `$tstudent_account`.`grade`,`$tstudent_account`.`class`,`$tstudent_account`.`number`,`$tstudent_account`.`username`,`$torderlist_detail`.`num`
+FROM `$torderlist_detail`
+	INNER JOIN `$torderlist` ON `$torderlist_detail`.`odid` = `$torderlist`.`odid`
+	INNER JOIN `$tstudent_account` ON `$torderlist`.`suid` = `$tstudent_account`.`suid`
+WHERE `$torderlist`.`lid` = ? AND `$torderlist_detail`.`gid` = ? AND `$tstudent_account`.`grade` = ? AND `$tstudent_account`.`class` = ?
+ORDER BY `student_account`.`number` ASC",array($lid,$gid,$grade,$class));
+}
+
+function GetGoodNumWithSize($lid,$gid)
+{
+    $torderlist_detail = SQL::tname('orderlist_detail');
+    return SQL::fetchAll("SELECT `num`,`bust`,`waistline`,`lpants` FROM `$torderlist_detail` WHERE `lid`=? AND `gid`=?",array($lid,$gid));
+}
+
+function GetGoodNumWithSizeByClassStudent($lid,$gid,$grade,$class)
+{
+    $tstudent_account = SQL::tname('student_account');
+    $torderlist_detail = SQL::tname('orderlist_detail');
+    $torderlist = SQL::tname('orderlist');
+    return SQL::fetchAll(
+"SELECT `$tstudent_account`.`grade`,`$tstudent_account`.`class`,`$tstudent_account`.`number`,`$tstudent_account`.`username`,`$torderlist_detail`.`num`,`$torderlist_detail`.`bust`,`$torderlist_detail`.`waistline`,`$torderlist_detail`.`lpants`
+FROM `$torderlist_detail` 
+	INNER JOIN `$torderlist` ON `$torderlist`.`odid` = `$torderlist_detail`.`odid` 
+    INNER JOIN `$tstudent_account` ON  `$torderlist`.`suid` = `$tstudent_account`.`suid`
+WHERE `$torderlist`.`lid` = ? AND `$torderlist_detail`.`gid` = ? AND `$tstudent_account`.`grade` = ? AND `$tstudent_account`.`class` = ?",array($lid,$gid,$grade,$class));
+}
