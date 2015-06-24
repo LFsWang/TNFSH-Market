@@ -24,9 +24,9 @@ $group = safe_post('group');
 
 $data = array();
 $data['name'] = safe_post('name',null);
-$data['grade'] = safe_post('grade',null);
-$data['class'] = safe_post('class',null);
-$data['number'] = safe_post('number',null);
+$data['grade'] = safe_post('grade',0);
+$data['class'] = safe_post('class',0);
+$data['number'] = safe_post('number',0);
 $res = addUserAccount($account,$password,$group,false,$data) ;
 if( $res === ERROR_NO )
 {

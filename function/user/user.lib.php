@@ -98,7 +98,7 @@ function addUserAccount($username,$password,$group,$newbie = false,$data = array
         }
         else
         {
-            $data[$i] = null;
+            $data[$i] = 0;
         }
     }
     if( !isset($data['name']) )
