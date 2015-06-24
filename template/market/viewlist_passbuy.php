@@ -19,7 +19,8 @@ if(!defined('IN_TEMPLATE'))
                         <thead>
                             <tr>
                                 <th class="col-sm-1">代號</th>
-                                <th class="col-sm-5">商品名稱</th>
+                                <th class="col-sm-3">商品名稱</th>
+                                <th class="col-sm-2"><span title="胸圍/腰圍/褲長">尺寸</span></th>
                                 <th class="col-sm-2">單價</th>
                                 <th class="col-sm-2">購買數量</th>
                                 <th class="col-sm-2">總價</th>
@@ -28,28 +29,25 @@ if(!defined('IN_TEMPLATE'))
                         <tbody>
                             <?php $totalsum = 0; ?>
                             <?php foreach($tmpl['goodsinfo'] as $row ) { ?>
-                                <?php $totalsum += ($tmp = $row['price']*$tmpl['buyinfo'][$row['gid']]); ?>
+                                <?php $totalsum += ($tmp = $row['price']*$tmpl['buyinfo'][$row['gid']]['num']); ?>
                                 <tr>
                                     <td> <?=$row['gid']?> </td>
-                                    <td> <a href = "index.php?page=viewgood&gid="<?=$row['gid']?> target="_blank"><?=$row['name']?></a></td>
+                                    <td> <a href = "index.php?page=viewgood&gid=<?=$row['gid']?>" target="_blank"><?=$row['name']?></a></td>
+                                    <td>
+                                    <?php if($row['type'] == 'clothe'): ?>
+                                        <?=$tmpl['buyinfo'][$row['gid']]['bust']?>/<?=$tmpl['buyinfo'][$row['gid']]['waistline']?>/<?=$tmpl['buyinfo'][$row['gid']]['lpants']?>
+                                    <?php endif;?>
+                                    </td>
                                     <td> <?=$row['price']?> </td>
-                                    <td> <?=$tmpl['buyinfo'][$row['gid']]?></td>
+                                    <td> <?=$tmpl['buyinfo'][$row['gid']]['num']?></td>
                                     <td> <?=$tmp?></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
                     </table>
-                    <?php if($tmpl['listinfo']['needclothe']): ?>
-                    <div class = "row text-left">
-                        <h4>套量尺寸</h4>
-                        <div class ="col-sm-1">胸圍(X10)：</div>
-                        <div class ="col-sm-2"><?=$tmpl['buy']['bust']?></div>
-                        <div class ="col-sm-1">腰圍：</div>
-                        <div class ="col-sm-2"><?=$tmpl['buy']['waistline']?></div>
-                        <div class ="col-sm-1">褲長：</div>
-                        <div class ="col-sm-2"><?=$tmpl['buy']['lpants']?></div>
-                    </div>
-                    <?php endif; ?>
+                    
+                    
+                    
                     <div class = "row text-right">
                         
                         <div class = "col-sm-offset-6 col-sm-6">

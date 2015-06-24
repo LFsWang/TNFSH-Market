@@ -8,30 +8,28 @@ require_once('GlobalSetting.php');
 UserAccess::CheckToken('api');
 $action = @$_REQUEST['action'];
 
-$case = array(
-    'user' => array( 'login' , 'logout' ),
-);
+$case = array('login' , 'logout' , 'modifyspass');
 
-foreach( $case as $subpage => $act )
+
+if( in_array($action,$case) )
 {
-    if( in_array($action,$act) )
+    if( file_exists("function/user/$action.php") )
     {
-        if( file_exists("function/$subpage/$subpage.php") )
-        {
-            require_once("function/$subpage/$subpage.php");
-            exit(0);
-        }
+        require_once("function/user/$action.php");
+        exit(0);
     }
 }
 
+
 //ADMIN API
+if( $_G['usertype'] != 2 )
+{
+    throwjson('error','Access denied!');
+}
+
 $case = array( 'getgoodinfo' , 'getgoodlist' , 'editimage', 'delimage' , 'addadmin' ,'addsgroup','addsastudent');
 if( in_array($action,$case) )
 {
-    if( $_G['usertype'] != 2 )
-    {
-        throwjson('error','Access denied!');
-    }
     if( file_exists("function/adminapi/$action.php") )
     {
         require_once("function/adminapi/$action.php");

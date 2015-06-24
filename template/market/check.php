@@ -56,14 +56,25 @@ function check()
                     <div class = "container-fluid">
                         <?php if($tmpl['clothe']): ?>
                         <div class = "row text-left">
-                            <h4>套量尺寸<small>請依據廠商套量結果填寫</small></h4>
-                            <div class ="col-sm-1">胸圍(X10)：</div>
+                            <h4>套量尺寸(英寸)<small>請依據廠商套量結果填寫</small></h4>
+                            <div class ="col-sm-1">胸圍：</div>
                             <div class ="col-sm-2"><?=$tmpl['userin']['bust']?></div>
                             <div class ="col-sm-1">腰圍：</div>
                             <div class ="col-sm-2"><?=$tmpl['userin']['waistline']?></div>
                             <div class ="col-sm-1">褲長：</div>
                             <div class ="col-sm-2"><?=$tmpl['userin']['lpants']?></div>
                         </div>
+                            <?php foreach($tmpl['userin']['sz'] as $row ) { ?>
+                        <div class = "row text-left">
+                            <h4><?=$row[3]?> 尺寸</h4>
+                            <div class ="col-sm-1">胸圍：</div>
+                            <div class ="col-sm-2"><?=$row[0]?></div>
+                            <div class ="col-sm-1">腰圍：</div>
+                            <div class ="col-sm-2"><?=$row[1]?></div>
+                            <div class ="col-sm-1">褲長：</div>
+                            <div class ="col-sm-2"><?=$row[2]?></div>
+                        </div>
+                            <?php } ?>
                         <?php endif; ?>
                         <div class = "row text-right">
                             <div class = "col-sm-offset-5 col-sm-3">

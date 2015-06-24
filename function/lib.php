@@ -302,6 +302,25 @@ function CheckArrayAllNumber(&$array)
     return true;
 }
 
+function checkclothesize(&$bust,&$waistline,&$lpants)
+{
+    //bust 34 ~ 60 % 2 = 0 
+    //waistline 27 ~ 46
+    //lpants 38 ~ 46 % 2 = 0 
+    if( !makeint($bust) || !makeint($waistline) || !makeint($lpants) )
+    {
+        return false;
+    }
+
+    if( $bust < 34 || 60 < $bust || $bust % 2 != 0 
+      ||$waistline < 27 || 46 < $waistline
+      ||$lpants < 38 || 46 < $lpants || $lpants % 2 != 0 )
+    {
+        return false;
+    }
+    return true;
+}
+
 function GetGoodSumOnListByClassGroup($lid,$gid)
 {
     $tstudent_account = SQL::tname('student_account');

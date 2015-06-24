@@ -92,7 +92,7 @@ if(!defined('IN_TEMPLATE'))
         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
         <strong>Oh My God !</strong>
         <ul>
-            <li>還在用連美國國防部都拋棄的IE? 趕快換個瀏覽器吧</li>
+            <li>還在用連美國國防部都拋棄的IE? 趕快換個瀏覽器吧，本網站推薦使用<a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Chrome瀏覽器</a></li>
         </ul>
     </div>
     

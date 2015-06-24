@@ -53,7 +53,7 @@ if( $row = SQL::fetch("SELECT * FROM `$torderlist` WHERE `suid` = ? AND `lid` =?
     {
         foreach( $res as $row )
         {
-            $_E['template']['buyinfo'][$row['gid']] = $row['num'];
+            $_E['template']['buyinfo'][$row['gid']] = $row;
         }
     }
     else

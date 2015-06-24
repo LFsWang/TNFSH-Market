@@ -54,7 +54,17 @@ $odid = SQL::lastInsertId();
 $acceptflag = true;
 foreach( $userin['gid'] as $gid => $num )
 {
-    if( !SQL::query("INSERT INTO `$torderlist_detail`(`odid`, `lid`, `gid`, `num`, `bust`, `waistline`, `lpants`) VALUES (?,?,?,?,?,?,?)",array($odid,$lid,$gid,$num,$userin['bust'],$userin['waistline'],$userin['lpants'])) )
+    if( isset($userin['sz'][$gid]) )
+    {
+        $sz = $userin['sz'][$gid];
+        if( !SQL::query("INSERT INTO `$torderlist_detail`(`odid`, `lid`, `gid`, `num`, `bust`, `waistline`, `lpants`) VALUES (?,?,?,?,?,?,?)",array($odid,$lid,$gid,$num,$sz[0],$sz[1],$sz[2])))
+        {
+            SQL::log('sp');
+            $acceptflag = false;
+            break;
+        }
+    }
+    elseif( !SQL::query("INSERT INTO `$torderlist_detail`(`odid`, `lid`, `gid`, `num`, `bust`, `waistline`, `lpants`) VALUES (?,?,?,?,?,?,?)",array($odid,$lid,$gid,$num,$userin['bust'],$userin['waistline'],$userin['lpants'])) )
     {
         $acceptflag = false;
         break;

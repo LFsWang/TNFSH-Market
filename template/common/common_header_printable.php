@@ -18,8 +18,9 @@ if(!defined('IN_TEMPLATE'))
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
     <![endif]-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/js.js"></script>
     <style>
     body { height:297mm; width:210mm; margin-left:auto; margin-right:auto; }
     </style>

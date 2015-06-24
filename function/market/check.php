@@ -35,11 +35,14 @@ if( $data === false )
 #Chech user input num
 $userin = array();
 $userin['gid'] = array();
+$userin['sz'] = array();
 $acflag = true;
 $clothe = $data['needclothe'];
+
 foreach( $data['goodsinfo'] as $row )
 {
-    $num = safe_post( 'gid-'.$row['gid'] , 0 );
+    $gid = $row['gid'];
+    $num = safe_post( 'gid-'.$gid , 0 );
     if( empty($num) || !makeint($num) ){
         $num = 0;
     }
@@ -47,7 +50,20 @@ foreach( $data['goodsinfo'] as $row )
         $acflag = false;
         continue;
     }
-    $userin['gid'][$row['gid']] = $num;
+    $userin['gid'][$gid] = $num;
+    if( $row['type'] == 'clothe' )
+    {
+        $bust = safe_post('bust'.$gid,null);
+        $waistline = safe_post('waistline'.$gid,null);
+        $lpants = safe_post('lpants'.$gid,null);
+        if( !isset($bust) || !isset($waistline) || !isset($lpants) ) continue;
+        if( !checkclothesize($bust,$waistline,$lpants) )
+        {
+            Render::errormessage('尺寸輸入錯誤A'.$bust.$waistline.$lpants);
+            Render::render('viewlist_user_denied','market');
+        }
+        $userin['sz'][$gid] = array($bust,$waistline,$lpants,$row['name']);
+    }
 }
 if( $clothe )
 {
@@ -59,17 +75,9 @@ if( $clothe )
     //bust 34 ~ 60 % 2 = 0 
     //waistline 27 ~ 46
     //lpants 38 ~ 46 % 2 = 0 
-    if( !makeint($bust) || !makeint($waistline) || !makeint($lpants) )
+    if( !checkclothesize($bust,$waistline,$lpants) )
     {
         Render::errormessage('尺寸輸入錯誤');
-        Render::render('viewlist_user_denied','market');
-    }
-
-    if( $bust < 34 || 60 < $bust || $bust % 2 != 0 
-      ||$waistline < 27 || 46 < $waistline
-      ||$lpants < 38 || 46 < $lpants || $lpants % 2 != 0 )
-    {
-        Render::errormessage('衣物尺寸輸入錯誤');
         Render::render('viewlist_user_denied','market');
     }
     
@@ -84,6 +92,7 @@ else
     $userin['waistline'] = 0;
     $userin['lpants'] = 0;
 }
+
 $userin['lid'] = $lid;
 $userin['timestamp'] = time();
 //Render::errormessage($userin);

@@ -31,7 +31,7 @@ if(!defined('IN_TEMPLATE'))
                             <?php $totalsum += $row['price']*$row['defaultnum']; ?>
                             <tr>
                                 <td> <?=$row['gid']?> </td>
-                                <td> <a href = "index.php?page=viewgood&gid="<?=$row['gid']?> target="_blank"><?=$row['name']?></a></td>
+                                <td> <a href = "index.php?page=viewgood&gid=<?=$row['gid']?>" target="_blank"><?=$row['name']?></a></td>
                                 <td> <?=$row['price']?> </td>
                                 <td> </td>
                                 <td> <span id="m-<?=$row['gid']?>"></span></td>

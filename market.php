@@ -6,7 +6,7 @@ if( $_G['usertype'] != 1 )
     header("Location:index.php");
 }
 require_once("function/market/market.lib.php");
-$allow_page = array('index','check','buy');
+$allow_page = array('index','check','buy','profile');
 $page = 'index';
 if( isset($_REQUEST['page']) )
 {
