@@ -26,6 +26,7 @@ if(!defined('IN_TEMPLATE'))
                     <?php if( $_G['usertype'] == 1 ): ?>
                     <li><a href="market.php">採購頁面</a></li>
                     <?php endif; ?>
+                    <li><a href="https://docs.google.com/forms/d/1Qn4rHAa6L_cnysumjYpL_xpWDxkI-OfhhjVAcB-ymIg/viewform">問題回報</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <?php if( $_G['usertype'] == 2 ): ?>
@@ -80,11 +81,12 @@ if(!defined('IN_TEMPLATE'))
         (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
         (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
         
-        if (Sys.ie) $('#whydidyouuseie').show();
-        /*if (Sys.firefox) $('span').text('Firefox: ' + Sys.firefox);
-        if (Sys.chrome) $('span').text('Chrome: ' + Sys.chrome);
-        if (Sys.opera) $('span').text('Opera: ' + Sys.opera);
-        if (Sys.safari) $('span').text('Safari: ' + Sys.safari);*/
+        if (Sys.ie) { 
+            $('#whydidyouuseie').show();
+            console.log(Sys.ie);
+            if( Sys.ie < 11 )
+                alert("本網站不支援IE，請更換瀏覽器，若發生任何錯誤均不負責。");
+        }
     });
     </script>
 
@@ -92,7 +94,7 @@ if(!defined('IN_TEMPLATE'))
         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
         <strong>Oh My God !</strong>
         <ul>
-            <li>還在用連美國國防部都拋棄的IE? 趕快換個瀏覽器吧，本網站推薦使用<a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Chrome瀏覽器</a></li>
+            <li><a href="http://www.ithome.com.tw/news/90027" target="_blank">還在使用過時且危險的IE?</a> 趕快換個瀏覽器吧，本網站推薦使用<a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Chrome瀏覽器。</a>(若IE 11以前的版本將會有額外的跳窗警告)</li>
         </ul>
     </div>
     

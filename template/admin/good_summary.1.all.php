@@ -23,10 +23,10 @@ if(!defined('IN_TEMPLATE'))
         <?php for($i=34;$i<=60;$i+=2){ ?>
         <tr>
             <td><?=$i?></td>
-            <td><?=$i/2?></td>
+            <td><?=($i+24)/4?></td>
             <?php foreach( $tmpl['allgoods'] as $goods ){?>
                 <td style="font-size:150%;padding:0 8px;"><?=@$tmpl['data'][(int)$goods['gid']][$i]?></td>
-                <?php @$s[(int)$goods['gid']] += @@$tmpl['data'][(int)$goods['gid']][$i];?>
+                <?php @$s[(int)$goods['gid']] += @$tmpl['data'][(int)$goods['gid']][$i];?>
             <?php }?>
             <td></td>
         </tr>

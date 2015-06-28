@@ -24,13 +24,5 @@ if(!defined('IN_TEMPLATE'))
     <script>
         $('.dropdown-toggle').dropdown();
     </script>
-    <style>
-        body{
-            background-image: url('src/index-background.jpg');
-            background-size: cover;
-            background-repeat:no-repeat;
-            background-attachment:fixed
-        }
-    </style>
 </head>
 <noscript style="color:#FFF;font-size:100px">我要JAVASCRIPT~ QQ</noscript>

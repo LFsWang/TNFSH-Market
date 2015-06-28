@@ -8,18 +8,10 @@ if(!defined('IN_TEMPLATE'))
     <div class="row">
         <div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 trans_form_mh300">
             <center>
-                <h3>開發日誌</h3>
+                <h3>Who am I ?</h3>
+                Welcome to find the easter eggs in this website!
             </center>
-            TODO<br>
-            goods 衣服少一個col存match的度量標準
-            <div>
-                <h4>20150614 - 1</h4>
-                <ol>
-                    <li>優化SQL查詢
-                    <li>新增學生帳號群組
-                    <li>修正權限問題
-                </ol>
-            </div>
+            <a href="https://github.com/LFsWang/TNFSH-Market">Site Code on github!</a>
         </div>
     </div>
 </div>

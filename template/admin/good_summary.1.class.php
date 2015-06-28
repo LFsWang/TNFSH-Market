@@ -31,7 +31,7 @@ if(!defined('IN_TEMPLATE'))
             <td><?=$name?></td>
             <?php foreach( $tmpl['allgoods'] as $goods ){?>
             <td class="text-center col-sm-1 text-left"><?=@$tmpl['data'][(int)$goods['gid']][$snum][0]?></td>
-            <td class="text-center col-sm-1 text-left"><?=@$tmpl['data'][(int)$goods['gid']][$snum][1]?></td>
+            <td class="text-center col-sm-1 text-left"><?=@($tmpl['data'][(int)$goods['gid']][$snum][1]+24)/4?></td>
             <?php }?>
             <td></td>
         </tr>
