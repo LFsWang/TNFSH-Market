@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主機: localhost
--- 產生時間： 2015-06-16 04:40:50
+-- 產生時間： 2015-06-29 04:50:09
 -- 伺服器版本: 5.6.24
 -- PHP 版本： 5.6.8
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- 資料庫： `test_market`
 --
+CREATE DATABASE IF NOT EXISTS `test_market` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+USE `test_market`;
 
 -- --------------------------------------------------------
 
@@ -87,6 +89,7 @@ CREATE TABLE IF NOT EXISTS `goods` (
   `price` int(11) NOT NULL,
   `defaultnum` int(11) NOT NULL,
   `maxnum` int(11) NOT NULL,
+  `tbmatch` int(11) NOT NULL,
   `description` text COLLATE utf8_bin,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -129,6 +132,9 @@ CREATE TABLE IF NOT EXISTS `orderlist` (
   `suid` int(11) NOT NULL,
   `gpid` int(11) NOT NULL,
   `lid` int(11) NOT NULL,
+  `bust` int(11) NOT NULL,
+  `waistline` int(11) NOT NULL,
+  `lpants` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `orderhash` text COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -173,9 +179,9 @@ CREATE TABLE IF NOT EXISTS `student_account` (
   `password` text COLLATE utf8_bin NOT NULL,
   `gpid` int(11) NOT NULL,
   `name` text COLLATE utf8_bin NOT NULL,
-  `grade` int(11) DEFAULT NULL,
-  `class` int(11) DEFAULT NULL,
-  `number` int(11) DEFAULT NULL
+  `grade` int(11) NOT NULL DEFAULT '0',
+  `class` int(11) NOT NULL DEFAULT '0',
+  `number` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
@@ -397,3 +403,6 @@ ALTER TABLE `student_account`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+INSERT INTO `account` (`uid`, `username`, `password`, `title`, `root`, `stats`) VALUES
+(1, 'admin', '$2y$10$xfd7IERfvsxIxi4bwJRCUOQi7DjA9Bw/v3mftyfIcnis2bpG9nrje', '', 1, 1);

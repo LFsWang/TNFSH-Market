@@ -65,15 +65,23 @@ function check()
                             <div class ="col-sm-2"><?=$tmpl['userin']['lpants']?></div>
                         </div>
                             <?php foreach($tmpl['userin']['sz'] as $row ) { ?>
+                            <?php if($row[4] == 0) continue; ?>
                         <div class = "row text-left">
-                            <h4><?=$row[3]?> 尺寸</h4>
+                            <h4><?=$row[3]?> <small>自訂尺寸</small></h4>
+                            <?php if($row[4]&1): ?>
                             <div class ="col-sm-1">胸圍：</div>
                             <div class ="col-sm-2"><?=$row[0]?></div>
+                            <?php endif;?>
+                            <?php if($row[4]&2): ?>
                             <div class ="col-sm-1">腰圍：</div>
                             <div class ="col-sm-2"><?=$row[1]?></div>
+                            <?php endif;?>
+                            <?php if($row[4]&4): ?>
                             <div class ="col-sm-1">褲長：</div>
                             <div class ="col-sm-2"><?=$row[2]?></div>
+                            <?php endif;?>
                         </div>
+                        <hr>
                             <?php } ?>
                         <?php endif; ?>
                         <div class = "row text-right">

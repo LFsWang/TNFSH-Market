@@ -65,7 +65,15 @@ $( document ).ready(function() {
                                     <td> <a href = "index.php?page=viewgood&gid=<?=$row['gid']?>" target="_blank"><?=$row['name']?></a></td>
                                     <td> <?=$row['price']?> </td>
                                     <td>
-                                        <input type="number" class="form-control" id="gid-<?=$row['gid']?>" placeholder="數量" value="<?=$row['defaultnum']?>" name="gid-<?=$row['gid']?>" min="0" max="<?=$row['maxnum']?>" onchange="updatemoney(<?=$row['gid']?>,<?=$row['price']?>)" required>
+                                        <select name="gid-<?=$row['gid']?>" class="form-control" id="gid-<?=$row['gid']?>" onchange="updatemoney(<?=$row['gid']?>,<?=$row['price']?>)">
+                                        <?php for($i=0;$i<=$row['maxnum'];++$i){ ?>
+                                        <?php if( $i == $row['defaultnum'] ): ?>
+                                        <?php else: ?>
+                                        <option value="<?=$i?>" selected="selected"><?=$i?></option>
+                                        <?php endif;?>
+                                        <?php } ?>
+                                        </select>
+                                        <!--<input type="number" class="form-control" id="gid-<?=$row['gid']?>" placeholder="數量" value="<?=$row['defaultnum']?>" name="gid-<?=$row['gid']?>" min="0" max="<?=$row['maxnum']?>" onchange="updatemoney(<?=$row['gid']?>,<?=$row['price']?>)" required>-->
                                     </td>
                                     <td> <span id="m-<?=$row['gid']?>"><?=$row['total']?></span></td>
                                     <td>

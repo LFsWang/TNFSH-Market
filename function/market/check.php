@@ -62,7 +62,7 @@ foreach( $data['goodsinfo'] as $row )
             Render::errormessage('尺寸輸入錯誤A'.$bust.$waistline.$lpants);
             Render::render('viewlist_user_denied','market');
         }
-        $userin['sz'][$gid] = array($bust,$waistline,$lpants,$row['name']);
+        $userin['sz'][$gid] = array($bust,$waistline,$lpants,$row['name'],$row['tbmatch']);
     }
 }
 if( $clothe )
@@ -95,6 +95,7 @@ else
 
 $userin['lid'] = $lid;
 $userin['timestamp'] = time();
+$userin['goodlistdata'] = $data;
 //Render::errormessage($userin);
 if( !$acflag )
 {
