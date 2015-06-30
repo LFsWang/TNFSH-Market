@@ -4,6 +4,5 @@
    html = html.replace("{title}"     , title );
    html = html.replace("{smalltitle}", smalltitle );
    html = html.replace(/{numid}/g    , numid );
-   console.log(html);
    return html;
 }

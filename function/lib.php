@@ -205,6 +205,7 @@ function GetTimeFlag($timestart,$timeend)
 {
     $date1 = new DateTime($timestart);
     $date2 = new DateTime($timeend);
+    $date2->add(new DateInterval('P1D'));
     $datenow=new DateTime('NOW');
     if( $date1 > $date2 ) return false;
     if( $datenow < $date1 ) return TF_NOTYET;

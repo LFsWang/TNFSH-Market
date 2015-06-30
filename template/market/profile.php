@@ -53,10 +53,8 @@ $( document ).ready(function() {
 </script>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-2 col-md-2 col-sm-2 trans_form">
-            <?php $tmpl['market_panel_active'] = 'site'; ?>
-            <?php Render::renderSingleTemplate('panel','market'); ?>
-        </div>
+        <?php $tmpl['market_panel_active'] = 'site'; ?>
+        <?php Render::renderSingleTemplate('panel','market'); ?>
         <div class="col-lg-1 col-md-1 col-sm-1"><br></div>
         <div class="col-lg-8 col-md-8 col-sm-8 trans_form_mh300 panel panel-default">
             <center>

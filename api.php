@@ -4,7 +4,6 @@ require_once('GlobalSetting.php');
 
 
 //UserAccess::SetToken('api',900);
-#
 UserAccess::CheckToken('api');
 $action = @$_REQUEST['action'];
 
@@ -36,4 +35,4 @@ if( in_array($action,$case) )
         exit(0);
     }
 }
-throwjson('error','Error:7122');
+throwjson('error','Error:No such action');

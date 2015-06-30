@@ -69,35 +69,20 @@ if(!defined('IN_TEMPLATE'))
     });
     </script>
     <?php endif;?>
+    <!--[if lt IE 11]>
     <script>
-    $(function () {
-        var Sys = {};
-        var ua = navigator.userAgent.toLowerCase();
-        var s;
-        (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1] :
-        (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
-        (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
-        (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
-        (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
-        (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
-        
-        if (Sys.ie) { 
-            $('#whydidyouuseie').show();
-            console.log(Sys.ie);
-            if( Sys.ie < 11 )
-                alert("本網站不支援IE，請更換瀏覽器，若發生任何錯誤均不負責。");
-        }
-    });
+    alert("本網站不支援IE，請更換瀏覽器，若發生任何錯誤均不負責。");
     </script>
-
-    <div class="alert alert-danger fade in" role="alert" id="whydidyouuseie" hidden>
+    <![endif]-->
+    <!--[if lte IE 11]>
+    <div class="alert alert-danger fade in" role="alert" id="whydidyouuseie">
         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
         <strong>Oh My God !</strong>
         <ul>
             <li><a href="http://www.ithome.com.tw/news/90027" target="_blank">還在使用過時且危險的IE?</a> 趕快換個瀏覽器吧，本網站推薦使用<a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Chrome瀏覽器。</a>(若IE 11以前的版本將會有額外的跳窗警告)</li>
         </ul>
     </div>
-    
+    <![endif]-->
 <?php if( $_G['usertype'] == 0 ): ?>
     <!--Not Login-->
     <!--LoginModal-->
@@ -117,24 +102,28 @@ if(!defined('IN_TEMPLATE'))
                         $('#info').html('Success! reload page');
                         setTimeout( function(){
                             $('#login_form').modal('hide');
+                            setTimeout( function(){
+                                if( res.data == 1 )
+                                {
+                                    location.href = 'market.php';
+                                }
+                                else
+                                {
+                                    location.href = 'admin.php';
+                                }                        
+                            },200);
                         },300);
-                        setTimeout( function(){
-                            if( res.data == 1 )
-                            {
-                                location.href = 'market.php';
-                            }
-                            else
-                            {
-                                location.href = 'admin.php';
-                            }                        
-                        },500);
+                        
                     }
                     else
                     {
                         $('#info').css('color','Red');
                         $('#info').html(res.data);
                     }
-                },"json");
+                },"json").error(function(e) {
+                    console.log(e);
+                    alert( "JSON format Fail!" );
+                });
             return true;
         }
         $( document ).ready(function() {        

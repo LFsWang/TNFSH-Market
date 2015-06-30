@@ -7,6 +7,7 @@ if(!defined('IN_TEMPLATE'))
 <!DOCTYPE html>
 <head>
     <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php if( isset($tmpl['title'] ) ): ?>
     <title><?=$tmpl['title']?></title>
