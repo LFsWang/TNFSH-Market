@@ -146,11 +146,13 @@ if(!defined('IN_TEMPLATE'))
                         <input type = "hidden" name="action" value="login">
                         <div class="form-group">
                             <label for="LoginUserName">帳號</label>
-                            <input type="text" class="form-control" id="LoginUserName" name="account" placeholder="身分證(首字需大寫)">
+                            <input type="text" class="form-control" id="LoginUserName" name="account">
+                            <span class="help-block">身分證(首字需大寫)</span>
                         </div>
                         <div class="form-group">
                             <label for="LoginUserPassword">密碼</label>
-                            <input type="password" class="form-control" id="LoginUserPassword" name="password" placeholder="生日7碼(YYYMMDD)">
+                            <input type="password" class="form-control" id="LoginUserPassword" name="password">
+                            <span class="help-block">生日7碼(YYYMMDD)</span>
                         </div>
                         <div class="form-group">
                             <label>身分類別</label>
