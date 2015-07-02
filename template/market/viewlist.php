@@ -19,10 +19,14 @@ $( document ).ready(function() {
     $("[gid]").change(function(){
         console.log( $(this).attr('gid') );
         gid = $(this).attr('gid');
+        tbmatch = $(this).attr('tbmatch');
         if( $(this).is(':checked') )
         {
             gname = $("#szbar"+gid).attr('gname');
             $("#szbar"+gid).html(genclothesizeinputrowstring(gname,'自定義尺寸',gid));
+            if(!( tbmatch & 1 )) $("#bust"+gid).hide();
+            if(!( tbmatch & 2 )) $("#waistline"+gid).hide();
+            if(!( tbmatch & 4 )) $("#lpants"+gid).hide();
         }
         else
         {
@@ -72,14 +76,13 @@ $( document ).ready(function() {
                                         <?php endif;?>
                                         <?php } ?>
                                         </select>
-                                        <!--<input type="number" class="form-control" id="gid-<?=$row['gid']?>" placeholder="數量" value="<?=$row['defaultnum']?>" name="gid-<?=$row['gid']?>" min="0" max="<?=$row['maxnum']?>" onchange="updatemoney(<?=$row['gid']?>,<?=$row['price']?>)" required>-->
                                     </td>
                                     <td> <span id="m-<?=$row['gid']?>"><?=$row['total']?></span></td>
                                     <td>
                                         <?php if( $row['type'] == 'clothe' ): ?>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" gid="<?=$row['gid']?>">
+                                                <input type="checkbox" gid="<?=$row['gid']?>" tbmatch="<?=$row['tbmatch']?>">
                                             </label>
                                         </div>
                                         <?php $genlist[]=array($row['gid'],$row['name']) ?>

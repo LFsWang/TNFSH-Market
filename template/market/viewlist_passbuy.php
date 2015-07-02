@@ -33,7 +33,7 @@ if(!defined('IN_TEMPLATE'))
                                 <td> <a href = "index.php?page=viewgood&gid=<?=$row['gid']?>" target="_blank"><?=$row['name']?></a></td>
                                 <td>
                                 <?php if($row['type'] == 'clothe'): ?>
-                                    <?php $lt=array('bust','waistline','gid'); ?>
+                                    <?php $lt=array('bust','waistline','lpants'); ?>
                                     <?php for($i=0;$i<3;++$i) { ?>
                                         <?php if(  $row['tbmatch'] & ( 1<<$i ) ): ?>
                                             <?=$tmpl['buyinfo'][$row['gid']][$lt[$i]]?>

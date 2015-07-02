@@ -18,6 +18,8 @@ if(!defined('IN_TEMPLATE'))
 
 ?>
 <div class="col-sm-2">
+    <div class="trans_form text-center"><p><?= htmlentities($_G['name']) ?>同學您好</p></div>
+    <br>
     <div class="trans_form">
         <ul class="nav nav-pills nav-stacked">
             <li role="presentation"><a href="market.php">購買列表</a></li>

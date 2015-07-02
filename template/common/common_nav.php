@@ -69,7 +69,7 @@ if(!defined('IN_TEMPLATE'))
     });
     </script>
     <?php endif;?>
-    <!--[if lt IE 11]>
+    <!--[if lt IE 8]>
     <script>
     alert("本網站不支援IE，請更換瀏覽器，若發生任何錯誤均不負責。");
     </script>
@@ -146,11 +146,11 @@ if(!defined('IN_TEMPLATE'))
                         <input type = "hidden" name="action" value="login">
                         <div class="form-group">
                             <label for="LoginUserName">帳號</label>
-                            <input type="text" class="form-control" id="LoginUserName" name="account" placeholder="學號">
+                            <input type="text" class="form-control" id="LoginUserName" name="account" placeholder="身分證">
                         </div>
                         <div class="form-group">
                             <label for="LoginUserPassword">密碼</label>
-                            <input type="password" class="form-control" id="LoginUserPassword" name="password" placeholder="Password">
+                            <input type="password" class="form-control" id="LoginUserPassword" name="password" placeholder="生日7碼(YYYMMDD)">
                         </div>
                         <div class="form-group">
                             <label>身分類別</label>
