@@ -8,7 +8,7 @@ require_once($_E['ROOT'].'/function/user/user.lib.php');
 $id = safe_post('uid');
 $passwordold = safe_post('passwordold','');
 $password = safe_post('password','');
-$root = safe_post('root')?true:false;
+$root = safe_post('root')?1:0;
 $title = safe_post('title','');
 if( !makeint($id) )
 {

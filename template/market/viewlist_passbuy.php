@@ -61,8 +61,11 @@ if(!defined('IN_TEMPLATE'))
                     </div>
                 </div>
                 <div class = "row">
-                    <div class = "col-sm-10 text-left">
+                    <div class = "col-sm-8 text-left">
                         交易內容驗證碼：<?=$tmpl['buy']['orderhash']?>
+                    </div>
+					<div class = "col-sm-2 text-right">
+                        <a href='https://docs.google.com/forms/d/1Qn4rHAa6L_cnysumjYpL_xpWDxkI-OfhhjVAcB-ymIg/viewform' class="btn btn-warning">申請取消</a>
                     </div>
                     <div class = "col-sm-2 text-right">
                         <button class="btn btn-success">列印繳費單</button>

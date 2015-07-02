@@ -71,31 +71,34 @@ $( document ).ready(function() {
                         </div>
                     </div>
                     <hr>
-                    <span id="helpBlock" class="help-block">修改密碼</span>
-                    <div class="form-group">
-                        <label for="password" class="col-sm-2 control-label">舊密碼</label>
-                        <div class="col-sm-10">
-                            <input type="password" class="form-control" name="passwordold" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="password" class="col-sm-2 control-label">新密碼</label>
-                        <div class="col-sm-10">
-                            <input type="password" class="form-control" id="ps1" name="passwordnew" required>
-                        </div>
-                    </div>
-                    <div class="form-group" id="ps2m">
-                        <label for="password" class="col-sm-2 control-label">確認</label>
-                        <div class="col-sm-10">
-                            <input type="password" class="form-control" id="ps2" onchange="checkpass()" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-default">送出</button>
-                            <span id="info"><span>
-                        </div>
-                    </div>
+                    <!-- 學校說讓你改密碼會造成困擾，不過你會改還是讓你改XD -->
+					<div id="dakckdncuarhf" hidden>
+						<span id="helpBlock" class="help-block">修改密碼</span>
+						<div class="form-group">
+							<label for="password" class="col-sm-2 control-label">舊密碼</label>
+							<div class="col-sm-10">
+								<input type="password" class="form-control" name="passwordold" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="password" class="col-sm-2 control-label">新密碼</label>
+							<div class="col-sm-10">
+								<input type="password" class="form-control" id="ps1" name="passwordnew" required>
+							</div>
+						</div>
+						<div class="form-group" id="ps2m">
+							<label for="password" class="col-sm-2 control-label">確認</label>
+							<div class="col-sm-10">
+								<input type="password" class="form-control" id="ps2" onchange="checkpass()" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-default">送出</button>
+								<span id="info"><span>
+							</div>
+						</div>
+					</div>
                     
                 </div>
                 <div class="col-sm-6">
