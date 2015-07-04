@@ -65,7 +65,11 @@ if(!defined('IN_TEMPLATE'))
                         交易內容驗證碼：<?=$tmpl['buy']['orderhash']?>
                     </div>
 					<div class = "col-sm-2 text-right">
+<<<<<<< HEAD
                         <a href='https://docs.google.com/forms/d/1Qn4rHAa6L_cnysumjYpL_xpWDxkI-OfhhjVAcB-ymIg/viewform'target="_blank" class="btn btn-warning">申請取消</a>
+=======
+                        <a href='https://docs.google.com/forms/d/1Qn4rHAa6L_cnysumjYpL_xpWDxkI-OfhhjVAcB-ymIg/viewform' class="btn btn-warning">申請取消</a>
+>>>>>>> origin/master
                     </div>
                     <div class = "col-sm-2 text-right">
                         <a class="btn btn-success" href='market.php?id=<?=$tmpl['buy']['lid']?>&pdf' target="_blank">列印本頁</a>
