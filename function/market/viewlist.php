@@ -64,7 +64,16 @@ if( $row = SQL::fetch("SELECT * FROM `$torderlist` WHERE `suid` = ? AND `lid` =?
 }
 if( $_E['template']['buyflag'] )
 {
-    Render::render('viewlist_passbuy','market');
+    if( safe_get('pdf') !== false )
+    {
+        Render::renderSingleTemplate('common_header_printable','common');
+        Render::renderSingleTemplate('viewlist_passbuypdf','market');
+        Render::renderSingleTemplate('common_footer_printable');
+    }
+    else
+    {
+        Render::render('viewlist_passbuy','market');
+    }
 }
 elseif( $timeflag == TF_NOTYET )
 {

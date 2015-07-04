@@ -46,7 +46,8 @@ if( isset($cgUseHTTPS) && $cgUseHTTPS === true )
 
 require_once('function/sql.php');
 require_once('function/lib.php');
-require_once('function/renderCore.php');
+require_once('function/RenderCore.php');
 require_once('function/userCore.php');
 SQL::intro();
 UserAccess::intro();
+SQL::query('SET NAMES UTF8');

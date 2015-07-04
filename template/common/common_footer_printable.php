@@ -7,4 +7,4 @@ if(!defined('IN_TEMPLATE'))
         </div>
     </div>
 </body>
-<script>//window.print();</script>
+<script>window.print();</script>

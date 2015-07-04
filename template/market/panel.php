@@ -22,17 +22,18 @@ if(!defined('IN_TEMPLATE'))
     <br>
     <div class="trans_form">
         <ul class="nav nav-pills nav-stacked">
-            <li role="presentation"><a href="market.php">購買列表</a></li>
+            <li role="presentation"><a href="market.php">注意事項</a></li>
             <?php foreach($tmpl['panel_list'] as $row) { ?>
             <li role="presentation" class="<?php market_panel_active("mlist-".$row['lid'],$tname)?>"><a href="market.php?id=<?=$row['lid']?>"><?=htmlspecialchars($row['name'])?></a></li>
             <?php }?>
-            
+            <!--
             <li class="dropdown <?php market_panel_active('site',$tname)?>">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dLabe3">帳號管理<span class="caret"></span></a>
                 <ul class="dropdown-menu" aria-labelledby="dLabe3">
                     <li><a href="market.php?page=profile">修改密碼</a></li>
                 </ul>
             </li>
+            -->
         </ul>
     </div>
     <br>

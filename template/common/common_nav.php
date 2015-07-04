@@ -16,7 +16,8 @@ if(!defined('IN_TEMPLATE'))
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php"><?=$_E['site']['name']?></a>
+                <!--<a class="navbar-brand" href="#" data-toggle="modal" data-target="#LoginModal">臺南一中採購系統</a>-->
+                <a class="navbar-brand" href="index.php">臺南一中採購系統</a>
             </div>
             
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -26,7 +27,7 @@ if(!defined('IN_TEMPLATE'))
                     <?php if( $_G['usertype'] == 1 ): ?>
                     <li><a href="market.php">採購頁面</a></li>
                     <?php endif; ?>
-                    <li><a href="https://docs.google.com/forms/d/1Qn4rHAa6L_cnysumjYpL_xpWDxkI-OfhhjVAcB-ymIg/viewform">問題回報</a></li>
+                    <li><a href="https://docs.google.com/forms/d/1Qn4rHAa6L_cnysumjYpL_xpWDxkI-OfhhjVAcB-ymIg/viewform" target="_blank">問題回報</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <?php if( $_G['usertype'] == 2 ): ?>
@@ -113,7 +114,6 @@ if(!defined('IN_TEMPLATE'))
                                 }                        
                             },200);
                         },300);
-                        
                     }
                     else
                     {

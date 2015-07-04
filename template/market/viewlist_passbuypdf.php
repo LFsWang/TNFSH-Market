@@ -6,10 +6,7 @@ if(!defined('IN_TEMPLATE'))
 ?>
 <div class="container-fluid">
     <div class="row">
-        <?php $tmpl['admin_panel_active'] = 'overview'; ?>
-        <?php Render::renderSingleTemplate('panel','market'); ?>
-        <div class="col-sm-1"><br></div>
-        <div class="col-sm-8 trans_form_mh300 panel panel-default">
+        <div class="col-sm-12 trans_form_mh300 panel panel-default">
             <center>
                 <h3><?=htmlentities($tmpl['listinfo']['name'])?><br><small>購買時間<?=$tmpl['buy']['timestamp']?></small></h3>
                 <h4>已完成訂購</h4>
@@ -50,12 +47,8 @@ if(!defined('IN_TEMPLATE'))
                             </tr>
                         <?php } ?>
                     </tbody>
-                </table>
-                
-                
-                
+                </table>      
                 <div class = "row text-right">
-                    
                     <div class = "col-sm-offset-6 col-sm-6">
                         <h4 style="color:red">應繳費用：<span id='totalmoney'><?=$totalsum?></span>元整</h4>
                     </div>
@@ -63,12 +56,6 @@ if(!defined('IN_TEMPLATE'))
                 <div class = "row">
                     <div class = "col-sm-8 text-left">
                         交易內容驗證碼：<?=$tmpl['buy']['orderhash']?>
-                    </div>
-					<div class = "col-sm-2 text-right">
-                        <a href='https://docs.google.com/forms/d/1Qn4rHAa6L_cnysumjYpL_xpWDxkI-OfhhjVAcB-ymIg/viewform'target="_blank" class="btn btn-warning">申請取消</a>
-                    </div>
-                    <div class = "col-sm-2 text-right">
-                        <a class="btn btn-success" href='market.php?id=<?=$tmpl['buy']['lid']?>&pdf' target="_blank">列印本頁</a>
                     </div>
                 </div>
             </center>

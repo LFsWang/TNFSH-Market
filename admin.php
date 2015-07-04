@@ -6,7 +6,7 @@ if( $_G['usertype'] != 2 )
 {
     header("Location:index.php?login=adm");
 }
-require_once('/function/admin/admin.lib.php');
+require_once('function/admin/admin.lib.php');
 
 $allow_page = array('index','goods','edit_system_announcement','goodlists','editimg','admininfo','listadmin','goodlists_summary','good_summary','admininfoedit','syslog','saccount_groups','addastudent');
 $page = 'index';
