@@ -36,11 +36,10 @@ if( !makeint($gid) )
 #else => 班級
 
 $allclass = SQL::fetchAll("SELECT `grade`, `class` , COUNT(*) AS `total`
-FROM `$tstudent_account` WHERE `gpid` IN (SELECT `gpid` FROM `$tgoodlist_accountgroup` WHERE `lid` = 1)
+FROM `$tstudent_account` WHERE `gpid` IN (SELECT `gpid` FROM `$tgoodlist_accountgroup` WHERE `lid` = ?)
 GROUP BY `grade`, `class`
-ORDER BY `grade` ASC");
+ORDER BY `grade` ASC",array($lid));
 
-//Render::errormessage($allclass);
 $classlist = array();
 if( $allclass )
 {
@@ -140,18 +139,17 @@ switch( $gooddata['tbmatch'] )
         {
             $studentnumber = array();
             $data = array();
-            //gid=>number=>num
+            //gid=>suid=>num
             foreach( $allgoods as $g )
             {
                 $_gid = (int)$g['gid'];
                 $data[ $_gid ] = array();
                 $res = GetGoodNumWithSizeByClassStudent($lid,$_gid,$grade,$class);
                 if( $res === false )continue;
-                //$data[ $_gid ] = $res;
                 foreach( $res as $row )
                 {
-                    $data[$_gid][(int)$row['number']] = array($row['num'],$row['bust']);
-                    $studentnumber[ (int)$row['number'] ] = $row['username'];
+                    $studentnumber[] = array((int)$row['suid'],$row['number'],$row['name']);
+                    $data[$_gid][(int)$row['suid']] = array($row['num'],$row['bust']);
                 }
             }
             $_E['template']['data'] = $data;

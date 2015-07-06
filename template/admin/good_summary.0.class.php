@@ -25,7 +25,7 @@ if(!defined('IN_TEMPLATE'))
             <td><?=$row['grade']?></td>
             <td><?=$row['class']?></td>
             <td><?=$row['number']?></td>
-            <td><?=htmlentities($row['username'])?></td>
+            <td><?=htmlentities($row['name'])?></td>
             <td class="text-left" style="font-size:150%;padding:0 8px;"><?=$row['num']?></td>
         </tr>
         <?php }?>

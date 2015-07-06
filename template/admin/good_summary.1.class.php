@@ -23,13 +23,14 @@ if(!defined('IN_TEMPLATE'))
     </thead>
     <tbody>
         <?php $s = 0;?>
-        <?php foreach( $tmpl['studentnumber'] as $snum => $name ){ ?>
+        <?php foreach( $tmpl['studentnumber'] as $row ){ ?>
         <tr>
             <td><?=$tmpl['grade']?></td>
             <td><?=$tmpl['class']?></td>
-            <td><?=$snum?></td>
-            <td><?=$name?></td>
+            <td><?=$row[1]?></td>
+            <td><?=$row[2]?></td>
             <?php foreach( $tmpl['allgoods'] as $goods ){?>
+            <?php $snum = $row[0]; ?>
             <td class="text-center col-sm-1 text-left"><?=@$tmpl['data'][(int)$goods['gid']][$snum][0]?></td>
             <td class="text-center col-sm-1 text-left"><?=@($tmpl['data'][(int)$goods['gid']][$snum][1]+24)/4?></td>
             <?php }?>

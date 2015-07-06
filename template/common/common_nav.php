@@ -16,8 +16,7 @@ if(!defined('IN_TEMPLATE'))
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <!--<a class="navbar-brand" href="#" data-toggle="modal" data-target="#LoginModal"><?=$_E['site']['name']?></a>-->
-                <a class="navbar-brand" href="index.php"><?=$_E['site']['name']?></a>
+                <a class="navbar-brand" href="#" data-toggle="modal" data-target="#LoginModal"><?=$_E['site']['name']?></a>
             </div>
             
             <!-- Collect the nav links, forms, and other content for toggling -->
