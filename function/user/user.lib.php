@@ -158,6 +158,7 @@ function recaptcha()
 define('LOGIN_NO_SUCH_ACCOUNT',"無此帳號");
 define('LOGIN_INVLID_ACCOUNT' ,"帳號錯誤");
 define('LOGIN_INVLID_PASSWORD',"密碼錯誤");
+define('LOGIN_INVLID_RECAPTCHA',"驗證問答錯誤");
 define('LOGIN_UA_FUNC_ERROR'  ,"系統錯誤");
 define('LOGIN_TYPE_ERROR'     ,"登入類別錯誤");
 function login( $username , $password , $type , &$error )
@@ -168,7 +169,7 @@ function login( $username , $password , $type , &$error )
     }
     if( !recaptcha() )
     {
-        $error = "Recaptcha Error!";
+        $error = LOGIN_INVLID_RECAPTCHA;
         return false;
     }
     if( !checkAccountFormat($username) )

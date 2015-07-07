@@ -21,13 +21,17 @@ require_once($_E['ROOT'].'/function/user/user.lib.php');
 $account = safe_post('account');
 $password = safe_post('password');
 $group = safe_post('group');
+$type = safe_post('type');
 
 $data = array();
 $data['name'] = safe_post('name',null);
 $data['grade'] = safe_post('grade',0);
 $data['class'] = safe_post('class',0);
 $data['number'] = safe_post('number',0);
-$res = addUserAccount($account,$password,$group,false,$data) ;
+
+$type = $type?true:false;
+
+$res = addUserAccount($account,$password,$group,$type,$data) ;
 if( $res === ERROR_NO )
 {
     throwjson('SUCC',"");

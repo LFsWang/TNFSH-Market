@@ -118,6 +118,7 @@ if(!defined('IN_TEMPLATE'))
                     {
                         $('#info').css('color','Red');
                         $('#info').html(res.data);
+                        grecaptcha.reset();
                     }
                 },"json").error(function(e) {
                     console.log(e);

@@ -25,17 +25,9 @@ if(!defined('IN_TEMPLATE'))
         <ul class="dropdown-menu" aria-labelledby="dLabel">
             <li><a href="admin.php?page=goodlists">購買清單</a></li>
             <li><a href="admin.php?page=goods">商品管理</a></li>
+            <li><a href="admin.php?page=orderfind">查詢訂單</a></li>
         </ul>
     </li>
-    <!--
-    <li class="dropdown <?php admin_panel_active('student',$tname)?>">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dLabe2">學生管理<span class="caret"></span></a>
-        <ul class="dropdown-menu" aria-labelledby="dLabe2">
-            <li><a href="#">群組</a></li>
-            <li><a href="#">S商品管理</a></li>
-        </ul>
-    </li>
-    -->
     
     <li class="dropdown <?php admin_panel_active('site',$tname)?>">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dLabe3">網站管理<span class="caret"></span></a>

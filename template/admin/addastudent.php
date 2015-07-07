@@ -69,6 +69,15 @@ $( document ).ready(function() {
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="password" class="col-sm-2 control-label">類別</label>
+                        <div class="col-sm-10">
+                            <select name="type">
+                                <option value="1">新生</option>
+                                <option value="0">在校生</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
