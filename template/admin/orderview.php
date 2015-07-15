@@ -6,7 +6,12 @@ if(!defined('IN_TEMPLATE'))
 ?>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-12 trans_form_mh300 panel panel-default">
+        <div class="col-lg-2 col-md-2 col-sm-2 trans_form">
+            <?php $tmpl['admin_panel_active'] = 'goods'; ?>
+            <?php Render::renderSingleTemplate('panel','admin'); ?>
+        </div>
+        <div class="col-sm-1"><br></div>
+        <div class="col-sm-8 trans_form_mh300 panel panel-default">
             <center>
                 <h3><?=htmlentities($tmpl['listinfo']['name'])?><br><small>購買時間<?=$tmpl['buy']['timestamp']?></small></h3>
                 <h4><?=@$tmpl['acct']['grade']?>年<?=@$tmpl['acct']['class']?>班<?=@$tmpl['acct']['number']?>號<?=@$tmpl['acct']['name']?> 已完成訂購</h4>
@@ -47,8 +52,12 @@ if(!defined('IN_TEMPLATE'))
                             </tr>
                         <?php } ?>
                     </tbody>
-                </table>      
+                </table>
+                
+                
+                
                 <div class = "row text-right">
+                    
                     <div class = "col-sm-offset-6 col-sm-6">
                         <h4 style="color:red">應繳費用：<span id='totalmoney'><?=$totalsum?></span>元整</h4>
                     </div>
@@ -56,6 +65,11 @@ if(!defined('IN_TEMPLATE'))
                 <div class = "row">
                     <div class = "col-sm-8 text-left">
                         交易內容驗證碼：<?=$tmpl['buy']['orderhash']?>
+                    </div>
+					<div class = "col-sm-2 text-right">
+                    </div>
+                    <div class = "col-sm-2 text-right">
+                        <a class="btn btn-success" href='admin.php?page=orderview&odid=<?=$tmpl['buy']['odid']?>&pdf' target="_blank">列印本頁</a>
                     </div>
                 </div>
             </center>

@@ -7,7 +7,8 @@ if(!defined('IN_SYSTEM'))
 $_E['template']['res'] = array();
 
 $fd = safe_get('name');
-if( !empty($fd) )
+$ct = safe_get('acct');
+if( !empty($fd) || !empty($ct) )
 {
     $tstudent_account = SQL::tname('student_account');
     $torderlist = SQL::tname('orderlist');
@@ -28,7 +29,9 @@ SELECT
 FROM `$tstudent_account` 
 	RIGHT JOIN `$torderlist` ON `$tstudent_account`.`suid` = `$torderlist`.`suid`
     INNER JOIN `$tgoodlist`  ON `$torderlist`.`lid` = `$tgoodlist`.`lid`
-WHERE `$tstudent_account`.`name` LIKE ?",array( '%'.$fd.'%' ) );
+WHERE `$tstudent_account`.`name` LIKE ? AND `$tstudent_account`.`username` LIKE ?
+ORDER BY `timestamp`",
+    array( '%'.$fd.'%' , '%'.$ct.'%' ) );
     if( $res === false )
     {
         Render::errormessage('SQL Error!');

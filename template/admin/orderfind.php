@@ -50,6 +50,10 @@ function delorder(odid){
             <form class="form-inline">
                 <input type="hidden" name='page' value="orderfind">
                 <div class="form-group">
+                    <label for="acct">帳號(身分證)</label>
+                    <input type="text" class="form-control" name="acct">
+                </div>
+                <div class="form-group">
                     <label for="name">姓名</label>
                     <input type="text" class="form-control" name="name">
                 </div>
@@ -84,7 +88,7 @@ function delorder(odid){
                             <td><?=htmlentities($row['gname'])?></td>
                             <td><?=$row['timestamp']?></td>
                             <td>
-                                <a class="icon-bttn" href="#">
+                                <a class="icon-bttn" href="admin.php?page=orderview&odid=<?=$row['odid']?>">
                                     <span class="glyphicon glyphicon-eye-open" title="檢視"></span>
                                 </a>
                                 <a class="icon-bttn" onclick="delorder(<?=$row['odid']?>)">
