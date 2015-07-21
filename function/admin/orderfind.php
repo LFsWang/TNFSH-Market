@@ -8,7 +8,7 @@ $_E['template']['res'] = array();
 
 $fd = safe_get('name');
 $ct = safe_get('acct');
-if( !empty($fd) || !empty($ct) )
+if( $fd!=='' || $ct!=='' )
 {
     $tstudent_account = SQL::tname('student_account');
     $torderlist = SQL::tname('orderlist');

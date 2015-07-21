@@ -44,7 +44,7 @@ if(!defined('IN_TEMPLATE'))
             <li><a href="admin.php?page=saccount_groups">學生帳號群組</a></li>
             <?php if( $_G['root'] ): ?>
             <li><a href="admin.php?page=addastudent">新增單一學生帳號</a></li>
-            <li><a href="admin.php?page=modifyastudent">修改單一學生帳號</a></li>
+            <li><a href="admin.php?page=studentfind">修改單一學生帳號</a></li>
             <?php endif; ?>
         </ul>
     </li>
