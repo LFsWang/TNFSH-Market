@@ -6,8 +6,8 @@ if(!defined('IN_SYSTEM'))
 
 $_E['template']['res'] = array();
 
-$fd = safe_get('name');
-$ct = safe_get('acct');
+$fd = safe_get('name','');
+$ct = safe_get('acct','');
 if( $fd!=='' || $ct!=='' )
 {
     $tstudent_account = SQL::tname('student_account');

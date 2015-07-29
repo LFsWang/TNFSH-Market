@@ -3,17 +3,14 @@ if(!defined('IN_SYSTEM'))
 {
     exit('Access denied');
 }
-
 //if can view in public...
 //todo
-
 $gid = safe_get('gid','1');
 if( !is_numeric($gid) )
 {
     $gid = '1';
 }
 $gid = (int)$gid;
-
 $table = SQL::tname('goods');
 $sql_select = "SELECT * FROM `$table` WHERE `gid` = ?";
 $res = SQL::prepare($sql_select);
@@ -23,7 +20,6 @@ if( !SQL::execute($res,array($gid)) )
     Render::render('nonedefined');
     exit(0);
 }
-
 $data = $res->fetch();
 if(!$data)
 {
@@ -33,9 +29,7 @@ if(!$data)
     exit(0);
 }
 $_E['template']['data'] = $data;
-
 $_E['template']['img'] = array();
-
 $tgoods_image = SQL::tname('goods_image');
 $sql_select = "SELECT `imgid` FROM `$tgoods_image` WHERE `gid` = ?";
 $res = SQL::prepare($sql_select);

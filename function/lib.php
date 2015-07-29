@@ -21,7 +21,7 @@ __df('ERROR_SQL_EXEC');
 __df('ERROR_PREMISSION_DENIED');
 __df('ERROR_OTHERS');
 
-function makeint($var)
+function makeint(&$var)
 {
     if( !is_numeric($var) )
             return false;
