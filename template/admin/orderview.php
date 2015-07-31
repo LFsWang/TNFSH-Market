@@ -4,6 +4,37 @@ if(!defined('IN_TEMPLATE'))
     exit('Access denied');
 }
 ?>
+<script>
+odid = <?=$tmpl['buy']['odid']?>;
+$(document).ready(function(e){
+    $('.goodnum').bind('click',function(event){
+        console.log( $(this).attr('gid') );
+        gid = $(this).attr('gid');
+        if(event.ctrlKey){
+            console.log('ctrl');
+            val = prompt('請輸入新的數量',$(this).attr('defaultnum'));
+            ival =  parseInt(val, 10);
+            if ( !isNaN(ival) ) 
+            {
+                $.post("api.php",{action:'cg-num',odid:odid,gid:gid,num:val},function(res){
+                    if( res.status == 'SUCC' ){
+                        location.reload();
+                    }
+                    else{
+                        alert(res.data);
+                    }
+                },"json").error(function(e){
+                    console.log(e);
+                });
+            }
+            else
+            {
+                alert('輸入錯誤!');
+            }
+        }
+    });
+});
+</script>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-2 col-md-2 col-sm-2 trans_form">
@@ -15,6 +46,7 @@ if(!defined('IN_TEMPLATE'))
             <center>
                 <h3><?=htmlentities($tmpl['listinfo']['name'])?><br><small>購買時間<?=$tmpl['buy']['timestamp']?></small></h3>
                 <h4><?=@$tmpl['acct']['grade']?>年<?=@$tmpl['acct']['class']?>班<?=@$tmpl['acct']['number']?>號<?=@$tmpl['acct']['name']?> 已完成訂購</h4>
+                <h5>CTRL+選取要修改的數字可以修改訂單</h5>
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -47,7 +79,7 @@ if(!defined('IN_TEMPLATE'))
                                 <?php endif;?>
                                 </td>
                                 <td> <?=$row['price']?> </td>
-                                <td> <?=$tmpl['buyinfo'][$row['gid']]['num']?></td>
+                                <td><span class="goodnum" gid='<?=$row['gid']?>' defaultnum='<?=$tmpl['buyinfo'][$row['gid']]['num']?>'><?=$tmpl['buyinfo'][$row['gid']]['num']?></span></td>
                                 <td> <?=$tmp?></td>
                             </tr>
                         <?php } ?>
