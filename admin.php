@@ -8,7 +8,7 @@ if( $_G['usertype'] != 2 )
 }
 require_once('function/admin/admin.lib.php');
 
-$allow_page = array('index','goods','edit_system_announcement','goodlists','editimg','admininfo','listadmin','goodlists_summary','good_summary','admininfoedit','syslog','saccount_groups','addastudent','modifyastudent','orderfind','orderview','studentfind');
+$allow_page = array('index','goods','edit_system_announcement','goodlists','editimg','admininfo','listadmin','goodlists_summary','good_summary','admininfoedit','syslog','saccount_groups','addastudent','modifyastudent','orderfind','orderview','studentfind','sacctgpedit');
 $page = 'index';
 if( isset($_REQUEST['page']) )
 {

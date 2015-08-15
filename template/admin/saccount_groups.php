@@ -40,7 +40,7 @@ $( document ).ready(function() {
         <div class="col-lg-1 col-md-1 col-sm-1"><br></div>
         <div class="col-lg-8 col-md-8 col-sm-8 trans_form_mh300 panel panel-default">
             <center>
-                <h2>學生群組列表</h2
+                <h2>學生群組列表</h2>
             <hr>
             </center>
             <h3>增加學生群組(DEVELOP)</h3>
@@ -81,7 +81,7 @@ $( document ).ready(function() {
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <a class="icon-bttn" href="admin.php?page=saccountedit&gpid=<?=$row['gpid']?>" >
+                                <a class="icon-bttn" href="admin.php?page=sacctgpedit&gpid=<?=$row['gpid']?>" >
                                     <span class="glyphicon glyphicon-pencil" title="編輯"></span>
                                 </a>
                             </td>

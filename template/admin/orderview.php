@@ -7,16 +7,20 @@ if(!defined('IN_TEMPLATE'))
 <script>
 odid = <?=$tmpl['buy']['odid']?>;
 $(document).ready(function(e){
-    $('.goodnum').bind('click',function(event){
+    $('.modifyval').bind('click',function(event){
         console.log( $(this).attr('gid') );
         gid = $(this).attr('gid');
+        type= $(this).attr('type');
         if(event.ctrlKey){
             console.log('ctrl');
             val = prompt('請輸入新的數量',$(this).attr('defaultnum'));
+            if(val === null){
+                return false;
+            }
             ival =  parseInt(val, 10);
             if ( !isNaN(ival) ) 
             {
-                $.post("api.php",{action:'cg-num',odid:odid,gid:gid,num:val},function(res){
+                $.post("api.php",{action:'cg-num',odid:odid,type:type,gid:gid,num:val},function(res){
                     if( res.status == 'SUCC' ){
                         location.reload();
                     }
@@ -70,7 +74,9 @@ $(document).ready(function(e){
                                     <?php $lt=array('bust','waistline','lpants'); ?>
                                     <?php for($i=0;$i<3;++$i) { ?>
                                         <?php if(  $row['tbmatch'] & ( 1<<$i ) ): ?>
+                                            <span class="modifyval" type="<?=$lt[$i]?>" defaultnum="<?=$tmpl['buyinfo'][$row['gid']][$lt[$i]]?>" gid='<?=$row['gid']?>'>
                                             <?=$tmpl['buyinfo'][$row['gid']][$lt[$i]]?>
+                                            </span>
                                         <?php else :?>
                                             -
                                         <?php endif;?>
@@ -79,7 +85,7 @@ $(document).ready(function(e){
                                 <?php endif;?>
                                 </td>
                                 <td> <?=$row['price']?> </td>
-                                <td><span class="goodnum" gid='<?=$row['gid']?>' defaultnum='<?=$tmpl['buyinfo'][$row['gid']]['num']?>'><?=$tmpl['buyinfo'][$row['gid']]['num']?></span></td>
+                                <td><span class="modifyval" type="num" gid='<?=$row['gid']?>' defaultnum='<?=$tmpl['buyinfo'][$row['gid']]['num']?>'><?=$tmpl['buyinfo'][$row['gid']]['num']?></span></td>
                                 <td> <?=$tmp?></td>
                             </tr>
                         <?php } ?>

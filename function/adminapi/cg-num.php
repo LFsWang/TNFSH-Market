@@ -15,6 +15,7 @@ require_once($_E['ROOT'].'/function/admin/admin.lib.php');
 require_once($_E['ROOT'].'/function/user/user.lib.php');
 $gid = safe_post('gid');
 $odid= safe_post('odid');
+$type= safe_post('type');
 $num = safe_post('num');
 
 $tsaccount_group = SQL::tname('saccount_group');
@@ -29,18 +30,42 @@ if( !$good )
 {
     throwjson('error',"無此商品");
 }
-if( $num < 0 ||  $good['maxnum'] < $num )
-{
-    throwjson('error',"數量錯誤 需介於0~".$good['maxnum']);
-}
 $torderlist_detail = SQL::tname('orderlist_detail');
-if( !SQL::query("SELECT `odid` FROM `$torderlist_detail` WHERE `odid`=? AND `gid`=?",array($odid,$gid)) )
+if( !($tmp=SQL::fetch("SELECT * FROM `$torderlist_detail` WHERE `odid`=? AND `gid`=?",array($odid,$gid)) ))
 {
     throwjson('error',"無此訂單");
 }
 
-if( !SQL::query("UPDATE `$torderlist_detail` SET `num`=? WHERE `odid`=? AND `gid`=?",array($num,$odid,$gid)) )
+if( $type == 'num' )
 {
-    throwjson('error',"SQL error");
+    if( $num < 0 ||  $good['maxnum'] < $num )
+    {
+        throwjson('error',"數量錯誤 需介於0~".$good['maxnum']);
+    }
+    if( !SQL::query("UPDATE `$torderlist_detail` SET `num`=? WHERE `odid`=? AND `gid`=?",array($num,$odid,$gid)) )
+    {
+        throwjson('error',"SQL error");
+    }
 }
+elseif( $type == 'bust' || $type == 'waistline' || $type == 'lpants' )
+{
+    $tmp[$type] = $num;
+    if( !checkclothesize($tmp['bust'],$tmp['waistline'],$tmp['lpants']) )
+    {
+        throwjson('error',"尺寸錯誤");
+    }
+    if( !SQL::query("UPDATE `$torderlist_detail` 
+    SET `bust`=?,waistline=?,lpants=?
+    WHERE `odid`=? AND `gid`=?",array($tmp['bust'],$tmp['waistline'],$tmp['lpants'],$odid,$gid)) )
+    {
+        throwjson('error',"SQL error");
+    }
+}
+else
+{
+    throwjson('error',"參數錯誤");
+}
+
+
+
 throwjson('SUCC',"SUCC");
