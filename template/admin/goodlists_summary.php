@@ -31,11 +31,11 @@ $( document ).ready(function() {
                         <td>應購買人數: <?=$tmpl['goodlist']['totaluser']?></td>
                         <td>已下單人數: <?=$tmpl['totalbuyuser']?></td>
                     </tr>
-                    <tr>
-                        
-                    </tr>
                 </tbody>
             </table>
+            <p>
+                <a href="admin.php?page=exportorder&lid=<?=$tmpl['goodlist']['lid']?>" class="btn btn-default" target="_blank">匯出CSV</a>
+            </p>
             <hr>
             <h3>一般商品大綱</h3>
             <table class="table table-striped table-hover">

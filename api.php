@@ -26,7 +26,7 @@ if( $_G['usertype'] != 2 )
     throwjson('error','Access denied!');
 }
 
-$case = array( 'getgoodinfo' , 'getgoodlist' , 'editimage', 'delimage' , 'addadmin' ,'addsgroup','addsastudent','modifyastudent','delorder','cg-num','modifysgroup','importacct');
+$case = array( 'getgoodinfo' , 'getgoodlist' , 'editimage', 'delimage' , 'addadmin' ,'addsgroup','addsastudent','modifyastudent','delorder','cg-num','modifysgroup','importacct','importclass');
 if( in_array($action,$case) )
 {
     if( file_exists("function/adminapi/$action.php") )
