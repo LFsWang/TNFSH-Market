@@ -5,6 +5,36 @@ if(!defined('IN_TEMPLATE'))
 }
 ?>
 <script>
+function delgroup(gpid){
+    if( !confirm("真的要刪除這個群組嗎? 此動作無法復原，解將遺失所有帳號組的資訊") )
+    {
+        return ;
+    }
+    $.post( "api.php",
+        {
+            action : 'delgroup' ,
+            gpid : gpid
+        },
+        function(res){
+            console.log(res);
+            if( res.status == 'SUCC' )
+            {
+                alert('刪除成功!');
+                setTimeout( function(){
+                    location.reload();
+                },300);
+            }
+            else
+            {
+                alert('錯誤!' + res.data);
+            }
+        },
+        "json"
+    ).error(function(e){
+        alert('錯誤!');
+        console.log(e);
+    });
+}
 $( document ).ready(function() {
     $("#addsgroup").submit(function(e){
         e.preventDefault();
@@ -83,6 +113,9 @@ $( document ).ready(function() {
                             <td>
                                 <a class="icon-bttn" href="admin.php?page=sacctgpedit&gpid=<?=$row['gpid']?>" >
                                     <span class="glyphicon glyphicon-pencil" title="編輯"></span>
+                                </a>
+                                <a class="icon-bttn" onclick="delgroup(<?=$row['gpid']?>)">
+                                    <span class="glyphicon glyphicon-trash" title="刪除群組"></span>
                                 </a>
                             </td>
                         </tr>
