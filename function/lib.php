@@ -227,7 +227,7 @@ function GetGoodlistByLID($lid)
     $data['needclothe'] = false;
     $tmp = SQL::fetchAll("SELECT `$tgoods`.`gid`,`type` FROM `$tgoodlist_goodstable` 
     INNER JOIN `$tgoods` ON `$tgoods`.`gid` = `$tgoodlist_goodstable`.`gid` 
-    WHERE `lid` = ?",array($lid));
+    WHERE `lid` = ? ORDER BY `view` ASC,`gid` ASC",array($lid));
     foreach( $tmp as $row )
     {
         $data['goods'][] = $row['gid'];
@@ -252,7 +252,7 @@ function GetGoodlistDetail($lid)
     {
         return false;
     }
-    $sql_select = "SELECT *,`defaultnum` * `price` AS `total` FROM `$tgoods` WHERE `gid` IN (SELECT `gid` FROM `$tgoodlist_goodstable` WHERE `lid` = ?)";
+    $sql_select = "SELECT *,`defaultnum` * `price` AS `total` FROM `$tgoods` WHERE `gid` IN (SELECT `gid` FROM `$tgoodlist_goodstable` WHERE `lid` = ?) ORDER BY `view` ASC,`gid` ASC";
     if( $res = SQL::query($sql_select,array($lid)) )
     {
         $data['goodsinfo'] = array();

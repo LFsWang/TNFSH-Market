@@ -54,7 +54,7 @@ if( isset( $_SESSION['editgoodlistsflag'] ) )
 #prepare goods
 #prepare list
 $table = SQL::tname('goods');
-$sql_select = "SELECT `gid`,`name`,`price`,`defaultnum` FROM `goods` WHERE `owner` = ? OR ?";
+$sql_select = "SELECT `gid`,`name`,`price`,`defaultnum` FROM `goods` WHERE `owner` = ? OR ? ORDER BY `view` ASC,`gid` ASC";
 if(!( $result = SQL::fetchAll($sql_select,array($_G['uid'],$_G['root'])) ))
 {
     $result = array();

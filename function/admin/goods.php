@@ -29,6 +29,7 @@ if( isset($_POST['method']) )
             $data['maxnum']   = safe_post('maxnum',null);
             $data['tbmatch']   = safe_post('tbmatch',null);
             $data['description'] = safe_post('description','');
+            $data['view'] = safe_post('view',0);
             
             $data['status']   = safe_post('status',null);
             $data['status'] = (int)$data['status'][0];
@@ -74,7 +75,7 @@ if( isset( $_SESSION['editgoodsflag'] ) )
 
 #prepare list
 $table = SQL::tname('goods');
-$sql_select = "SELECT `gid`, `name`, `type`, `price`, `defaultnum` ,`status` FROM `$table` WHERE `owner`  = ? OR ?";
+$sql_select = "SELECT `gid`, `name`, `type`, `price`, `defaultnum` ,`status` FROM `$table` WHERE `owner`  = ? OR ? ORDER BY `view` ASC,`gid` ASC";
 $res = SQL::prepare($sql_select);
 if( !SQL::execute($res,array($_G['uid'],$_G['root']) ) )
 {

@@ -46,7 +46,7 @@ function modify_good( $data , $gid = null , &$error = null )
         return false;
     }
     
-    $args_str = array('name','type','price','defaultnum','maxnum','tbmatch','description','status','image');
+    $args_str = array('name','type','price','defaultnum','maxnum','tbmatch','description','status','image','view');
     foreach( $args_str as $var )
     {
         if( !isset( $data[$var] ) )
@@ -90,7 +90,11 @@ function modify_good( $data , $gid = null , &$error = null )
             return false;
         }
     }
-    
+    if( !makeint($data['view']) )
+    {
+        $error = ERROR_INT_FORMAT."VIEW";
+        return false;
+    }
     if( !makeint($data['price']) || !makeint($data['defaultnum']) || !makeint($data['maxnum']) )
     {
         $error = ERROR_INT_FORMAT."$";
@@ -131,8 +135,9 @@ function modify_good( $data , $gid = null , &$error = null )
         }
     }
     $sql_insert="
-    INSERT INTO `$tgoods`(`gid`, `owner`, `name`, `type`, `price`, `defaultnum`, `maxnum`, `tbmatch`, `description`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?) 
+    INSERT INTO `$tgoods`(`gid`,`view`, `owner`, `name`, `type`, `price`, `defaultnum`, `maxnum`, `tbmatch`, `description`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?,?) 
     ON DUPLICATE KEY UPDATE
+    `view` = ? ,
     `name` = ? ,
     `type` = ? ,
     `price` = ?,
@@ -143,7 +148,7 @@ function modify_good( $data , $gid = null , &$error = null )
     `status`=?;";
     
     $res = SQL::prepare($sql_insert);
-    if( !SQL::execute($res,array($gid,$_G['uid'],$data['name'],$data['type'],$data['price'],$data['defaultnum'],$data['maxnum'],$data['tbmatch'],$data['description'],$data['status'],$data['name'],$data['type'],$data['price'],$data['defaultnum'],$data['maxnum'],$data['tbmatch'],$data['description'],$data['status'])) )
+    if( !SQL::execute($res,array($gid,$data['view'],$_G['uid'],$data['name'],$data['type'],$data['price'],$data['defaultnum'],$data['maxnum'],$data['tbmatch'],$data['description'],$data['status'],$data['view'],$data['name'],$data['type'],$data['price'],$data['defaultnum'],$data['maxnum'],$data['tbmatch'],$data['description'],$data['status'])) )
     {
         $error = ERROR_SQL_EXEC;
         return false;

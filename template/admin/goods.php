@@ -105,6 +105,7 @@ function editgood(gid)
         $("#goodprice").val(info.price);
         $("#defaultnum").val(info.defaultnum);
         $("#maxnum").val(info.maxnum);
+        $("#view").val(info.view);
         $("#tbmatch").val(info.tbmatch);
         $("#goodtype").val(info.type);
         tinyMCE.activeEditor.setContent(info.description);
@@ -228,6 +229,12 @@ $( document ).ready(function() {
                                                     <label for="maxnum" class="col-sm-4 col-md-4 control-label">最大購買數量</label>
                                                     <div class="col-sm-8 col-md-8">
                                                         <input type="number" class="form-control" id="maxnum" placeholder="10件" value=10 name="maxnum" min="0">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="view" class="col-sm-4 col-md-4 control-label">顯示排序</label>
+                                                    <div class="col-sm-8 col-md-8">
+                                                        <input type="number" class="form-control" id="view" placeholder="越小越前面" value=0 name="view">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
