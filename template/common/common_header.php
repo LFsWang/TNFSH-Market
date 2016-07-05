@@ -31,6 +31,16 @@ if(!defined('IN_TEMPLATE'))
     <script src="js/bootstrap.min.js"></script>
     <script src="js/js.js"></script>
     <script>
+    var getLocation = function(href) {
+        var l = document.createElement("a");
+        l.href = href;
+        return l;
+    };
+    var host = getLocation("https://sp.tnfsh.tn.edu.tw").hostname;
+    if ((host == window.location.host) && (window.location.protocol != "https:"))
+        window.location.protocol = "https";
+    </script>
+    <script>
         $('.dropdown-toggle').dropdown();
     </script>
 </head>
