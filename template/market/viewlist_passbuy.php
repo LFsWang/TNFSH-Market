@@ -4,6 +4,38 @@ if(!defined('IN_TEMPLATE'))
     exit('Access denied');
 }
 ?>
+<script>
+function delsorder(){
+    if( !confirm("真的要刪除這筆訂單嗎? 此動作無法復原，只有在訂購時限內可以刪除，刪除後需要重新填寫所有訂購內容！") )
+    {
+        return ;
+    }
+    $.post( "api.php",
+        {
+            action : 'delsorder' ,
+            lid : <?=$tmpl['buy']['lid']?>
+        },
+        function(res){
+            console.log(res);
+            if( res.status == 'SUCC' )
+            {
+                alert('刪除成功!');
+                setTimeout( function(){
+                    location.reload();
+                },300);
+            }
+            else
+            {
+                alert('錯誤!' + res.data);
+            }
+        },
+        "json"
+    ).error(function(e){
+        alert('錯誤!');
+        console.log(e);
+    });
+}
+</script>
 <div class="container-fluid">
     <div class="row">
         <?php $tmpl['admin_panel_active'] = 'overview'; ?>
@@ -11,7 +43,8 @@ if(!defined('IN_TEMPLATE'))
         <div class="col-sm-1"><br></div>
         <div class="col-sm-8 trans_form_mh300 panel panel-default">
             <center>
-                <h3><?=htmlentities($tmpl['listinfo']['name'])?><br><small>購買時間<?=$tmpl['buy']['timestamp']?></small></h3>
+                <h3><?=htmlentities($tmpl['listinfo']['name'])?><br><small>購買時間<?=$tmpl['buy']['timestamp']?></small>
+                <br><small>開放時間 <?=$tmpl['listinfo']['starttime']?> ~ <?=$tmpl['listinfo']['endtime']?></small></h3>
                 <h4>已完成訂購</h4>
                 <table class="table table-striped table-hover">
                     <thead>
@@ -61,11 +94,14 @@ if(!defined('IN_TEMPLATE'))
                     </div>
                 </div>
                 <div class = "row">
-                    <div class = "col-sm-8 text-left">
+                    <div class = "col-sm-6 text-left">
                         交易內容驗證碼：<?=$tmpl['buy']['orderhash']?>
                     </div>
-					<div class = "col-sm-2 text-right">
-                        <a href='https://docs.google.com/forms/d/1Qn4rHAa6L_cnysumjYpL_xpWDxkI-OfhhjVAcB-ymIg/viewform'target="_blank" class="btn btn-warning">申請取消</a>
+                    <div class = "col-sm-2 text-right">
+                        <a href='https://docs.google.com/forms/d/1Qn4rHAa6L_cnysumjYpL_xpWDxkI-OfhhjVAcB-ymIg/viewform'target="_blank" class="btn btn-warning">提出疑問</a>
+                    </div>
+                    <div class = "col-sm-2 text-right">
+                        <a class="btn btn-danger" onclick="delsorder()">撤回訂單</a>
                     </div>
                     <div class = "col-sm-2 text-right">
                         <a class="btn btn-success" href='market.php?id=<?=$tmpl['buy']['lid']?>&pdf' target="_blank">列印本頁</a>

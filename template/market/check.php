@@ -7,7 +7,7 @@ if(!defined('IN_TEMPLATE'))
 <script>
 function check()
 {
-    if (confirm('確認送出訂單? 送出後無法再進行修改，請詳加確認。')) {
+    if (confirm('確認送出訂單? 送出後超過訂購時限將無法再進行修改，請詳加確認。')) {
         return true;
     } else {
         return false;

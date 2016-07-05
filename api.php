@@ -7,7 +7,7 @@ require_once('GlobalSetting.php');
 UserAccess::CheckToken('api');
 $action = @$_REQUEST['action'];
 
-$case = array('login' , 'logout' , 'modifyspass');
+$case = array('login' , 'logout' , 'modifyspass','delsorder');
 
 
 if( in_array($action,$case) )
