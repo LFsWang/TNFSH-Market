@@ -367,5 +367,5 @@ FROM `$torderlist_detail`
 	INNER JOIN `$torderlist` ON `$torderlist`.`odid` = `$torderlist_detail`.`odid` 
     INNER JOIN `$tstudent_account` ON  `$torderlist`.`suid` = `$tstudent_account`.`suid`
 WHERE `$torderlist`.`lid` = ? AND `$torderlist_detail`.`gid` = ? AND `$tstudent_account`.`grade` = ? AND `$tstudent_account`.`class` = ?
-ORDER BY `$tstudent_account`.`grade` ASC",array($lid,$gid,$grade,$class));
+ORDER BY `$tstudent_account`.`grade` ASC,`$tstudent_account`.`number` ASC",array($lid,$gid,$grade,$class));
 }

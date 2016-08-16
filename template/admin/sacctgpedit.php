@@ -334,7 +334,7 @@ $( document ).ready(function() {
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="goodname" class="col-sm-4 col-md-4 control-label">帳號欄位</label>
+                                                        <label for="goodname" class="col-sm-4 col-md-4 control-label">身分證(帳號)</label>
                                                         <div class="col-sm-8 col-md-8">
                                                             <input type="text" class="form-control" name="acct" value="" required>
                                                         </div>
